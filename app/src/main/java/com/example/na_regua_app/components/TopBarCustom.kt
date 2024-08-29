@@ -18,11 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.na_regua_app.ui.theme.FontProvider
+import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.example.na_regua_app.ui.theme.WHITE_BACKGROUND
 
 
@@ -48,11 +50,6 @@ fun TopBarCustom(
                     strokeWidth = strokeWidth
                 )
 
-                drawRect(
-                    color = Color.Black.copy(alpha = 0.2f),
-                    size = Size(size.width, 4.dp.toPx()),
-                    topLeft = Offset(0f, size.height - 4.dp.toPx())
-                )
             }
             .padding(bottom = 2.dp),
         title = {
@@ -64,7 +61,7 @@ fun TopBarCustom(
                     Text(
                         text = titlePage,
                         fontFamily = FontProvider.PlusJakartaSans,
-                        color = Color.White)
+                        color = Color.Black)
                 }
 
                 if(showIconNotification){
@@ -73,9 +70,17 @@ fun TopBarCustom(
                     }) {
                         Icon(
                             imageVector = Icons.Default.Notifications,
-                            contentDescription = "Notificações"
+                            contentDescription = "Notificações",
+                            tint = Color.Black
                         )
                     }
+                }else{
+                    Text("Marcar como lida",
+                        fontSize = 14.sp,
+                        color = ORANGE_SECUNDARY,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(15.dp)
+                    )
                 }
             }
         },

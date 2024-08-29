@@ -1,6 +1,7 @@
 package com.example.na_regua_app.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -33,17 +33,14 @@ fun BottomBarCustom(navController: NavController){
     BottomAppBar(
         containerColor = Color.White,
         contentColor = ORANGE_SECUNDARY,
-        modifier = Modifier.fillMaxWidth() // Cor do fundo do Box
+        modifier = Modifier.fillMaxWidth()
+            .border(
+            width = 1.dp,
+            color = Color.Transparent, // Defina a cor da borda, se necessário
+            shape = RoundedCornerShape(0.dp) // Ajuste a forma da borda, se necessário
+        )
             .drawBehind {
                 val strokeWidth = 2.dp.toPx()
-                val shadowHeight = 4.dp.toPx()
-
-                // Desenhar a sombra
-                drawRect(
-                    color = Color.Black.copy(alpha = 0.2f),
-                    size = Size(size.width, shadowHeight),
-                    topLeft = Offset(0f, -shadowHeight) // Posicionar a sombra acima do Box
-                )
 
                 // Desenhar a borda superior
                 drawLine(

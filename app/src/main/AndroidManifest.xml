@@ -12,6 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Nareguaapp"
         tools:targetApi="31">
+
+        <!-- Remova ou comente a linha abaixo -->
+        <!--
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/font" />
+        -->
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

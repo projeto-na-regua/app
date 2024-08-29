@@ -18,12 +18,12 @@ import com.example.na_regua_app.components.TopBarCustom
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Notificacoes(
+fun Adicionar(
     navController: NavController
 ) {
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Notificações",  false)
+            TopBarCustom(navController, "Adicionar", true)
         },
         content = { paddingValues ->
             Column(

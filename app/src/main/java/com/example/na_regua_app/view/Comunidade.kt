@@ -1,4 +1,3 @@
-package com.example.na_regua_app.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,14 +15,15 @@ import androidx.navigation.NavController
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.TopBarCustom
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Notificacoes(
+fun Comunidade(
     navController: NavController
 ) {
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Notificações",  false)
+            TopBarCustom(navController, "Comunidade",  true)
         },
         content = { paddingValues ->
             Column(

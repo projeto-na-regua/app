@@ -9,21 +9,20 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.na_regua_app.components.BottomBarCustom
-import com.example.na_regua_app.components.TopBarCustom
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Notificacoes(
+fun Login(
     navController: NavController
 ) {
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Notificações",  false)
+            TopAppBar(title = { Text("Login") })
         },
         content = { paddingValues ->
             Column(
@@ -32,17 +31,17 @@ fun Notificacoes(
                     .padding(paddingValues)
                     .padding(16.dp)
             ) {
-                Text(text = "Welcome to the Home Screen")
+
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Button(onClick = { /* Handle button click */ }) {
-                    Text("Click Me")
+                // Add navigation or other UI elements here
+                Button(onClick = {
+                    navController.navigate("home")
+                }) {
+                    Text("Entrar")
                 }
             }
-        },
-        bottomBar = {
-            BottomBarCustom(navController)
         }
     )
 }

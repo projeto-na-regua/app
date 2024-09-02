@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -14,6 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -34,6 +40,9 @@ fun TopBarCustom(
     navController: NavController,
     titlePage: String,
     showIconNotification: Boolean){
+
+    var existNotification by remember {mutableStateOf(true)}
+
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.White
@@ -65,15 +74,30 @@ fun TopBarCustom(
                 }
 
                 if(showIconNotification){
-                    IconButton(onClick = {
-                        navController.navigate("notificacoes")
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Notifications,
-                            contentDescription = "Notificações",
-                            tint = Color.Black
-                        )
+
+                    Box (modifier = Modifier.padding(10.dp)){
+                        IconButton(onClick = {
+                            navController.navigate("notificacoes")
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Notifications,
+                                contentDescription = "Notificações",
+                                tint = Color.Black
+                            )
+                        }
+
+                        if (existNotification) {
+                            Box(
+                                modifier = Modifier
+                                    .size(10.dp)
+                                    .background(ORANGE_SECUNDARY, shape = CircleShape)
+                                    .align(Alignment.TopEnd)
+                            )
+                        }
                     }
+
+
+
                 }else{
                     Text("Marcar como lida",
                         fontSize = 14.sp,

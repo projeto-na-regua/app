@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     composable("home") {
                         Home(navController)
                     }
-                    composable("home") {
+                    composable("agendamento") {
                         Agendamento(navController)
                     }
                     composable("telaInicial"){

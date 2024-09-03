@@ -14,7 +14,41 @@ val Typography = Typography(
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
-    )
+    ),
+
+    titleLarge = TextStyle(
+        color = BLUE_PRIMARY,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold
+    ),
+
+    titleMedium = TextStyle(
+        color = BLUE_PRIMARY,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold
+    ),
+
+    labelLarge = TextStyle(
+        color = BLUE_PRIMARY,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Bold
+    ),
+
+    labelMedium = TextStyle(
+        color = BLUE_PRIMARY,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Normal
+    ),
+
+    labelSmall = TextStyle(
+        color = BLUE_PRIMARY,
+        fontSize = 13.sp,
+        fontWeight = FontWeight.Normal
+    ),
+
+
+
+
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
@@ -31,4 +65,10 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
+)
+
+val labelLargeOrange = TextStyle(
+    color = ORANGE_SECUNDARY,
+    fontSize = 16.sp,
+    fontWeight = FontWeight.Bold
 )

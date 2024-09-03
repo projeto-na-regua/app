@@ -29,8 +29,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.FontProvider
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
+import com.example.na_regua_app.ui.theme.Typography
 import com.example.na_regua_app.ui.theme.WHITE_BACKGROUND
 
 
@@ -69,8 +71,8 @@ fun TopBarCustom(
                 Box(modifier = Modifier.weight(1f)) {
                     Text(
                         text = titlePage,
-                        fontFamily = FontProvider.PlusJakartaSans,
-                        color = Color.Black)
+                        style = Typography.titleLarge
+                    )
                 }
 
                 if(showIconNotification){

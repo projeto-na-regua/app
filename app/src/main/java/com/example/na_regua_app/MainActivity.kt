@@ -17,16 +17,19 @@ import com.example.na_regua_app.view.Notificacoes
 import com.example.na_regua_app.view.Perfil
 import com.example.na_regua_app.view.SplashScreen
 import com.example.na_regua_app.view.TelaInicial
-
+import com.example.na_regua_app.view.Agendamento
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             NareguaappTheme {
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = "splashScreen") {
+                NavHost(navController = navController, startDestination = "home") {
                     composable("home") {
                         Home(navController)
+                    }
+                    composable("agendamento") {
+                        Agendamento(navController)
                     }
                     composable("telaInicial"){
                         TelaInicial(navController)

@@ -30,7 +30,7 @@ import com.example.na_regua_app.ui.theme.labelLargeOrange
 @Composable
 fun Botao(
     onClick: () -> Unit,
-    textButton: String
+    textButton: String,
 ) {
     Button(
         onClick = { onClick() },
@@ -86,7 +86,39 @@ fun Botao(
     }
 }
 
+@Composable
+fun BotaoAjustavel(
+    onClick: () -> Unit,
+    textButton: String,
+    modifier: Modifier = Modifier,  // Permite modificar o tamanho e outras propriedades externamente
+    imagePainter: Painter? = null   // O ícone é opcional
+) {
+    Button(
+        onClick = { onClick() },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = BLUE_PRIMARY
+        ),
+        modifier = modifier  // Usa o modificador passado, permitindo ajuste de largura
+            .height(50.dp),
+        shape = RoundedCornerShape(12.dp),
+    ) {
+        imagePainter?.let {
+            Image(
+                painter = it,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(24.dp)
+                    .padding(end = 8.dp)
+            )
+        }
 
+        Text(
+            text = textButton,
+            style = labelLargeOrange.copy(fontSize = 10.sp),
+            letterSpacing = 1.sp
+        )
+    }
+}
 @Composable
 fun BotaoIcon(
     onClick: () -> Unit,

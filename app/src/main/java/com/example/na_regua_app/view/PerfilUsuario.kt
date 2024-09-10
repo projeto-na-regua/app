@@ -3,7 +3,6 @@ package com.example.na_regua_app.view
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,14 +34,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -52,19 +47,16 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.R
 import com.example.na_regua_app.classes.Postagem
-import com.example.na_regua_app.classes.Servico
 import com.example.na_regua_app.components.BotaoAjustavel
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.PostCard
 import com.example.na_regua_app.components.TopBarCustom
-import com.example.na_regua_app.components.ServiceList
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
-import com.example.na_regua_app.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Perfil(
+fun PerfilUsuario(
     navController: NavController
 ) {
     Scaffold(
@@ -72,7 +64,7 @@ fun Perfil(
             TopBarCustom(navController, "Perfil",  true)
         },
         content = { paddingValues ->
-            PerfilContent(
+            PerfilUsuarioContent(
                 paddingValues = paddingValues
             )
         },
@@ -83,7 +75,7 @@ fun Perfil(
 }
 
 @Composable
-fun PerfilContent(paddingValues: PaddingValues){
+fun PerfilUsuarioContent(paddingValues: PaddingValues){
 
     var nomeUsuario by remember { mutableStateOf("@barbeiro_ofc") }
     var seguindo by remember { mutableIntStateOf(2) }
@@ -278,9 +270,9 @@ fun PerfilContent(paddingValues: PaddingValues){
 
 @Preview(showBackground = true)
 @Composable
-fun PerfilPreview() {
+fun PerfilUsuarioPreview() {
     val navController = rememberNavController()
-    Perfil(navController = navController)
+    PerfilUsuario(navController = navController)
 }
 
 @Composable
@@ -292,76 +284,6 @@ fun PostList(posts: List<Postagem>) {
     }
 }
 
-@Composable
-fun ExpandableText(description: String) {
-    var isExpanded by remember { mutableStateOf(false) }
-    var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
-
-    Column {
-        // Descrição com limitação de linhas
-        Text(
-            text = description,
-            style = Typography.labelMedium,
-            maxLines = if (isExpanded) Int.MAX_VALUE else 3,
-            overflow = TextOverflow.Ellipsis,
-            onTextLayout = { textLayoutResult = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-        )
-
-        // Verifica se a descrição ocupa mais de 3 linhas e mostra o botão "ver mais" ou "ver menos"
-        textLayoutResult?.let {
-            if (it.hasVisualOverflow) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = if (isExpanded) "Ver menos" else "Ver mais",
-                    color = Color.Gray,
-                    fontSize = 14.sp,
-                    modifier = Modifier
-                        .clickable { isExpanded = !isExpanded }
-                        .padding(top = 4.dp) // Espaçamento extra para o botão
-                )
-            }
-        }
-    }
-}
-
-
-@Composable
-fun BoxServicosPerfil() {
-
-    val servicos = listOf(
-        Servico(
-            tituloServico = "Corte",
-            descricao = "Corte simples de cabelo aaaa aaaaa aaaaa aaaa aaaaa aaaa",
-            preco = 25.00
-        ),
-        Servico(
-            tituloServico = "Corte + Escova",
-            descricao = "Corte + escova",
-            preco = 55.00
-        )
-    )
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Text(
-                text = "Serviços",
-                style = Typography.titleMedium
-            )
-
-            ServiceList(services = servicos, isSelectable = false)
-        }
-    }
-}
 
 @Composable
 fun Espacamento(espaco: Dp){

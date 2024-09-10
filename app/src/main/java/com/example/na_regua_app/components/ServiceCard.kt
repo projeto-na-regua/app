@@ -44,7 +44,7 @@ fun ServiceCard(
             .fillMaxWidth()
             .height(90.dp)
             .background(backgroundColor)
-            .border(2.5.dp, Color.Gray, RoundedCornerShape(15.dp))
+            .border(2.dp, Color.Gray, RoundedCornerShape(15.dp))
             .clickable(enabled = isSelectable && onClick != null) {
                 onClick?.invoke()
             }  // Só permite clique se for selecionável e o callback estiver disponível
@@ -53,7 +53,7 @@ fun ServiceCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .padding(8.dp),
+                .padding(vertical = 8.dp, horizontal = 13.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {

@@ -18,9 +18,14 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -45,9 +50,11 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -57,13 +64,18 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.R
 import com.example.na_regua_app.classes.Postagem
+import com.example.na_regua_app.classes.Servico
 import com.example.na_regua_app.components.Botao
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.PostCard
 import com.example.na_regua_app.components.TopBarCustom
+import com.example.na_regua_app.components.ServiceCard
+import com.example.na_regua_app.components.ServiceList
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
+import com.example.na_regua_app.ui.theme.Typography
 import com.example.na_regua_app.ui.theme.WHITE_BACKGROUND
+import com.example.na_regua_app.ui.theme.labelLargeOrange
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -91,11 +103,10 @@ fun PerfilContent(paddingValues: PaddingValues){
     var nomeUsuario by remember { mutableStateOf("@barbeiro_ofc") }
     var seguindo by remember { mutableIntStateOf(2) }
     var seguidores by remember { mutableIntStateOf(0) }
-    var numeroDePostagens by remember { mutableStateOf(2) }
+    var numeroDePostagens by remember { mutableIntStateOf(2) }
     val selectedTab = remember { mutableStateOf("Perfil") }
-    var possuiAgendamentos by remember { mutableStateOf(true) }
-    var saldo by remember { mutableDoubleStateOf(214.00) }
-    var visitantes by remember { mutableIntStateOf(50) }
+    var localizacao by remember { mutableStateOf("Rua Piracicaba, 214 - SP") }
+    var descricao by remember { mutableStateOf("Nossa equipe de barbeiros altamente qualificados é especializada em cortes de cabelo e barbas que atendem aos mais altos padrões de estilo. Utilizamos apenas produtos premium para garantir um acabamento impecável e um atendimento personalizado que reflete a verdadeira essência do seu estilo individual.") }
 
     Column(
         modifier = Modifier
@@ -104,77 +115,43 @@ fun PerfilContent(paddingValues: PaddingValues){
             .background(Color.White)
     ) {
 
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(180.dp)
-                .background(White)
-
+                .height(140.dp)
+                .background(White),
+            horizontalAlignment = Alignment.CenterHorizontally, // Aligns image and text in the center
+            verticalArrangement = Arrangement.Center // Centers the content vertically
         ) {
-            Column(
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .drawBehind {
-                        val strokeWidth = 10.dp.toPx()
-                        val y = size.height - strokeWidth / 2
-                        drawLine(
-                            color = ORANGE_SECUNDARY,
-                            start = Offset(0f, y),
-                            end = Offset(size.width, y),
-                            strokeWidth = strokeWidth
-                        )
-                    }
+                    .size(90.dp)
+                    .clip(RoundedCornerShape(50))  // Makes the image circular
+                    .background(Color.Transparent)
             ) {
-
                 Image(
-                    painter = painterResource(id = R.drawable.capa_perfil_barbeiro),
-                    contentDescription = "Foto de capa do barbeiro",
-                    modifier = Modifier.fillMaxWidth(1f),
+                    painter = painterResource(id = R.drawable.foto_perfil),
+                    contentDescription = "Foto de perfil",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(50))  // Ensures the image is clipped as a circle
+                        .background(Color.White),
                     contentScale = ContentScale.Crop
                 )
             }
 
+            Spacer(modifier = Modifier.height(10.dp))  // Space between image and username
 
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .offset(y = 60.dp)
-                    .size(130.dp)
-                    .clip(RoundedCornerShape(50))
-                    .background(Color.Transparent)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(50))
-                        .background(Color.White)
-
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.foto_perfil),
-                        contentDescription = "Foto de perfil",
-                        modifier = Modifier.fillMaxWidth(1f),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-            }
+            Text(
+                text = nomeUsuario,
+                color = Black,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                fontSize = 13.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
 
-
-        Espacamento(70.dp)
-
-
-        Text(
-            text = "$nomeUsuario",
-            color = Black,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            fontSize = 13.sp,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Espacamento(13.dp)
 
         Row(
             modifier = Modifier
@@ -182,8 +159,6 @@ fun PerfilContent(paddingValues: PaddingValues){
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.Top
         ) {
-
-
             Row(
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.Center,
@@ -273,14 +248,15 @@ fun PerfilContent(paddingValues: PaddingValues){
                         fotoDePerfil = R.drawable.foto_perfil,
                         nomeDeUsuario = "@barbeiro_ofc",
                         descricao = "Primeira postagem na comunidade do Na Régua, sigam meu " +
-                                    "perfil e deem uma olhada nos serviços da minha barbearia.",
+                                "perfil e deem uma olhada nos serviços da minha barbearia.",
                         imagem = R.drawable.imagem_post
                     )
                 )
 
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(12.dp)
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(12.dp)
                 ) {
                     Column(
                         modifier = Modifier
@@ -308,19 +284,54 @@ fun PerfilContent(paddingValues: PaddingValues){
                         Spacer(modifier = Modifier.height(18.dp))
                     }
 
-                    Box(
+                    Row(
                         modifier = Modifier
                             .padding(top = 20.dp)
                             .align(Alignment.BottomCenter)
-                            .padding(9.dp)
+                            .padding(9.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
+                        Botao(onClick = { /*TODO*/ }, textButton = "Marcar horário")
                         Botao(onClick = { /*TODO*/ }, textButton = "Marcar horário")
                     }
                 }
 
             }
-            "Barbearia" -> {
 
+            "Barbearia" -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(12.dp)
+                ) {
+                    val scrollState = rememberScrollState()
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(scrollState)
+                            .padding(bottom = 8.dp)
+                    ) {
+                        Text(text = "Localização", style = Typography.titleMedium)
+
+                        Espacamento(espaco = 8.dp)
+
+                        Text(text = localizacao, style = Typography.labelMedium)
+
+                        Espacamento(espaco = 8.dp)
+
+                        Text(text = "Descrição", style = Typography.titleMedium)
+
+                        Espacamento(espaco = 8.dp)
+
+                        ExpandableText(descricao)
+
+                        Espacamento(espaco = 8.dp)
+
+                        BoxServicosPerfil()
+                    }
+                }
             }
         }
     }
@@ -362,6 +373,77 @@ fun PostList(posts: List<Postagem>) {
     Column {
         posts.forEach { post ->
             PostCard(post = post)
+        }
+    }
+}
+
+@Composable
+fun ExpandableText(description: String) {
+    var isExpanded by remember { mutableStateOf(false) }
+    var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+
+    Column {
+        // Descrição com limitação de linhas
+        Text(
+            text = description,
+            style = Typography.labelMedium,
+            maxLines = if (isExpanded) Int.MAX_VALUE else 3,
+            overflow = TextOverflow.Ellipsis,
+            onTextLayout = { textLayoutResult = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+        )
+
+        // Verifica se a descrição ocupa mais de 3 linhas e mostra o botão "ver mais" ou "ver menos"
+        textLayoutResult?.let {
+            if (it.hasVisualOverflow) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = if (isExpanded) "Ver menos" else "Ver mais",
+                    color = Color.Gray,
+                    fontSize = 14.sp,
+                    modifier = Modifier
+                        .clickable { isExpanded = !isExpanded }
+                        .padding(top = 4.dp) // Espaçamento extra para o botão
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
+fun BoxServicosPerfil() {
+
+    val servicos = listOf(
+        Servico(
+            tituloServico = "Corte",
+            descricao = "Corte simples de cabelo aaaa aaaaa aaaaa aaaa aaaaa aaaa",
+            preco = 25.00
+        ),
+        Servico(
+            tituloServico = "Corte + Escova",
+            descricao = "Corte + escova",
+            preco = 55.00
+        )
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = "Serviços",
+                style = Typography.titleMedium
+            )
+
+            ServiceList(services = servicos, isSelectable = false)
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.na_regua_app.view
 
-import android.app.DatePickerDialog
 import android.widget.CalendarView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,7 +26,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,7 +35,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,13 +42,15 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.na_regua_app.classes.Servico
+import com.example.na_regua_app.components.Botao
 import com.example.na_regua_app.components.BottomBarCustom
+import com.example.na_regua_app.components.ServiceCard
+import com.example.na_regua_app.components.ServiceList
 import com.example.na_regua_app.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.example.na_regua_app.ui.theme.Typography
-import java.util.Calendar
-import com.example.na_regua_app.components.Botao
 import com.example.na_regua_app.ui.theme.labelLargeOrange
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -177,7 +176,20 @@ fun BoxServicos(
     navController: NavController,
     onServiceSelected: (String) -> Unit
 ) {
-    var selectedService by remember { mutableStateOf<String?>(null) }
+    var selectedService by remember { mutableStateOf<Servico?>(null) }
+
+    val servicos = listOf(
+        Servico(
+            tituloServico = "Corte",
+            descricao = "Corte simples de cabelo aaaa aaaaa aaaaa aaaa aaaaa aaaa",
+            preco = 25.00,
+        ),
+        Servico(
+            tituloServico = "Corte + Escova",
+            descricao = "Corte + escova",
+            preco = 55.00,
+        )
+    )
 
     Box(
         modifier = Modifier
@@ -192,95 +204,18 @@ fun BoxServicos(
                 text = "Serviços",
                 style = Typography.titleMedium
             )
-
-            CardServicosTelaAgendamento(
-                titulo = "Corte",
-                descricao = "Corte simples de cabelo aaaa aaaaa aaaaa aaaa aaaaa aaaa",
-                preco = 25.00,
-                isSelected = selectedService == "Corte",
-                onClick = {
-                    selectedService = "Corte"
-                    onServiceSelected(selectedService!!)
-                }
-            )
-            CardServicosTelaAgendamento(
-                titulo = "Corte + Escova",
-                descricao = "Corte + escova",
-                preco = 55.00,
-                isSelected = selectedService == "Corte + Escova",
-                onClick = {
-                    selectedService = "Corte + Escova"
-                    onServiceSelected(selectedService!!)
+            ServiceList(
+                services = servicos,
+                isSelectable = true,
+                selectedService = selectedService,
+                onServiceClick = { service ->
+                    selectedService = service
+                    onServiceSelected(service.tituloServico)  // Retorna o título do serviço selecionado
                 }
             )
         }
     }
 }
-
-@Composable
-fun CardServicosTelaAgendamento(
-    titulo: String,
-    descricao: String,
-    preco: Double,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    val backgroundColor = if (isSelected) ORANGE_SECUNDARY else Color.Transparent
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(90.dp)
-            .background(backgroundColor)  // Alterar a cor de fundo com base na seleção
-            .border(2.5.dp, Color.Gray, RoundedCornerShape(15.dp))
-            .clickable { onClick() }  // Chama o callback ao clicar
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 7.dp)
-            ) {
-                Text(
-                    text = titulo,
-                    style = Typography.labelLarge,
-                    modifier = Modifier.padding(bottom = 4.dp)
-                )
-
-                Spacer(modifier = Modifier.height(5.dp))
-
-                Text(
-                    text = descricao,
-                    style = Typography.labelMedium,
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .height(80.dp)
-                    .width(75.dp)
-                    .background(BLUE_PRIMARY, CircleShape)
-                    .wrapContentSize(Alignment.Center)
-            ) {
-                Text(
-                    text = "R$ ${preco.format(2)}",
-                    color = ORANGE_SECUNDARY,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
-        }
-    }
-}
-
 
 @Composable
 fun BoxSelecaobarbeiro(

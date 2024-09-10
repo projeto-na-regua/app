@@ -14,10 +14,11 @@ import com.example.na_regua_app.view.Cadastro
 import com.example.na_regua_app.view.Dashboard
 import com.example.na_regua_app.view.Login
 import com.example.na_regua_app.view.Notificacoes
-import com.example.na_regua_app.view.Perfil
 import com.example.na_regua_app.view.SplashScreen
 import com.example.na_regua_app.view.TelaInicial
 import com.example.na_regua_app.view.Agendamento
+import com.example.na_regua_app.view.PerfilUsuario
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +51,7 @@ class MainActivity : ComponentActivity() {
                         Adicionar(navController)
                     }
                     composable("perfil") {
-                        Perfil(navController)
+                        PerfilUsuario(navController)
                     }
                     composable("login") {
                         Login(navController)

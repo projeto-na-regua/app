@@ -66,3 +66,21 @@ fun Input(
         )
     )
 }
+
+
+@Composable
+fun InputCadastroUsername(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: @Composable (() -> Unit)? = null
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = label,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(70.dp),
+        shape = RoundedCornerShape(12.dp))
+}
+

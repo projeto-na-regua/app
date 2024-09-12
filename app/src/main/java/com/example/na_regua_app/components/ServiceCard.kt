@@ -28,6 +28,7 @@ import com.example.na_regua_app.classes.Servico
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.example.na_regua_app.ui.theme.Typography
+import com.example.na_regua_app.ui.theme.WHITE_BACKGROUND
 import com.example.na_regua_app.view.format
 
 @Composable
@@ -44,10 +45,10 @@ fun ServiceCard(
             .fillMaxWidth()
             .height(90.dp)
             .background(backgroundColor)
-            .border(2.dp, Color.Gray, RoundedCornerShape(15.dp))
+            .border(2.dp, color = WHITE_BACKGROUND, RoundedCornerShape(15.dp))
             .clickable(enabled = isSelectable && onClick != null) {
                 onClick?.invoke()
-            }  // Só permite clique se for selecionável e o callback estiver disponível
+            }
     ) {
         Row(
             modifier = Modifier

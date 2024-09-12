@@ -262,7 +262,7 @@ fun PerfilUsuarioContent(paddingValues: PaddingValues, navController: NavControl
                 ) {
                     BotaoAjustavel(modifier = Modifier.weight(1.5f), onClick = { /*TODO*/ }, textButton = "Enviar mensagem", imagePainter = painterResource(R.drawable.send_icon))
                     Spacer(modifier = Modifier.width(2.dp))
-                    BotaoAjustavel(modifier = Modifier.weight(1.5f), onClick = { navController.navigate("perfilBarbeiro") }, textButton = "Visitar barbearia")
+                    BotaoAjustavel(modifier = Modifier.weight(1.5f), onClick = { navController.navigate("perfilBarbearia") }, textButton = "Visitar barbearia")
                 }
             }
         }

@@ -30,7 +30,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
@@ -61,7 +60,7 @@ import com.example.na_regua_app.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PerfilBarbeiro(
+fun PerfilBarbearia(
     navController: NavController
 ) {
     Scaffold(
@@ -69,7 +68,7 @@ fun PerfilBarbeiro(
             TopBarCustom(navController, "Perfil",  true)
         },
         content = { paddingValues ->
-            PerfilBarbeiroContent(
+            PerfilBarbeariaContent(
                 paddingValues = paddingValues,
                 navController = navController
             )
@@ -82,7 +81,7 @@ fun PerfilBarbeiro(
 
 
 @Composable
-fun PerfilBarbeiroContent(paddingValues: PaddingValues, navController: NavController) {
+fun PerfilBarbeariaContent(paddingValues: PaddingValues, navController: NavController) {
 
     var nomeBarbearia by remember { mutableStateOf("@barbearia_top_de_linha") }
     var localizacao by remember { mutableStateOf("Rua Piracicaba, 214 - SP") }
@@ -277,9 +276,9 @@ fun PerfilBarbeiroContent(paddingValues: PaddingValues, navController: NavContro
 
 @Preview(showBackground = true)
 @Composable
-fun PerfilBarbeiroPreview() {
+fun PerfilBarbeariaPreview() {
     val navController = rememberNavController()
-    PerfilBarbeiro(navController = navController)
+    PerfilBarbearia(navController = navController)
 }
 
 

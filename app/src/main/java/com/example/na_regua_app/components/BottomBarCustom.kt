@@ -122,7 +122,7 @@ fun BottomBarCustom(navController: NavController){
                     .size(54.dp)
                     .padding(12.dp)
                     .clickable{
-                        navController.navigate("perfil")
+                        navController.navigate("perfilUsuario")
                     }
             )
 

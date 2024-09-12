@@ -65,7 +65,8 @@ fun PerfilUsuario(
         },
         content = { paddingValues ->
             PerfilUsuarioContent(
-                paddingValues = paddingValues
+                paddingValues = paddingValues,
+                navController = navController
             )
         },
         bottomBar = {
@@ -75,7 +76,7 @@ fun PerfilUsuario(
 }
 
 @Composable
-fun PerfilUsuarioContent(paddingValues: PaddingValues){
+fun PerfilUsuarioContent(paddingValues: PaddingValues, navController: NavController){
 
     var nomeUsuario by remember { mutableStateOf("@barbeiro_ofc") }
     var seguindo by remember { mutableIntStateOf(2) }
@@ -261,7 +262,7 @@ fun PerfilUsuarioContent(paddingValues: PaddingValues){
                 ) {
                     BotaoAjustavel(modifier = Modifier.weight(1.5f), onClick = { /*TODO*/ }, textButton = "Enviar mensagem", imagePainter = painterResource(R.drawable.send_icon))
                     Spacer(modifier = Modifier.width(2.dp))
-                    BotaoAjustavel(modifier = Modifier.weight(1.5f), onClick = { /*TODO*/ }, textButton = "Visitar barbearia")
+                    BotaoAjustavel(modifier = Modifier.weight(1.5f), onClick = { navController.navigate("perfilBarbeiro") }, textButton = "Visitar barbearia")
                 }
             }
         }

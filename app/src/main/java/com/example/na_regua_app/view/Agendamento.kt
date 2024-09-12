@@ -42,9 +42,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.na_regua_app.R
+import com.example.na_regua_app.classes.Funcionario
 import com.example.na_regua_app.classes.Servico
 import com.example.na_regua_app.components.Botao
 import com.example.na_regua_app.components.BottomBarCustom
+import com.example.na_regua_app.components.SelecaoFuncionarios
 import com.example.na_regua_app.components.ServiceCard
 import com.example.na_regua_app.components.ServiceList
 import com.example.na_regua_app.components.TopBarCustom
@@ -63,6 +66,7 @@ fun Agendamento(
     var selectedDate by remember { mutableStateOf<String?>(null) }
     var selectedTime by remember { mutableStateOf<String?>(null) }
     var showDialog by remember { mutableStateOf(false) }
+
 
     Scaffold(
         topBar = {
@@ -234,6 +238,12 @@ fun BoxSelecaobarbeiro(
             style = Typography.titleMedium,
         )
 
+        val funcionarios = listOf(
+            Funcionario(1, nome = "Barbeiro 1", imgPerfil = R.drawable.foto_perfil, "Barbeiro"),
+            Funcionario(2, nome = "Barbeiro 2", imgPerfil = R.drawable.barbeira2, "Barbeiro"),
+            Funcionario(3, nome = "Barbeiro 3", imgPerfil = R.drawable.barbeiro1, "Barbeiro")
+        )
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -241,7 +251,9 @@ fun BoxSelecaobarbeiro(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             repeat(3) { index ->
-                CirculoBarbeiroAgendamento(
+                SelecaoFuncionarios(
+                    funcionario = funcionarios[index],
+                    isSelectable = true,
                     isSelected = selectedBarbeiro == index,
                     onClick = {
                         selectedBarbeiro = index
@@ -250,29 +262,6 @@ fun BoxSelecaobarbeiro(
                 )
             }
         }
-    }
-}
-
-@Composable
-fun CirculoBarbeiroAgendamento(
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    val borderColor = if (isSelected) ORANGE_SECUNDARY else Color.Gray
-
-    Box(
-        modifier = Modifier
-            .size(85.dp)
-            .clip(CircleShape)
-            .background(Color.Transparent)
-            .border(3.dp, borderColor, CircleShape)
-            .clickable { onClick() }
-    ) {
-        Text(
-            text = "Foto Barbeiro",
-            style = Typography.labelMedium,
-            modifier = Modifier.align(Alignment.Center)
-        )
     }
 }
 

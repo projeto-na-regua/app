@@ -17,6 +17,7 @@ import com.example.na_regua_app.view.Notificacoes
 import com.example.na_regua_app.view.SplashScreen
 import com.example.na_regua_app.view.TelaInicial
 import com.example.na_regua_app.view.Agendamento
+import com.example.na_regua_app.view.PerfilBarbeiro
 import com.example.na_regua_app.view.PerfilUsuario
 
 class MainActivity : ComponentActivity() {
@@ -50,8 +51,11 @@ class MainActivity : ComponentActivity() {
                     composable("adicionar") {
                         Adicionar(navController)
                     }
-                    composable("perfil") {
+                    composable("perfilUsuario") {
                         PerfilUsuario(navController)
+                    }
+                    composable("perfilBarbeiro"){
+                        PerfilBarbeiro(navController)
                     }
                     composable("login") {
                         Login(navController)

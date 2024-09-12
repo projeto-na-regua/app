@@ -68,5 +68,4 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("io.coil-kt:coil-compose:2.2.2")
-    implementation ("com.jjoe64:graphview:4.2.2")
 }

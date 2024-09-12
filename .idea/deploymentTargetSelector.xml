@@ -4,20 +4,14 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-09-02T01:51:26.837426500Z">
+        <DropdownSelection timestamp="2024-09-12T03:01:31.159046500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=RQCX40AZF4F" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\a913666\.android\avd\Medium_Phone_Edited_API_VanillaIceCream.avd" />
             </handle>
           </Target>
         </DropdownSelection>
         <DialogSelection />
-      </SelectionState>
-      <SelectionState runConfigName="PerfilBarbeiroPreview">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="PerfilUsuarioPreview">
-        <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="DashboardPreview">
         <option name="selectionMode" value="DROPDOWN" />

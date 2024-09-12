@@ -60,7 +60,7 @@ fun Cadastro(
             ) {
                 LogoImage()
                 Text(
-                    text = "Vamos começar!",
+                    text = "Informações pessoais!",
                     fontSize = 24.sp,
                     color = BLUE_PRIMARY,
                     fontWeight = FontWeight.Bold,
@@ -133,7 +133,7 @@ fun Cadastro(
                         mostrarPrimeirasInputs = true
                         botaoClicado = true
                     },
-                    textButton = if (!botaoClicado) "Prosseguir" else "Cadastrar-se",
+                    textButton = if (!botaoClicado) "Próximo" else "Cadastrar-se",
                     textEsquerda = "Já possui conta?",
                     textDireita = "Entre",
                     onTextoDireitaClick = {

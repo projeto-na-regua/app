@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">na-regua-app</string>
+
+    <plurals name="pendentes">
+        <item quantity="one">%1$d agendamento pendente</item>
+        <item quantity="other">%1$d agendamentos pendentes</item>
+    </plurals>
+
+    <plurals name="confirmado">
+        <item quantity="one">%1$d agendamento confirmado</item>
+        <item quantity="other">%1$d agendamentos confirmados</item>
+    </plurals>
+
+    <plurals name="concluido">
+        <item quantity="one">%1$d agendamento concluido</item>
+        <item quantity="other">%1$d agendamentos concluidos</item>
+    </plurals>
+
+    <plurals name="cancelado">
+        <item quantity="one">%1$d agendamento cancelado</item>
+        <item quantity="other">%1$d agendamentos cancelados</item>
+    </plurals>
 </resources>

@@ -57,7 +57,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation("androidx.compose.material3:material3:1.1.0") // Versão atualizada
     val navVersion = "2.5.3"
     implementation("androidx.navigation:navigation-compose:$navVersion")
     testImplementation(libs.junit)
@@ -68,4 +68,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation ("com.jjoe64:graphview:4.2.2")
 }

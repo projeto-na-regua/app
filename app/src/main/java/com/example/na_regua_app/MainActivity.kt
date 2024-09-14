@@ -10,15 +10,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.ui.theme.NareguaappTheme
 import com.example.na_regua_app.view.Adicionar
+import com.example.na_regua_app.view.Agendamento
 import com.example.na_regua_app.view.Cadastro
-import com.example.na_regua_app.view.Dashboard
 import com.example.na_regua_app.view.Login
 import com.example.na_regua_app.view.Notificacoes
-import com.example.na_regua_app.view.SplashScreen
-import com.example.na_regua_app.view.TelaInicial
-import com.example.na_regua_app.view.Agendamento
 import com.example.na_regua_app.view.PerfilBarbearia
 import com.example.na_regua_app.view.PerfilUsuario
+import com.example.na_regua_app.view.SplashScreen
+import com.example.na_regua_app.view.TelaInicial
+import com.example.na_regua_app.view.dashboard.Dashboard
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             NareguaappTheme {
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = "home") {
+                NavHost(navController = navController, startDestination = "login") {
                     composable("home") {
                         Home(navController)
                     }

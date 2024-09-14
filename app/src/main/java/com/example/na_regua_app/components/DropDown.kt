@@ -22,18 +22,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
+import com.example.na_regua_app.classes.AgendamentoBarbeiro
+import com.example.na_regua_app.classes.ItemMenuDropDown
+import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
+import com.example.na_regua_app.view.dashboard.actions
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropDownMenu(
-    actions: List<Pair<String, (String) -> Unit>>, // Lista de pares (texto, função)
+    agendamentoBarbeiro: AgendamentoBarbeiro? = null,
+    items: List<ItemMenuDropDown>, // Lista de pares (texto, função)
     modifier: Modifier = Modifier,
-    menuWidth: Dp
+    menuWidth: Dp,
+    tamFont: TextUnit,
+    tamIcon: Dp? = null,
+    selectedItemPosition: ItemMenuDropDown? = null
 ) {
-    val selectedText = remember { mutableStateOf(actions.first().first) }
+    val selectedItem = remember {
+        mutableStateOf(selectedItemPosition ?: items.first())
+    }
     val expanded = remember { mutableStateOf(false) }
 
     Box(
@@ -47,33 +58,37 @@ fun DropDownMenu(
             }
         ) {
             TextField(
-                value = selectedText.value,
+                value = selectedItem.value.name, // Exibe o nome do item selecionado
                 onValueChange = {},
                 readOnly = true,
+                textStyle = androidx.compose.ui.text.TextStyle(
+                    fontSize = tamFont,
+                    fontWeight = FontWeight.Bold
+                ),
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowDown,
                         contentDescription = null,
                         modifier = Modifier
-                            .padding(end = 8.dp)
+                            .width(tamIcon ?: 50.dp)
                             .rotate(if (expanded.value) 180f else 0f) // Rotaciona o ícone
                             .align(Alignment.Center) // Alinha verticalmente o ícone
                     )
                 },
                 modifier = Modifier
-                    .menuAnchor()
+                    .menuAnchor().padding(0.dp)
                     .background(Color.Transparent)
                     .fillMaxWidth(), // Faz o TextField ocupar a largura máxima disponível
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Color.Transparent,
-                    focusedTextColor = Color.Black,
-                    unfocusedTextColor = ORANGE_SECUNDARY,
+                    focusedTextColor = selectedItem.value.colorAfter ?: BLUE_PRIMARY,
+                    unfocusedTextColor = selectedItem.value.colorBefore ?: BLUE_PRIMARY, // Cor antes do clique
                     disabledTextColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
-                    focusedTrailingIconColor = Color.Black,
-                    unfocusedTrailingIconColor = ORANGE_SECUNDARY
+                    focusedTrailingIconColor = selectedItem.value.colorAfter ?: BLUE_PRIMARY,
+                    unfocusedTrailingIconColor = selectedItem.value.colorBefore ?: BLUE_PRIMARY,
                 ),
                 shape = RectangleShape
             )
@@ -85,18 +100,25 @@ fun DropDownMenu(
                     .background(Color.White)
                     .width(menuWidth) // Define a largura do menu
             ) {
-                actions.forEach { (text, action) ->
+                items.forEach { item ->
                     DropdownMenuItem(
                         text = {
-                            Text(
-                                text = text,
-                                color = Color.Black
-                            )
+                            Text(text = item.name, color = if (selectedItem.value == item) {
+                                    item.colorAfter ?: BLUE_PRIMARY // Cor após o clique
+                                } else {
+                                    item.colorAfter ?: BLUE_PRIMARY// Cor antes do clique
+                                }, fontSize = tamFont)
                         },
                         onClick = {
-                            selectedText.value = text
+                            // Atualize o item selecionado
+                            selectedItem.value = item
+                            // Se o nameAfter não for nulo, use-o; caso contrário, use o name original
+                            selectedItem.value = selectedItem.value.copy(name = item.nameAfter ?: item.name)
                             expanded.value = false
-                            action(text) // Chama a função associada ao item selecionado
+                            if (agendamentoBarbeiro != null){
+                                actions(agendamentoBarbeiro, item.name)
+                            }
+                            item.action?.let { it() }
                         },
                         modifier = Modifier
                             .background(Color.White) // Define o fundo branco para cada item do menu
@@ -106,3 +128,5 @@ fun DropDownMenu(
         }
     }
 }
+
+

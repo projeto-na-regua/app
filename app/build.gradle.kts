@@ -68,4 +68,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("io.coil-kt:coil-compose:2.2.2")
+    val latest_release = "0.2.2-alpha"
+    implementation("com.github.tehras:charts:$latest_release")
 }

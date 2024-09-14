@@ -363,9 +363,9 @@ fun BoxFuncionarios(){
         )
 
         val funcionarios = listOf(
-            Funcionario(1, nome = "Diego", imgPerfil = R.drawable.foto_perfil, "Administrador"),
-            Funcionario(2, nome = "Beatriz V.", imgPerfil = R.drawable.barbeira2, "Barbeira"),
-            Funcionario(3, nome = "Roberto M.", imgPerfil = R.drawable.barbeiro1, "Barbeiro")
+            Funcionario(1, nome = "Diego", imgPerfil = R.drawable.foto_perfil, dtype =  "Administrador", email = "barbeiro@gmail.com"),
+            Funcionario(2, nome = "Beatriz V.", imgPerfil = R.drawable.barbeira2,  dtype ="Barbeira", email = "barbeiro@gmail.com"),
+            Funcionario(3, nome = "Roberto M.", imgPerfil = R.drawable.barbeiro1,  dtype ="Barbeiro", email = "barbeiro@gmail.com")
         )
 
         Row(

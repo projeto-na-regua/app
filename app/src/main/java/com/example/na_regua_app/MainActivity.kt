@@ -1,6 +1,11 @@
 package com.example.na_regua_app
 
 import Comunidade
+import Configuracoes
+import ConfiguracoesInformacoesPessoais
+import ConfiguracoesSeuNegocio
+import ExcluirConta
+import ExcluirNegocio
 import Home
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,7 +23,8 @@ import com.example.na_regua_app.view.PerfilBarbearia
 import com.example.na_regua_app.view.PerfilUsuario
 import com.example.na_regua_app.view.SplashScreen
 import com.example.na_regua_app.view.TelaInicial
-import com.example.na_regua_app.view.dashboard.Dashboard
+import com.example.na_regua_app.view.Dashboard
+import com.example.na_regua_app.view.Agendamento
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +68,21 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("cadastro") {
                         Cadastro(navController)
+                    }
+                    composable("settings") {
+                        Configuracoes(navController)
+                    }
+                    composable("settingsprofile") {
+                        ConfiguracoesInformacoesPessoais(navController)
+                    }
+                    composable("settingsbusiness") {
+                        ConfiguracoesSeuNegocio(navController)
+                    }
+                    composable("deleteaccount") {
+                        ExcluirConta(navController)
+                    }
+                    composable("deletebusiness") {
+                        ExcluirNegocio(navController)
                     }
                 }
             }

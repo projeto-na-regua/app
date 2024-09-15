@@ -12,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -48,36 +49,38 @@ fun Botao(
 }
 
 @Composable
-fun Botao(
+fun BotaoComIcone(
     onClick: () -> Unit,
     textButton: String,
-    imagePainter: Painter? = null // Adiciona um parâmetro para a imagem (opcional)
+    imagePainter: Painter? = null,
+    backgroundColor: Color? = null,
+    textColor: Color? = null
 ) {
     Button(
         onClick = { onClick() },
         colors = ButtonDefaults.buttonColors(
-            containerColor = BLUE_PRIMARY
+            containerColor =  backgroundColor ?: BLUE_PRIMARY
         ),
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .height(60.dp),
-        shape = RoundedCornerShape(12.dp),
+            .padding(horizontal = 16.dp, vertical = 4.dp)
+            .height(60.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp)
     ) {
         imagePainter?.let {
             Image(
                 painter = it,
-                contentDescription = null, // Pode ser nulo se a imagem for decorativa
+                contentDescription = null,
                 modifier = Modifier
-                    .size(24.dp) // Tamanho da imagem
-                    .padding(end = 8.dp) // Espaçamento entre a imagem e o texto
+                    .size(32.dp)
+                    .padding(end = 8.dp)
             )
         }
 
         Text(
             text = textButton,
             style = labelLargeOrange,
-            letterSpacing = 1.sp
+            color = textColor ?: ORANGE_SECUNDARY,
         )
     }
 }

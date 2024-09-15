@@ -18,6 +18,7 @@ import com.example.na_regua_app.view.PerfilBarbearia
 import com.example.na_regua_app.view.PerfilUsuario
 import com.example.na_regua_app.view.SplashScreen
 import com.example.na_regua_app.view.TelaInicial
+import com.example.na_regua_app.view.Agendamento
 import com.example.na_regua_app.view.dashboard.Dashboard
 
 class MainActivity : ComponentActivity() {

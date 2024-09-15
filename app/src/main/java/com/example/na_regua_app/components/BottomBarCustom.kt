@@ -97,7 +97,7 @@ fun BottomBarCustom(navController: NavController){
             IconSpan(id = R.drawable.person_icon,
                     descripition = "Perfil",
                     navController = navController,
-                    route = "perfil")
+                    route = "perfilUsuario")
 
 
             Spacer(modifier = Modifier.weight(1f))

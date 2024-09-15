@@ -65,7 +65,7 @@ fun PerfilBarbearia(
 ) {
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Perfil",  true)
+            TopBarCustom(navController, "Perfil",  true, true)
         },
         content = { paddingValues ->
             PerfilBarbeariaContent(

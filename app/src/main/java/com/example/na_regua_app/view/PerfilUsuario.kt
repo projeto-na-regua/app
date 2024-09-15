@@ -61,7 +61,7 @@ fun PerfilUsuario(
 ) {
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Perfil",  true)
+            TopBarCustom(navController, "Perfil",  true, true)
         },
         content = { paddingValues ->
             PerfilUsuarioContent(

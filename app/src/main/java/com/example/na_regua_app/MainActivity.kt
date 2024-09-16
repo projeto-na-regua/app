@@ -98,7 +98,7 @@ class MainActivity : ComponentActivity() {
                         PerfilUsuario(navController, usuarios()[1])
                     }
                     composable("perfilBarbearia") {
-                        PerfilBarbearia(navController, usuarios().first())
+                        PerfilBarbearia(navController, usuarios()[1])
                     }
                     composable("login") {
                         Login(navController)

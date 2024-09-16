@@ -63,13 +63,13 @@ fun BuscaBarbearias(navController: NavHostController,
                 item {
                     opcoesBuscaBarbearia(
                         onServiceClick = {
-                            navController.navigate("selecionarServico")
+                            navController.navigate("listagemBarbearias")
                         },
                         onDateClick = {
-                            navController.navigate("selecionarData")
+                            navController.navigate("listagemBarbearias")
                         },
                         onLocalClick = {
-                            navController.navigate("selecionarLocal")
+                            navController.navigate("listagemBarbearias")
                         }
                     )
                 }

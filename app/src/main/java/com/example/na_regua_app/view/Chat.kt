@@ -63,7 +63,7 @@ fun Chat(
 
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Voltar ao perfil", false, true)
+            TopBarCustom(navController, "Voltar ao perfil", false, false, true)
         },
         content = { paddingValues ->
             ChatContent(

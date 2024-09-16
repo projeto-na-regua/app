@@ -92,6 +92,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("homeUsuario") {
                         HomeUsuario(navController)
+                    }
                         composable("settings") {
                             Configuracoes(navController)
                         }
@@ -112,4 +113,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
+

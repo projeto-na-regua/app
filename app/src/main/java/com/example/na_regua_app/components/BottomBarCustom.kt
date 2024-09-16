@@ -54,29 +54,17 @@ fun BottomBarCustom(navController: NavController){
         actions = {
             Spacer(modifier = Modifier.weight(1f))
 
-            Icon(
-                painter = painterResource(id = R.drawable.home_icon),
-                contentDescription = "Home",
-                modifier = Modifier
-                    .size(54.dp)
-                    .padding(12.dp)
-                    .clickable {
-                        navController.navigate("home")
-                    }
-            )
+            IconSpan(id = R.drawable.home_icon,
+                descripition = "Home",
+                navController = navController,
+                route = "home")
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Icon(
-                painter = painterResource(id = R.drawable.dash_icon),
-                contentDescription = "Dashboard",
-                modifier = Modifier
-                    .size(54.dp)
-                    .padding(12.dp)
-                    .clickable {
-                        navController.navigate("dashboard")
-                    }
-            )
+            IconSpan(id = R.drawable.dash_icon,
+                descripition = "Dashboard",
+                navController = navController,
+                route = "dashboard")
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -90,45 +78,50 @@ fun BottomBarCustom(navController: NavController){
                         navController.navigate("adicionar")
                     }
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.plus_icon),
-                    contentDescription = "Adicionar",
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(12.dp)
-                        .size(48.dp)
-                )
+                IconSpan(id = R.drawable.plus_icon,
+                    descripition = "Adicionar",
+                    navController = navController,
+                    route = "adicionar")
             }
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Icon(
-                painter = painterResource(id = R.drawable.comunnity_icon),
-                contentDescription = "Comunidade",
-                modifier = Modifier
-                    .size(54.dp)
-                    .padding(12.dp)
-                    .clickable {
-                        navController.navigate("comunidade")
-                    }
-            )
+            IconSpan(id = R.drawable.comunnity_icon,
+                descripition = "Comunidade",
+                navController = navController,
+                route = "comunidade")
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Icon(
-                painter = painterResource(id = R.drawable.person_icon),
-                contentDescription = "Perfil",
-                modifier = Modifier
-                    .size(54.dp)
-                    .padding(12.dp)
-                    .clickable{
-                        navController.navigate("perfil")
-                    }
-            )
+
+            IconSpan(id = R.drawable.person_icon,
+                    descripition = "Perfil",
+                    navController = navController,
+                    route = "perfilUsuario")
 
 
             Spacer(modifier = Modifier.weight(1f))
         },
+    )
+}
+
+@Composable
+fun IconSpan(
+    id: Int,
+    descripition: String,
+    navController: NavController,
+    route: String
+){
+
+    Icon(
+        painter = painterResource(id = id),
+        contentDescription = descripition,
+        modifier = Modifier
+            .size(54.dp)
+            .padding(12.dp)
+            .clickable{
+                navController.navigate(route)
+            }
     )
 }
 

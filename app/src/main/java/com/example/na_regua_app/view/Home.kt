@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.R
+import com.example.na_regua_app.components.BotaoIcon
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
@@ -171,6 +172,8 @@ fun HomeContent(paddingValues: PaddingValues) {
         }
 
 
+
+
         Espacamento(70.dp)
 
 
@@ -183,7 +186,19 @@ fun HomeContent(paddingValues: PaddingValues) {
             modifier = Modifier.fillMaxWidth()
         )
 
-        Espacamento(15.dp)
+        Espacamento(10.dp)
+
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth().padding(20.dp)
+        ){
+            Text("Para você", fontSize = 16.sp)
+            Box (modifier = Modifier.width(230.dp)){
+                BotaoIcon(textButton = "Adicionar campo", onClick = {}, idIcon = R.drawable.add_campos, tamFont = 14.sp, altura = 50.dp)
+            }
+
+        }
 
 
         Box(

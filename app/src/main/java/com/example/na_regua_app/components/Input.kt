@@ -16,6 +16,7 @@ import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Input(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     label: @Composable (() -> Unit)? = null,
@@ -24,8 +25,7 @@ fun Input(
         value = value,
         onValueChange = onValueChange,
         label = label,
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
             .padding(top = 12.dp)
             .height(70.dp),
         shape = RoundedCornerShape(12.dp),
@@ -66,3 +66,21 @@ fun Input(
         )
     )
 }
+
+
+@Composable
+fun InputCadastro(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: @Composable (() -> Unit)? = null
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = label,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(70.dp),
+        shape = RoundedCornerShape(12.dp))
+}
+

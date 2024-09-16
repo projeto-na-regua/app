@@ -1,14 +1,21 @@
 package com.example.na_regua_app.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,8 +36,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.FontProvider
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
+import com.example.na_regua_app.ui.theme.Typography
 import com.example.na_regua_app.ui.theme.WHITE_BACKGROUND
 
 
@@ -39,7 +48,10 @@ import com.example.na_regua_app.ui.theme.WHITE_BACKGROUND
 fun TopBarCustom(
     navController: NavController,
     titlePage: String,
-    showIconNotification: Boolean){
+    showIconNotification: Boolean,
+    showIconSettings: Boolean = false,
+    showBackButton: Boolean = false
+) {
 
     var existNotification by remember {mutableStateOf(true)}
 
@@ -66,15 +78,29 @@ fun TopBarCustom(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                if(showBackButton) {
+                    Box {
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowLeft,
+                            contentDescription = "Voltar",
+                            tint = Color.Black,
+                            modifier = Modifier.clickable(onClick = {
+                                navController.popBackStack()
+                            })
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+
                 Box(modifier = Modifier.weight(1f)) {
                     Text(
                         text = titlePage,
-                        fontFamily = FontProvider.PlusJakartaSans,
-                        color = Color.Black)
+                        style = Typography.titleLarge
+                    )
                 }
 
                 if(showIconNotification){
-
                     Box (modifier = Modifier.padding(10.dp)){
                         IconButton(onClick = {
                             navController.navigate("notificacoes")
@@ -95,16 +121,20 @@ fun TopBarCustom(
                             )
                         }
                     }
+                }
 
-
-
-                }else{
-                    Text("Marcar como lida",
-                        fontSize = 14.sp,
-                        color = ORANGE_SECUNDARY,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier.padding(15.dp)
-                    )
+                if(showIconSettings) {
+                    Box {
+                        IconButton(onClick = {
+                            navController.navigate("settings")
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Settings,
+                                contentDescription = "Settings",
+                                tint = Color.Black
+                            )
+                        }
+                    }
                 }
             }
         },

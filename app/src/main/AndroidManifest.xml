@@ -2,24 +2,48 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo_app_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo_app_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.Nareguaapp"
         tools:targetApi="31">
-
-        <!-- Remova ou comente a linha abaixo -->
+        <activity
+            android:name=".view.EcluirNegocio"
+            android:exported="false"
+            android:label="@string/title_activity_ecluir_negocio"
+            android:theme="@style/Theme.Nareguaapp" />
+        <activity
+            android:name=".view.ExcluirConta"
+            android:exported="false"
+            android:label="@string/title_activity_excluir_conta"
+            android:theme="@style/Theme.Nareguaapp" />
+        <activity
+            android:name=".view.ConfiguracoesSeuNegocio"
+            android:exported="false"
+            android:label="@string/title_activity_configuracoes_seu_negocio"
+            android:theme="@style/Theme.Nareguaapp" />
+        <activity
+            android:name=".view.ConfiguracoesInformacoesPessoais"
+            android:exported="false"
+            android:label="@string/title_activity_configuracoes_informacoes_pessoais"
+            android:theme="@style/Theme.Nareguaapp" />
+        <activity
+            android:name=".view.Configuracoes"
+            android:exported="false"
+            android:label="@string/title_activity_configuracoes"
+            android:theme="@style/Theme.Nareguaapp" /> <!-- Remova ou comente a linha abaixo -->
         <!--
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/font" />
         -->
-
         <activity
             android:name=".MainActivity"
             android:exported="true"

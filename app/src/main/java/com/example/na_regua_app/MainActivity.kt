@@ -14,6 +14,8 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.na_regua_app.screens.ListagemBarbearias
+import com.example.na_regua_app.screens.ListagemBarbeariasPreview
 import com.example.na_regua_app.ui.theme.NareguaappTheme
 import com.example.na_regua_app.view.Adicionar
 import com.example.na_regua_app.view.Agendamento
@@ -51,7 +53,7 @@ class MainActivity : ComponentActivity() {
                         BuscaBarbearias(navController)
                     }
                     composable("listagemBarbearias") {
-                        BuscaBarbearias(navController)
+                        ListagemBarbearias(navController)
                     }
                     composable("telaInicial") {
                         TelaInicial(navController)

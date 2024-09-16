@@ -30,6 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.navigation.NavController
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.na_regua_app.R
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 
@@ -41,6 +44,7 @@ fun BarraPesquisar(
     ) {
     val textState = remember { mutableStateOf(TextFieldValue("")) }
     val keyboardController = LocalSoftwareKeyboardController.current // Controlador para o teclado
+
 
     Box(
         modifier = Modifier
@@ -60,7 +64,6 @@ fun BarraPesquisar(
                     .clickable { navController.navigate("cadastro") }
             )
             Spacer(modifier = Modifier.width(8.dp))
-
             OutlinedTextField(
                 value = textState.value,
                 onValueChange = { textState.value = it },

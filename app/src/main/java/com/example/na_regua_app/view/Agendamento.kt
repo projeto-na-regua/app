@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -185,7 +187,7 @@ fun BoxServicos(
     val servicos = listOf(
         Servico(
             tituloServico = "Corte",
-            descricao = "Corte simples de cabelo aaaa aaaaa aaaaa aaaa aaaaa aaaa",
+            descricao = "Corte simples de cabelo",
             preco = 25.00,
         ),
         Servico(
@@ -239,9 +241,9 @@ fun BoxSelecaobarbeiro(
         )
 
         val funcionarios = listOf(
-            Funcionario(1, nome = "Barbeiro 1", imgPerfil = R.drawable.foto_perfil, "Barbeiro"),
-            Funcionario(2, nome = "Barbeiro 2", imgPerfil = R.drawable.barbeira2, "Barbeiro"),
-            Funcionario(3, nome = "Barbeiro 3", imgPerfil = R.drawable.barbeiro1, "Barbeiro")
+            Funcionario(1, nome = "Barbeiro 1", imgPerfil = R.drawable.foto_perfil, dtype = "Barbeiro", email = "barbeiro@gmail.com"),
+            Funcionario(2, nome = "Barbeiro 2", imgPerfil = R.drawable.barbeira2, dtype = "Barbeiro", email = "barbeiro@gmail.com"),
+            Funcionario(3, nome = "Barbeiro 3", imgPerfil = R.drawable.barbeiro1, dtype = "Barbeiro", email = "barbeiro@gmail.com")
         )
 
         Row(

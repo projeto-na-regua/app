@@ -130,6 +130,9 @@ fun Cadastro(
                 Spacer(modifier = Modifier.weight(1f))
                 BotaoSpan(
                     onClick = {
+                        if(botaoClicado) {
+                            navController.navigate("login")
+                        }
                         mostrarPrimeirasInputs = true
                         botaoClicado = true
                     },

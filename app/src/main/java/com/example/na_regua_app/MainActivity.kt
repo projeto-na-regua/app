@@ -17,11 +17,15 @@ import com.example.na_regua_app.ui.theme.NareguaappTheme
 import com.example.na_regua_app.view.Adicionar
 import com.example.na_regua_app.view.Agendamento
 import com.example.na_regua_app.view.Cadastro
+import com.example.na_regua_app.view.CadastroBarbeariaEndereco
+import com.example.na_regua_app.view.CadastroBarbeariaFim
+import com.example.na_regua_app.view.CadastroBarbeariaFotoNome
 import com.example.na_regua_app.view.Login
 import com.example.na_regua_app.view.Notificacoes
 import com.example.na_regua_app.view.SplashScreen
 import com.example.na_regua_app.view.TelaInicial
 import com.example.na_regua_app.view.CadastroBarbeariaInicio
+import com.example.na_regua_app.view.CadastroFotoUsername
 import com.example.na_regua_app.view.HomeUsuario
 import com.example.na_regua_app.view.PerfilBarbearia
 import com.example.na_regua_app.view.PerfilUsuario
@@ -93,21 +97,33 @@ class MainActivity : ComponentActivity() {
                     composable("homeUsuario") {
                         HomeUsuario(navController)
                     }
-                        composable("settings") {
-                            Configuracoes(navController)
-                        }
-                        composable("settingsprofile") {
-                            ConfiguracoesInformacoesPessoais(navController)
-                        }
-                        composable("settingsbusiness") {
-                            ConfiguracoesSeuNegocio(navController)
-                        }
-                        composable("deleteaccount") {
-                            ExcluirConta(navController)
-                        }
-                        composable("deletebusiness") {
-                            ExcluirNegocio(navController)
-                        }
+                    composable("settings") {
+                        Configuracoes(navController)
+                    }
+                    composable("settingsprofile") {
+                        ConfiguracoesInformacoesPessoais(navController)
+                    }
+                    composable("settingsbusiness") {
+                        ConfiguracoesSeuNegocio(navController)
+                    }
+                    composable("deleteaccount") {
+                        ExcluirConta(navController)
+                    }
+                    composable("deletebusiness") {
+                        ExcluirNegocio(navController)
+                    }
+                    composable("cadastroBarbeariaFotoUsername"){
+                        CadastroBarbeariaFotoNome(navController)
+                    }
+                    composable("cadastroBarbeariaEndereco"){
+                        CadastroBarbeariaEndereco(navController)
+                    }
+                    composable("cadastroBarbeariaFim"){
+                        CadastroBarbeariaFim(navController)
+                    }
+                    composable("cadastroFotoUsername"){
+                        CadastroFotoUsername(navController)
+                    }
                     }
                 }
             }

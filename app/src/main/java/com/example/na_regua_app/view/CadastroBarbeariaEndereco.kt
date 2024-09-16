@@ -126,8 +126,7 @@ fun CadastroBarbeariaEndereco(
 
                 Spacer(modifier = Modifier.weight(1f))
                 Botao(
-                    onClick = {
-                    },
+                    onClick = {navController.navigate("cadastroBarbeariaFim")},
                     textButton =  "Próximo"
                 )
 

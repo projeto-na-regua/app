@@ -14,14 +14,36 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Nareguaapp"
         tools:targetApi="31">
-
-        <!-- Remova ou comente a linha abaixo -->
+        <activity
+            android:name=".view.EcluirNegocio"
+            android:exported="false"
+            android:label="@string/title_activity_ecluir_negocio"
+            android:theme="@style/Theme.Nareguaapp" />
+        <activity
+            android:name=".view.ExcluirConta"
+            android:exported="false"
+            android:label="@string/title_activity_excluir_conta"
+            android:theme="@style/Theme.Nareguaapp" />
+        <activity
+            android:name=".view.ConfiguracoesSeuNegocio"
+            android:exported="false"
+            android:label="@string/title_activity_configuracoes_seu_negocio"
+            android:theme="@style/Theme.Nareguaapp" />
+        <activity
+            android:name=".view.ConfiguracoesInformacoesPessoais"
+            android:exported="false"
+            android:label="@string/title_activity_configuracoes_informacoes_pessoais"
+            android:theme="@style/Theme.Nareguaapp" />
+        <activity
+            android:name=".view.Configuracoes"
+            android:exported="false"
+            android:label="@string/title_activity_configuracoes"
+            android:theme="@style/Theme.Nareguaapp" /> <!-- Remova ou comente a linha abaixo -->
         <!--
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/font" />
         -->
-
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -61,7 +61,7 @@ fun PerfilUsuario(
 ) {
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Perfil",  true)
+            TopBarCustom(navController, "Perfil",  true, true)
         },
         content = { paddingValues ->
             PerfilUsuarioContent(
@@ -260,7 +260,12 @@ fun PerfilUsuarioContent(paddingValues: PaddingValues, navController: NavControl
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    BotaoAjustavel(modifier = Modifier.weight(1.5f), onClick = { /*TODO*/ }, textButton = "Enviar mensagem", imagePainter = painterResource(R.drawable.send_icon))
+                    val userName by remember { mutableStateOf("Diego") }
+                    val profilePic by remember { mutableIntStateOf(R.drawable.barbeiro1) }
+                    val profilePicString = profilePic.toString()
+                    val origin by remember { mutableStateOf("perfilUsuario") }
+
+                    BotaoAjustavel(modifier = Modifier.weight(1.5f), onClick = { navController.navigate("chat/$userName/$profilePicString/$origin") }, textButton = "Enviar mensagem", imagePainter = painterResource(R.drawable.send_icon))
                     Spacer(modifier = Modifier.width(2.dp))
                     BotaoAjustavel(modifier = Modifier.weight(1.5f), onClick = { navController.navigate("perfilBarbearia") }, textButton = "Visitar barbearia")
                 }

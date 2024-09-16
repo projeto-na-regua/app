@@ -1,6 +1,6 @@
 package com.example.na_regua_app.view
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +16,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,16 +25,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.na_regua_app.components.Botao
 import com.example.na_regua_app.components.BotaoSpan
-import com.example.na_regua_app.components.Input
-import com.example.na_regua_app.components.LogoImage
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
-import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 
 @Composable
-fun Login(navController: NavController) {
-    var email by remember { mutableStateOf("") }
-    var senha by remember { mutableStateOf("") }
+fun CadastroBarbeariaInicio(
+    navController: NavController
+) {
+    var botaoClicado by remember { mutableStateOf(false) }
 
     Scaffold(
         content = { paddingValues ->
@@ -44,17 +45,17 @@ fun Login(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
-                LogoImage()
                 Text(
-                    text = "Faça seu login",
+                    text = "Quer cadastrar sua barbearia?",
                     fontSize = 24.sp,
                     color = BLUE_PRIMARY,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 40.dp),
-                    letterSpacing = 1.sp
+                    modifier = Modifier.padding(top = 40.dp).fillMaxWidth(.7f),
+                    letterSpacing = 1.sp,
+                    textAlign = TextAlign.Center
                 )
                 Text(
-                    text = "Acesse sua conta e venha ficar na régua conosco!",
+                    text = "Explore o que nós podemos oferecer!",
                     fontSize = 12.sp,
                     color = BLUE_PRIMARY,
                     modifier = Modifier.padding(top = 12.dp),
@@ -62,53 +63,34 @@ fun Login(navController: NavController) {
                     fontWeight = FontWeight.Medium,
                     letterSpacing = 1.sp,
                 )
+
                 Column(
                     modifier = Modifier
                         .padding(top = 18.dp)
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Input(
-                        value = email,
-                        onValueChange = { novoValor -> email = novoValor },
-                        label = { Text("E-mail") }
-                    )
-                    Input(
-                        value = senha,
-                        onValueChange = { novoValor -> senha = novoValor },
-                        label = { Text("Senha") }
-                    )
-                    Text(
-                        text = "Esqueci minha senha",
+                    Image(
+                        painter = painterResource(id = com.example.na_regua_app.R.drawable.imagem_inicio_cadastro_barbearia),
+                        contentDescription = "",
                         modifier = Modifier
-                            .clickable { /* Ação para senha esquecida */ }
-                            .padding(top = 12.dp, end = 39.dp)
-                            .fillMaxWidth(),
-                        color = ORANGE_SECUNDARY,
-                        textAlign = TextAlign.End,
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Medium
+                            .fillMaxWidth(.9f)
+                            .padding(top = 80.dp),
+                        contentScale = ContentScale.Crop
                     )
                 }
-
                 Spacer(modifier = Modifier.weight(1f))
-                BotaoSpan(
-                    onClick = { navController.navigate("homeUsuario")},
-                    textButton = "Entrar",
-                    textEsquerda = "Não possui conta?",
-                    textDireita = "Cadastre-se",
-                    onTextoDireitaClick = {
-                        navController.navigate("cadastroInicio")
-                    }
+                Botao(
+                    onClick = { navController.navigate("cadastroBarbeariaFotoUsername") },
+                    textButton = "Iniciar"
                 )
             }
         }
     )
 }
 
-
 @Preview
 @Composable
-fun LoginPreview() {
-    Login(navController = rememberNavController())
+fun CadastroBarbeariaInicioPreview() {
+    CadastroBarbeariaInicio(navController = rememberNavController())
 }

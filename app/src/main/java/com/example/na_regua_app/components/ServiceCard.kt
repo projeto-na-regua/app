@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -44,6 +45,7 @@ fun ServiceCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(90.dp)
+            .clip(RoundedCornerShape(15.dp))
             .background(backgroundColor)
             .border(2.dp, color = WHITE_BACKGROUND, RoundedCornerShape(15.dp))
             .clickable(enabled = isSelectable && onClick != null) {
@@ -103,7 +105,8 @@ fun ServiceList(
     selectedService: Servico? = null,
     onServiceClick: ((Servico) -> Unit)? = null
 ) {
-    Column (verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column (verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.clip(RoundedCornerShape(15.dp))) {
         services.forEach { service ->
             ServiceCard(
                 servico = service,

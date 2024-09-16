@@ -45,7 +45,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.components.Botao
 import com.example.na_regua_app.components.BotaoSpan
 import com.example.na_regua_app.components.Input
-import com.example.na_regua_app.components.InputCadastroUsername
+import com.example.na_regua_app.components.InputCadastro
 import com.example.na_regua_app.components.LogoImage
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
@@ -137,7 +137,7 @@ fun CadastroFotoUsername(
                             fontSize = 15.sp
                         )
                     }
-                    InputCadastroUsername(
+                    InputCadastro(
                         value = apelido,
                         onValueChange = { novoValor -> apelido = novoValor },
                         label = { Text("Apelido") }
@@ -146,7 +146,7 @@ fun CadastroFotoUsername(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Botao(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("cadastro") },
                     textButton = "Próximo"
                 )
             }

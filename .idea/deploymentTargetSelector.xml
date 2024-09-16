@@ -11,9 +11,6 @@
       <SelectionState runConfigName="PerfilUsuarioPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="DashboardPreview (1)">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="PerfilBarbeariaPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>

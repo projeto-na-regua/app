@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             NareguaappTheme {
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = "login") {
+                NavHost(navController = navController, startDestination = "agendamento") {
                     composable("home") {
                         Home(navController)
                     }

@@ -10,15 +10,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,26 +31,18 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.components.Botao
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.Typography
-import com.example.na_regua_app.view.BoxSelecaoDataEHora
-import com.example.na_regua_app.view.BoxSelecaobarbeiro
-import com.example.na_regua_app.view.BoxServicos
-import com.example.na_regua_app.view.ConfirmationDialog
+import com.example.na_regua_app.view.CalendarExample
 
 @Composable
-fun BuscaBarbearias(navController: NavController) {
-    var selectedService by remember { mutableStateOf<String?>(null) }
-    var selectedDate by remember { mutableStateOf<String?>(null) }
-    var selectedLocal by remember { mutableStateOf<String?>(null) }
-
-    var showServiceDialog by remember { mutableStateOf(false) }
-    var showDateDialog by remember { mutableStateOf(false) }
-    var showLocalDialog by remember { mutableStateOf(false) }
-
+fun BuscaBarbearias(navController: NavHostController) {
     Scaffold(
         topBar = {
             TopBarCustom(navController, "Busca", true)
@@ -67,9 +59,15 @@ fun BuscaBarbearias(navController: NavController) {
                 }
                 item {
                     opcoesBuscaBarbearia(
-                        onServiceClick = { showServiceDialog = true },
-                        onDateClick = { showDateDialog = true },
-                        onLocalClick = { showLocalDialog = true }
+                        onServiceClick = {
+                            navController.navigate("selecionarServico")
+                        },
+                        onDateClick = {
+                            navController.navigate("selecionarData")
+                        },
+                        onLocalClick = {
+                            navController.navigate("selecionarLocal")
+                        }
                     )
                 }
             }
@@ -78,43 +76,170 @@ fun BuscaBarbearias(navController: NavController) {
             BottomBarCustom(navController)
         }
     )
+}
 
-    // Diálogo para selecionar o serviço
-    if (showServiceDialog) {
-        ModalDialog(
-            title = "Selecionar Serviço",
-            options = listOf("Corte", "Barba", "Corte + Barba"),
-            onDismiss = { showServiceDialog = false },
-            onOptionSelected = { service ->
-                selectedService = service
-                showServiceDialog = false
-            }
-        )
-    }
+@Composable
+fun SelecionarLocalScreen(navController: NavHostController) {
+    val localAtual = "Rua Fictícia, 123 - Centro"
+    val enderecosVisitados = listOf(
+        "Rua Exemplo, 456 - Bairro A",
+        "Avenida Teste, 789 - Bairro B",
+        "Travessa Simulação, 1011 - Bairro C"
+    )
 
-    // Diálogo para selecionar a data
-    if (showDateDialog) {
-        ModalDialog(
-            title = "Selecionar Data",
-            options = listOf("10/09/2024", "11/09/2024", "12/09/2024"),
-            onDismiss = { showDateDialog = false },
-            onOptionSelected = { date ->
-                selectedDate = date
-                showDateDialog = false
-            }
-        )
-    }
+    Scaffold(
+        topBar = {
+            TopBarCustom(navController, "Selecionar Local", true)
+        },
+        content = { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(14.dp)
+            ) {
+                Text(
+                    text = "Localização Atual",
+                    style = Typography.bodyMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                OpcaoEndereco(
+                    texto = localAtual,
+                    onClick = {
+                        // Lógica ao selecionar o local atual
+                        navController.popBackStack() // Voltar para a tela anterior, ou fazer outra ação
+                    }
+                )
 
-    // Diálogo para selecionar o local
-    if (showLocalDialog) {
-        ModalDialog(
-            title = "Selecionar Local",
-            options = listOf("Barbearia Central", "Barbearia Norte", "Barbearia Sul"),
-            onDismiss = { showLocalDialog = false },
-            onOptionSelected = { local ->
-                selectedLocal = local
-                showLocalDialog = false
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "Locais Visitados",
+                    style = Typography.bodyMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(enderecosVisitados) { endereco ->
+                        OpcaoEndereco(
+                            texto = endereco,
+                            onClick = {
+                                // Lógica ao selecionar um local visitado
+                                navController.popBackStack() // Voltar para a tela anterior, ou fazer outra ação
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(15.dp)) // Espaço entre os endereços visitados
+                    }
+                }
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Button(
+                    onClick = {
+                        // Lógica ao clicar no botão de confirmação
+                        navController.popBackStack() // Voltar para a tela anterior, ou fazer outra ação
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                ) {
+                    Text(text = "Confirmar")
+                }
             }
+        },
+        bottomBar = {
+            BottomBarCustom(navController)
+        }
+    )
+}
+
+@Composable
+fun SelecionarDataScreen(navController: NavHostController) {
+    var selectedDate by remember { mutableStateOf<String?>(null) }
+
+    Scaffold(
+        topBar = {
+            TopBarCustom(navController, "Selecionar Data", true)
+        },
+        content = { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(14.dp)
+            ) {
+                // Exibir o calendário
+                CalendarExample { date ->
+                    selectedDate = date
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Exibir a data selecionada (se houver)
+                selectedDate?.let {
+                    Text(
+                        text = "Data selecionada: $it",
+                        style = Typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+                }
+
+                // Botão de confirmação
+                Botao(
+                    onClick = {navController.popBackStack("buscaBarbearias", false)},
+                    textButton = "Marcar Horário"
+                )
+            }
+        },
+        bottomBar = {
+            BottomBarCustom(navController)
+        }
+    )
+}
+
+@Composable
+fun SelecionarServicoScreen(navController: NavController) {
+    Scaffold(
+        topBar = {
+            TopBarCustom(navController, "Selecionar Serviço", true)
+        },
+        content = { paddingValues ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(14.dp)
+            ) {
+                item {
+                    opcoesServicos { service ->
+                        // Lógica para lidar com a seleção de serviço e voltar para a tela principal
+                        navController.popBackStack("buscaBarbearias", false)
+                    }
+                }
+            }
+        },
+        bottomBar = {
+            BottomBarCustom(navController)
+        }
+    )
+}
+
+@Composable
+fun OpcaoEndereco(texto: String, onClick: () -> Unit) {
+    // Estilo de cartão para endereços, sem ícones
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .border(1.dp, Color.Gray, shape = RoundedCornerShape(8.dp))
+            .padding(16.dp)
+            .padding(vertical = 8.dp)
+    ) {
+        Text(
+            text = texto,
+            style = Typography.titleSmall
         )
     }
 }
@@ -136,6 +261,20 @@ fun opcoesBuscaBarbearia(
 }
 
 @Composable
+fun opcoesServicos(onServiceClick: (String) -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        listOf("Corte", "Alisamento", "Pintura", "Barba", "Hidratação").forEach { service ->
+            OptionRow(icon = Icons.Default.DateRange, text = service) {
+                onServiceClick(service)
+            }
+        }
+    }
+}
+
+@Composable
 fun OptionRow(icon: ImageVector, text: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
@@ -153,43 +292,6 @@ fun OptionRow(icon: ImageVector, text: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun ModalDialog(
-    title: String,
-    options: List<String>,
-    onDismiss: () -> Unit,
-    onOptionSelected: (String) -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(text = title) },
-        text = {
-            Column {
-                options.forEach { option ->
-                    Text(
-                        text = option,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp)
-                            .clickable { onOptionSelected(option) }
-                    )
-                }
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Fechar")
-            }
-        }
-    )
-}
-
-@Preview
-@Composable
-fun BuscaBarbeariasPreview() {
-    BuscaBarbearias(navController = rememberNavController())
-}
-
-@Composable
 fun textoAcimaOpcoesBusca(){
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -200,10 +302,17 @@ fun textoAcimaOpcoesBusca(){
             text = "O que você busca ?",
             style = Typography.titleSmall
         )
-
     }
-
 }
 
 
-
+@Preview
+@Composable
+fun MyAppNavHost(navController: NavHostController = rememberNavController()) {
+    NavHost(navController, startDestination = "buscaBarbearias") {
+        composable("buscaBarbearias") { BuscaBarbearias(navController) }
+        composable("selecionarServico") { SelecionarServicoScreen(navController) }
+        composable("selecionarData") { SelecionarDataScreen(navController) }
+        composable("selecionarLocal") { SelecionarLocalScreen(navController) }
+    }
+}

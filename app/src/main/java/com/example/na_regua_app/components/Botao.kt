@@ -12,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -78,6 +79,43 @@ fun Botao(
             text = textButton,
             style = labelLargeOrange,
             letterSpacing = 1.sp
+        )
+    }
+}
+
+@Composable
+fun BotaoComIcone(
+    onClick: () -> Unit,
+    textButton: String,
+    imagePainter: Painter? = null,
+    backgroundColor: Color? = null,
+    textColor: Color? = null
+) {
+    Button(
+        onClick = { onClick() },
+        colors = ButtonDefaults.buttonColors(
+            containerColor =  backgroundColor ?: BLUE_PRIMARY
+        ),
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 4.dp)
+            .height(60.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        imagePainter?.let {
+            Image(
+                painter = it,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(32.dp)
+                    .padding(end = 8.dp)
+            )
+        }
+
+        Text(
+            text = textButton,
+            style = labelLargeOrange,
+            color = textColor ?: ORANGE_SECUNDARY,
         )
     }
 }

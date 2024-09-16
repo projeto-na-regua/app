@@ -20,4 +20,11 @@
         <item quantity="one">%1$d agendamento cancelado</item>
         <item quantity="other">%1$d agendamentos cancelados</item>
     </plurals>
+    <string name="title_activity_configuracoes">Configuracoes</string>
+    <string name="title_activity_configuracoes_informacoes_pessoais">
+        ConfiguracoesInformacoesPessoais
+    </string>
+    <string name="title_activity_configuracoes_seu_negocio">ConfiguracoesSeuNegocio</string>
+    <string name="title_activity_excluir_conta">ExcluirConta</string>
+    <string name="title_activity_ecluir_negocio">EcluirNegocio</string>
 </resources>

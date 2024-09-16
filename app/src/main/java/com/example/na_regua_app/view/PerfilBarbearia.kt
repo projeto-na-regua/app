@@ -3,6 +3,7 @@ package com.example.na_regua_app.view
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -65,7 +67,7 @@ fun PerfilBarbearia(
 ) {
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Perfil",  true)
+            TopBarCustom(navController, "Perfil",  true, true)
         },
         content = { paddingValues ->
             PerfilBarbeariaContent(
@@ -235,7 +237,7 @@ fun PerfilBarbeariaContent(paddingValues: PaddingValues, navController: NavContr
                     Espacamento(espaco = 8.dp)
                 }
                 item {
-                    BoxFuncionarios()
+                    BoxFuncionarios(navController)
                     Espacamento(espaco = 8.dp)
                 }
             }
@@ -255,9 +257,14 @@ fun PerfilBarbeariaContent(paddingValues: PaddingValues, navController: NavContr
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                val userName by remember { mutableStateOf("Dom Bigode") }
+                val profilePic by remember { mutableIntStateOf(R.drawable.barbeiro1) }
+                val profilePicString = profilePic.toString()
+                val origin by remember { mutableStateOf("pefilBarbearia") }
+
                 BotaoAjustavel(
                     modifier = Modifier.weight(1.5f),
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("chat/$userName/$profilePicString/$origin") },
                     textButton = "Enviar mensagem",
                     imagePainter = painterResource(R.drawable.send_icon)
                 )
@@ -351,7 +358,7 @@ fun BoxServicosPerfil() {
 }
 
 @Composable
-fun BoxFuncionarios(){
+fun BoxFuncionarios(navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -375,11 +382,15 @@ fun BoxFuncionarios(){
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             repeat(3) { index ->
-                SelecaoFuncionarios(
-                    funcionario = funcionarios[index],
-                    isSelectable = false,
-                    exibirInformacoes = true
-                )
+                Box(modifier = Modifier.clickable {
+                    navController.navigate("perfilUsuario")
+                }) {
+                    SelecaoFuncionarios(
+                        funcionario = funcionarios[index],
+                        isSelectable = false,
+                        exibirInformacoes = true
+                    )
+                }
             }
         }
     }

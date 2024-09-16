@@ -2,11 +2,13 @@ package com.example.na_regua_app.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -33,21 +35,17 @@ import com.example.na_regua_app.components.LogoImage
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 
 @Composable
-fun Cadastro(
+fun CadastroBarbeariaEndereco(
     navController: NavController
 ) {
-    var nome by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var senha by remember { mutableStateOf("") }
-    var confirmarSenha by remember { mutableStateOf("") }
-
     var cep by remember { mutableStateOf("") }
     var logradouro by remember { mutableStateOf("") }
     var cidade by remember { mutableStateOf("") }
     var estado by remember { mutableStateOf("") }
-
-    var mostrarPrimeirasInputs by remember { mutableStateOf(false) }
-    var botaoClicado by remember { mutableStateOf(false) }
+    var bairro by remember { mutableStateOf("") }
+    var numero by remember {
+        mutableStateOf("")
+    }
 
     Scaffold(
         content = { paddingValues ->
@@ -59,9 +57,8 @@ fun Cadastro(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
-                LogoImage()
                 Text(
-                    text = "Informações pessoais!",
+                    text = "Endereço da sua barbearia",
                     fontSize = 24.sp,
                     color = BLUE_PRIMARY,
                     fontWeight = FontWeight.Bold,
@@ -69,7 +66,7 @@ fun Cadastro(
                     letterSpacing = 1.sp
                 )
                 Text(
-                    text = "Para iniciarmos seu cadastro informe seu dados!",
+                    text = "Informe o endereço de sua barbearia para seus clientes te encontrarem.",
                     fontSize = 12.sp,
                     color = BLUE_PRIMARY,
                     modifier = Modifier.padding(top = 12.dp),
@@ -84,60 +81,53 @@ fun Cadastro(
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    if(!mostrarPrimeirasInputs) {
+                    Input(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = cep,
+                        onValueChange = { novoValor -> cep = novoValor },
+                        label = { Text("Cep") }
+                    )
+                    Row (
+                        modifier = Modifier.fillMaxWidth()
+                    ){
                         Input(
-                            value = nome,
-                            onValueChange = { novoValor -> nome = novoValor },
-                            label = { Text("Nome") }
-                        )
-                        Input(
-                            value = email,
-                            onValueChange = { novoValor -> email = novoValor },
-                            label = { Text("E-mail") }
-                        )
-                        Input(
-                            value = senha,
-                            onValueChange = { novoValor -> senha = novoValor },
-                            label = { Text("Senha") }
-                        )
-                        Input(
-                            value = confirmarSenha,
-                            onValueChange = { novoValor -> confirmarSenha = novoValor },
-                            label = { Text("Confirmar senha") }
-                        )
-                    } else {
-                        Input(
-                            value = cep,
-                            onValueChange = { novoValor -> cep = novoValor },
-                            label = { Text("Cep") }
-                        )
-                        Input(
+                            modifier = Modifier.weight(.7f),
                             value = logradouro,
                             onValueChange = { novoValor -> logradouro = novoValor },
                             label = { Text("Logradouro") }
                         )
+                        Spacer(modifier = Modifier.weight(.05f))
                         Input(
-                            value = cidade,
-                            onValueChange = { novoValor -> cidade = novoValor },
-                            label = { Text("Cidade") }
-                        )
-                        Input(
-                            value = estado,
-                            onValueChange = { novoValor -> estado = novoValor },
-                            label = { Text("Estado") }
+                            modifier = Modifier.weight(.3f),
+                                value = numero,
+                        onValueChange = { novoValor -> numero = novoValor },
+                        label = { Text("N") }
                         )
                     }
+                    Input(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = bairro,
+                        onValueChange = { novoValor -> bairro = novoValor },
+                        label = { Text("Bairro") }
+                    )
+                    Input(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = cidade,
+                        onValueChange = { novoValor -> cidade = novoValor },
+                        label = { Text("Cidade") }
+                    )
+                    Input(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = estado,
+                        onValueChange = { novoValor -> estado = novoValor },
+                        label = { Text("Estado") }
+                    )
                 }
+
                 Spacer(modifier = Modifier.weight(1f))
                 Botao(
-                    onClick = {
-                        if(botaoClicado) {
-                            navController.navigate("cadastroFim")
-                        }
-                        mostrarPrimeirasInputs = true
-                        botaoClicado = true
-                    },
-                    textButton = "Próximo"
+                    onClick = {navController.navigate("cadastroBarbeariaFim")},
+                    textButton =  "Próximo"
                 )
 
             }
@@ -147,6 +137,6 @@ fun Cadastro(
 
 @Preview
 @Composable
-fun CadastroPreview() {
-    Cadastro(navController = rememberNavController())
+fun CadastroBarbeariaEnderecoPreview() {
+    CadastroBarbeariaEndereco(navController = rememberNavController())
 }

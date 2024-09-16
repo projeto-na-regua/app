@@ -87,7 +87,7 @@ fun ConfiguracoesInformacoesPessoais(
                         modifier = Modifier.padding(horizontal = 16.dp)
                     ) {
                         Column {
-                            Text(text = "Informações de Pessoais", style = titleSectionBold)
+                            Text(text = "Informações Pessoais", style = titleSectionBold)
 
                             Spacer(modifier = Modifier.height(24.dp))
 

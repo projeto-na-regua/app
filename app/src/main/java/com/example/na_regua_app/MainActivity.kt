@@ -21,17 +21,12 @@ import com.example.na_regua_app.view.Login
 import com.example.na_regua_app.view.Notificacoes
 import com.example.na_regua_app.view.SplashScreen
 import com.example.na_regua_app.view.TelaInicial
-import com.example.na_regua_app.view.Agendamento
 import com.example.na_regua_app.view.CadastroBarbeariaInicio
 import com.example.na_regua_app.view.HomeUsuario
 import com.example.na_regua_app.view.PerfilBarbearia
 import com.example.na_regua_app.view.PerfilUsuario
-import com.example.na_regua_app.view.SplashScreen
-import com.example.na_regua_app.view.TelaInicial
 import com.example.na_regua_app.view.dashboard.Dashboard
 import com.example.na_regua_app.view.Chat
-import com.example.na_regua_app.view.PerfilBarbearia
-import com.example.na_regua_app.view.PerfilUsuario
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,10 +41,10 @@ class MainActivity : ComponentActivity() {
                     composable("agendamento") {
                         Agendamento(navController)
                     }
-                    composable("telaInicial"){
+                    composable("telaInicial") {
                         TelaInicial(navController)
                     }
-                    composable("splashScreen"){
+                    composable("splashScreen") {
                         SplashScreen(navController)
                     }
                     composable("notificacoes") {
@@ -61,10 +56,14 @@ class MainActivity : ComponentActivity() {
                     composable("comunidade") {
                         Comunidade(navController)
                     }
-                    composable("chat/{userName}/{profilePic}/{origin}") {backStackEntry ->
-                        val userName = backStackEntry.arguments?.getString("userName") ?: "Nome Desconhecido"
-                        val profilePic = backStackEntry.arguments?.getString("profilePic")?.toIntOrNull() ?: R.drawable.avatar_funcionario_default
-                        val origin = backStackEntry.arguments?.getString("origin") ?: "Origem Desconhecida"
+                    composable("chat/{userName}/{profilePic}/{origin}") { backStackEntry ->
+                        val userName =
+                            backStackEntry.arguments?.getString("userName") ?: "Nome Desconhecido"
+                        val profilePic =
+                            backStackEntry.arguments?.getString("profilePic")?.toIntOrNull()
+                                ?: R.drawable.avatar_funcionario_default
+                        val origin =
+                            backStackEntry.arguments?.getString("origin") ?: "Origem Desconhecida"
 
                         Chat(
                             navController = navController,
@@ -79,7 +78,7 @@ class MainActivity : ComponentActivity() {
                     composable("perfilUsuario") {
                         PerfilUsuario(navController)
                     }
-                    composable("perfilBarbearia"){
+                    composable("perfilBarbearia") {
                         PerfilBarbearia(navController)
                     }
                     composable("login") {
@@ -88,25 +87,26 @@ class MainActivity : ComponentActivity() {
                     composable("cadastro") {
                         Cadastro(navController)
                     }
-                    composable("cadastroBarbearia"){
+                    composable("cadastroBarbearia") {
                         CadastroBarbeariaInicio(navController)
                     }
-                    composable("homeUsuario"){
+                    composable("homeUsuario") {
                         HomeUsuario(navController)
-                    composable("settings") {
-                        Configuracoes(navController)
-                    }
-                    composable("settingsprofile") {
-                        ConfiguracoesInformacoesPessoais(navController)
-                    }
-                    composable("settingsbusiness") {
-                        ConfiguracoesSeuNegocio(navController)
-                    }
-                    composable("deleteaccount") {
-                        ExcluirConta(navController)
-                    }
-                    composable("deletebusiness") {
-                        ExcluirNegocio(navController)
+                        composable("settings") {
+                            Configuracoes(navController)
+                        }
+                        composable("settingsprofile") {
+                            ConfiguracoesInformacoesPessoais(navController)
+                        }
+                        composable("settingsbusiness") {
+                            ConfiguracoesSeuNegocio(navController)
+                        }
+                        composable("deleteaccount") {
+                            ExcluirConta(navController)
+                        }
+                        composable("deletebusiness") {
+                            ExcluirNegocio(navController)
+                        }
                     }
                 }
             }

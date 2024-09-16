@@ -105,7 +105,7 @@ fun CadastroFim(
 
                 Spacer(modifier = Modifier.weight(1f))
                 Botao(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("homeUsuario") },
                     textButton = "Ir para Página Inicial"
                 )
             }

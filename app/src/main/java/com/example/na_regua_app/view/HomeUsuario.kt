@@ -22,8 +22,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -83,186 +85,185 @@ fun HomeUsuario(
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun HomeUsuarioContent(paddingValues: PaddingValues, navController: NavController) {
-    Column(
+    LazyColumn(
+        contentPadding = paddingValues,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 80.dp)
+        modifier = Modifier.fillMaxWidth()
+            .padding(top = 20.dp)
     ) {
-        BarraPesquisar({pesquisa -> navController.navigate("cadastro")}, navController)
-        Text(
-            text = "Informações para você",
-            color = BLUE_PRIMARY,
-            fontSize = 20.sp,
-            letterSpacing = .5.sp,
-            fontWeight = FontWeight(500),
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .fillMaxWidth(.9f)
-                .padding(vertical = 15.dp)
-        )
+        item {
+            BarraPesquisar({ pesquisa -> navController.navigate("cadastro") }, navController)
+        }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(.9f)
-                .clip(RoundedCornerShape(12.dp))
-                .background(color = BLUE_PRIMARY)
-                .padding(vertical = 15.dp, horizontal = 12.dp)
-        ) {
+        item {
             Text(
-                text = buildAnnotatedString {
-                    append("Seu compromisso foi confirmado pela barbearia ")
-
-                    // Estilo para "Dom Bigode" (cor diferente)
-                    withStyle(style = SpanStyle(color = ORANGE_SECUNDARY, fontWeight = FontWeight.Bold)) { // Cor laranja, por exemplo
-                        append("Dom Bigode")
-                    }
-
-                    append(". \nInformações do Agendamento: ")
-
-                    // Estilo para "Corte + Escova" (negrito)
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append("Corte + Escova")
-                    }
-
-                    append(" no dia ")
-
-                    // Estilo para "23/09/2024 às 9h!" (negrito)
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append("23/09/2024 às 9h!")
-                    }
-                },
-                color = White,
-                fontWeight = FontWeight(350),
-                letterSpacing = 1.sp,
-                fontSize = 16.sp,
-                style = TextStyle(
-                    lineHeight = 24.sp // Define o espaçamento entre as linhas
-                )
+                text = "Informações para você",
+                color = BLUE_PRIMARY,
+                fontSize = 20.sp,
+                letterSpacing = .5.sp,
+                fontWeight = FontWeight(500),
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .fillMaxWidth(.9f)
+                    .padding(vertical = 15.dp)
             )
         }
 
-        Text(
-            text = "Pesquisas recentes",
-            color = BLUE_PRIMARY,
-            fontSize = 20.sp,
-            letterSpacing = .5.sp,
-            fontWeight = FontWeight(500),
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .fillMaxWidth(.9f)
-                .padding(top = 25.dp)
-        )
-
-        LazyRow (
-            horizontalArrangement = Arrangement.Start,
-            modifier = Modifier.fillMaxWidth(.9f)
-        ){
-            item {
-                CardImagemInfoBarbearia(
-                    onClick = { navController.navigate("perfilBarbearia") },
-                    nomeBarbearia = "Dom bigode",
-                    distancia = "200",
-                    isOpen = true
-                )
-                CardImagemInfoBarbearia(
-                    onClick = { navController.navigate("perfilBarbearia") },
-                    nomeBarbearia = "Dom bigode",
-                    distancia = "200",
-                    isOpen = true
-                )
-                CardImagemInfoBarbearia(
-                    onClick = { navController.navigate("perfilBarbearia") },
-                    nomeBarbearia = "Dom bigode",
-                    distancia = "200",
-                    isOpen = true
-                )
-            }
-        }
-
-        Text(
-            text = "Pode te interessar",
-            color = BLUE_PRIMARY,
-            fontSize = 20.sp,
-            letterSpacing = .5.sp,
-            fontWeight = FontWeight(500),
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .fillMaxWidth(.9f)
-                .padding(top = 40.dp, bottom = 15.dp)
-        )
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .height(150.dp)
-                .clip(RoundedCornerShape(15.dp))
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.capa_perfil_barbeiro),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
-
+        item {
             Box(
                 modifier = Modifier
-                    .matchParentSize()
-                    .background(Color.Black.copy(alpha = 0.6f))
-            )
-            Column (
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .padding(start = 15.dp)
-                    .fillMaxHeight()
                     .fillMaxWidth(.9f)
-            ){
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(color = BLUE_PRIMARY)
+                    .padding(vertical = 15.dp, horizontal = 12.dp)
+            ) {
                 Text(
-                    text = "Possui uma barbearia?",
+                    text = buildAnnotatedString {
+                        append("Seu compromisso foi confirmado pela barbearia ")
+
+                        withStyle(style = SpanStyle(color = ORANGE_SECUNDARY, fontWeight = FontWeight.Bold)) {
+                            append("Dom Bigode")
+                        }
+
+                        append(". \nInformações do Agendamento: ")
+
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Corte + Escova")
+                        }
+
+                        append(" no dia ")
+
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("23/09/2024 às 9h!")
+                        }
+                    },
                     color = White,
-                    fontWeight = FontWeight(600),
+                    fontWeight = FontWeight(350),
                     letterSpacing = 1.sp,
                     fontSize = 16.sp,
-                    modifier = Modifier.padding(bottom = 10.dp)
-                )
-                Text(
-                    text = "Faça o cadastro dela e tenha uma infinidade de funções para a melhor gestão.",
-                    color = White,
-                    fontSize = 14.sp,
-                    letterSpacing = .5.sp,
-                    lineHeight = 24.sp,
-                    modifier = Modifier.fillMaxWidth(.8f),
-                    fontWeight = FontWeight(300)
+                    style = TextStyle(
+                        lineHeight = 24.sp
+                    )
                 )
             }
+        }
 
-            Box(
+        item {
+            Text(
+                text = "Pesquisas recentes",
+                color = BLUE_PRIMARY,
+                fontSize = 20.sp,
+                letterSpacing = .5.sp,
+                fontWeight = FontWeight(500),
+                textAlign = TextAlign.Start,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp) // Espaçamento do Box interno
+                    .fillMaxWidth(.9f)
+                    .padding(top = 25.dp)
+            )
+        }
+
+        item {
+            LazyRow(
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier.fillMaxWidth(.95f)
             ) {
-                // Box com o ícone posicionado no BottomEnd
-                Box(
-                    modifier = Modifier
-                        .clickable {
-                            navController.navigate("cadastroBarbearia")
-                        }
-                        .size(40.dp)
-                        .clip(RoundedCornerShape(7.dp))
-                        .background(color = BLUE_PRIMARY)
-                        .padding(5.dp)
-                        .align(Alignment.BottomEnd),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.icone_setinha_svg),
-                        contentDescription = ""
+                items(5) { // Exemplo com 3 itens; ajuste conforme necessário
+                    CardImagemInfoBarbearia(
+                        onClick = { navController.navigate("perfilBarbearia") },
+                        nomeBarbearia = "Dom Bigode",
+                        distancia = "200",
+                        isOpen = true
                     )
                 }
             }
         }
 
+        item {
+            Text(
+                text = "Pode te interessar",
+                color = BLUE_PRIMARY,
+                fontSize = 20.sp,
+                letterSpacing = .5.sp,
+                fontWeight = FontWeight(500),
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .fillMaxWidth(.9f)
+                    .padding(top = 40.dp, bottom = 15.dp)
+            )
+        }
+
+        item {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .height(150.dp)
+                    .clip(RoundedCornerShape(15.dp))
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.capa_perfil_barbeiro),
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .background(Color.Black.copy(alpha = 0.6f))
+                )
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .padding(start = 15.dp)
+                        .fillMaxHeight()
+                        .fillMaxWidth(.9f)
+                ) {
+                    Text(
+                        text = "Possui uma barbearia?",
+                        color = White,
+                        fontWeight = FontWeight(600),
+                        letterSpacing = 1.sp,
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(bottom = 10.dp)
+                    )
+                    Text(
+                        text = "Faça o cadastro dela e tenha uma infinidade de funções para a melhor gestão.",
+                        color = White,
+                        fontSize = 14.sp,
+                        letterSpacing = .5.sp,
+                        lineHeight = 24.sp,
+                        modifier = Modifier.fillMaxWidth(.8f),
+                        fontWeight = FontWeight(300)
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .clickable {
+                                navController.navigate("cadastroBarbearia")
+                            }
+                            .size(40.dp)
+                            .clip(RoundedCornerShape(7.dp))
+                            .background(color = BLUE_PRIMARY)
+                            .padding(5.dp)
+                            .align(Alignment.BottomEnd),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.icone_setinha_svg),
+                            contentDescription = ""
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 

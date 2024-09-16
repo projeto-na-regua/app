@@ -236,7 +236,7 @@ fun CadastroBarbeariaFotoNome(
                         Spacer(modifier = Modifier.height(30.dp))
                     }
                     Botao(
-                        onClick = { /*TODO*/ },
+                        onClick = { navController.navigate("cadastroBarbeariaEndereco") },
                         textButton = "Próximo"
                     )
                 }

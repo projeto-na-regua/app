@@ -100,6 +100,9 @@ fun TelaInicial(navController: NavController) {
                             Spacer(modifier = Modifier.padding(bottom = 30.dp))
                         }
                         Botao(onClick = {
+                            if(botaoEntrarClicado){
+                                navController.navigate("homeUsuario")
+                            }
                             botaoEntrarClicado = true
                         },
                             textButton = "Entrar"

@@ -54,7 +54,7 @@ fun Login(navController: NavController) {
                     letterSpacing = 1.sp
                 )
                 Text(
-                    text = "Acesse sua conta e piririri e tome tome tome.",
+                    text = "Acesse sua conta e venha ficar na régua conosco!",
                     fontSize = 12.sp,
                     color = BLUE_PRIMARY,
                     modifier = Modifier.padding(top = 12.dp),

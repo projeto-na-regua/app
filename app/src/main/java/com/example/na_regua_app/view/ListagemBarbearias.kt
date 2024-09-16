@@ -5,14 +5,24 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -21,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,13 +39,16 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.R
+import com.example.na_regua_app.classes.Usuario
+import com.example.na_regua_app.classes.usuarios
 import com.example.na_regua_app.components.BarraPesquisar
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.Typography
 
 @Composable
-fun ListagemBarbearias(navController: NavHostController) {
+fun ListagemBarbearias(navController: NavHostController,
+                       usuario: Usuario) {
     Scaffold(
         modifier = Modifier.background(Color.White),
         topBar = {
@@ -46,7 +58,7 @@ fun ListagemBarbearias(navController: NavHostController) {
             ListagemContent(paddingValues = paddingValues, navController = navController)
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, usuario)
         }
     )
 }
@@ -184,5 +196,5 @@ fun ListagemContent(paddingValues: PaddingValues, navController: NavController) 
 @Preview
 @Composable
 fun ListagemBarbeariasPreview() {
-    ListagemBarbearias(rememberNavController())
+    ListagemBarbearias(rememberNavController(), usuarios()[1])
 }

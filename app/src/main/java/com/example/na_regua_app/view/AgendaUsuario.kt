@@ -1,5 +1,4 @@
 package com.example.na_regua_app.view
-import android.content.ClipData.Item
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,16 +30,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.na_regua_app.classes.Usuario
+import com.example.na_regua_app.classes.usuarios
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
@@ -49,7 +47,8 @@ import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 
 @Composable
 fun AgendaUsuario(
-    navController: NavController
+    navController: NavController,
+    usuario: Usuario
 ) {
     var botaoClicado by remember { mutableStateOf(false) }
     var nomeBarbearia by remember { mutableStateOf("") }
@@ -67,7 +66,7 @@ fun AgendaUsuario(
             )
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, usuario)
         }
     )
 }
@@ -222,5 +221,5 @@ fun AgendaUsuarioContent(paddingValues: PaddingValues, navController: NavControl
 @Preview
 @Composable
 fun AgendaUsuarioPreview() {
-    AgendaUsuario(navController = rememberNavController())
+    AgendaUsuario(navController = rememberNavController(), usuarios()[1])
 }

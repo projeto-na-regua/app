@@ -35,6 +35,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.na_regua_app.classes.Usuario
+import com.example.na_regua_app.classes.usuarios
 import com.example.na_regua_app.components.Botao
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.TopBarCustom
@@ -42,7 +44,8 @@ import com.example.na_regua_app.ui.theme.Typography
 import com.example.na_regua_app.view.CalendarExample
 
 @Composable
-fun BuscaBarbearias(navController: NavHostController) {
+fun BuscaBarbearias(navController: NavHostController,
+                    usuario: Usuario) {
     Scaffold(
         topBar = {
             TopBarCustom(navController, "Busca", true)
@@ -73,13 +76,13 @@ fun BuscaBarbearias(navController: NavHostController) {
             }
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, usuario)
         }
     )
 }
 
 @Composable
-fun SelecionarLocalScreen(navController: NavHostController) {
+fun SelecionarLocalScreen(navController: NavHostController, usuario: Usuario) {
     val localAtual = "Rua Fictícia, 123 - Centro"
     val enderecosVisitados = listOf(
         "Rua Exemplo, 456 - Bairro A",
@@ -150,13 +153,13 @@ fun SelecionarLocalScreen(navController: NavHostController) {
             }
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, usuario)
         }
     )
 }
 
 @Composable
-fun SelecionarDataScreen(navController: NavHostController) {
+fun SelecionarDataScreen(navController: NavHostController, usuario: Usuario) {
     var selectedDate by remember { mutableStateOf<String?>(null) }
 
     Scaffold(
@@ -194,13 +197,13 @@ fun SelecionarDataScreen(navController: NavHostController) {
             }
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, usuario)
         }
     )
 }
 
 @Composable
-fun SelecionarServicoScreen(navController: NavController) {
+fun SelecionarServicoScreen(navController: NavController, usuario: Usuario) {
     Scaffold(
         topBar = {
             TopBarCustom(navController, "Selecionar Serviço", true)
@@ -221,7 +224,7 @@ fun SelecionarServicoScreen(navController: NavController) {
             }
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, usuario)
         }
     )
 }
@@ -309,9 +312,9 @@ fun textoAcimaOpcoesBusca(){
 @Composable
 fun MyAppNavHost(navController: NavHostController = rememberNavController()) {
     NavHost(navController, startDestination = "buscaBarbearias") {
-        composable("buscaBarbearias") { BuscaBarbearias(navController) }
-        composable("selecionarServico") { SelecionarServicoScreen(navController) }
-        composable("selecionarData") { SelecionarDataScreen(navController) }
-        composable("selecionarLocal") { SelecionarLocalScreen(navController) }
+        composable("buscaBarbearias") { BuscaBarbearias(navController, usuarios()[0]) }
+        composable("selecionarServico") { SelecionarServicoScreen(navController,usuarios()[0]) }
+        composable("selecionarData") { SelecionarDataScreen(navController,usuarios()[0]) }
+        composable("selecionarLocal") { SelecionarLocalScreen(navController, usuarios()[0]) }
     }
 }

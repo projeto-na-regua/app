@@ -115,14 +115,14 @@ fun BottomBarCustom(navController: NavController, usuario: Usuario){
                 IconSpan(id = R.drawable.calendar,
                     descripition = "Calendar",
                     navController = navController,
-                    route = "agendamento")
+                    route = "agendaUsuarios")
 
                 Spacer(modifier = Modifier.weight(1f))
 
                 IconSpan(id = R.drawable.pesquisar,
                     descripition = "Pesquisar",
                     navController = navController,
-                    route = "dashboard")
+                    route = "buscarBarbearias")
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -145,9 +145,9 @@ fun BottomBarCustom(navController: NavController, usuario: Usuario){
                 Spacer(modifier = Modifier.weight(1f))
 
                 IconSpan(id = R.drawable.galeria,
-                    descripition = "Comunidade",
+                    descripition = "Galeria",
                     navController = navController,
-                    route = "comunidade")
+                    route = "galeria")
 
                 Spacer(modifier = Modifier.weight(1f))
 

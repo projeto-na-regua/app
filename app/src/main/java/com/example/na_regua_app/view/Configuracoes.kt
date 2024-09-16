@@ -81,7 +81,9 @@ fun Configuracoes(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         BotaoComIcone(
-                            onClick = { /*TODO*/ },
+                            onClick = {
+                                navController.navigate("login")
+                            },
                             textButton = "Sair",
                             imagePainter = painterResource(id = R.drawable.icon_exit),
                             )
@@ -124,7 +126,6 @@ fun SelecionarConfiguracao (
                 modifier = Modifier.size(24.dp),
                 tint = Color(0xFF082031)
             )
-
             Spacer(modifier = Modifier.width(16.dp))
 
             Text(

@@ -1,5 +1,6 @@
 package com.example.na_regua_app
 
+import BuscaBarbearias
 import Comunidade
 import Configuracoes
 import ConfiguracoesInformacoesPessoais
@@ -7,15 +8,17 @@ import ConfiguracoesSeuNegocio
 import ExcluirConta
 import ExcluirNegocio
 import Home
-import BuscaBarbearias
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.na_regua_app.classes.usuarios
+import com.example.na_regua_app.screens.ListagemBarbearias
 import com.example.na_regua_app.ui.theme.NareguaappTheme
 import com.example.na_regua_app.view.Adicionar
+import com.example.na_regua_app.view.AgendaUsuario
 import com.example.na_regua_app.view.Agendamento
 import com.example.na_regua_app.view.Cadastro
 import com.example.na_regua_app.view.CadastroBarbeariaEndereco
@@ -26,6 +29,7 @@ import com.example.na_regua_app.view.CadastroFim
 import com.example.na_regua_app.view.CadastroFotoUsername
 import com.example.na_regua_app.view.CadastroInicio
 import com.example.na_regua_app.view.Chat
+import com.example.na_regua_app.view.Galeria
 import com.example.na_regua_app.view.Gestao
 import com.example.na_regua_app.view.HomeUsuario
 import com.example.na_regua_app.view.Login
@@ -35,8 +39,7 @@ import com.example.na_regua_app.view.PerfilUsuario
 import com.example.na_regua_app.view.SplashScreen
 import com.example.na_regua_app.view.TelaInicial
 import com.example.na_regua_app.view.dashboard.Dashboard
-import com.example.na_regua_app.view.Chat
->>>>>>>>> Temporary merge branch 2
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,10 +55,10 @@ class MainActivity : ComponentActivity() {
                         Agendamento(navController, usuarios()[1])
                     }
                     composable("buscarBarbearias") {
-                        BuscaBarbearias(navController)
+                        BuscaBarbearias(navController, usuarios()[1])
                     }
                     composable("listagemBarbearias") {
-                        ListagemBarbearias(navController)
+                        ListagemBarbearias(navController, usuarios()[1])
                     }
                     composable("telaInicial") {
                         TelaInicial(navController)
@@ -144,6 +147,12 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("gestao"){
                         Gestao(navController, usuarios().first())
+                    }
+                    composable("galeria"){
+                        Galeria(navController, usuarios()[1])
+                    }
+                    composable("agendaUsuarios"){
+                        AgendaUsuario(navController, usuarios()[1])
                     }
                     }
                 }

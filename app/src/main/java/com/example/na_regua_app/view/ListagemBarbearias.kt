@@ -160,11 +160,11 @@ fun ListagemContent(paddingValues: PaddingValues, navController: NavController) 
         }
         item {
             CardSelecionarBarbearia(
-                nome = "Barbearia do seu Zé",
-                endereco = "Rua dos Limoeiros - 924",
+                nome = "barbearia_top_de_linha",
+                endereco = "Rua Piracicaba, 214 - SP",
                 distancia = "200m",
                 avaliacao = "4,5",
-                fotoResId = R.drawable.foto_fundo_tela_inicial, // Substitua pelo ID do seu recurso
+                fotoResId = R.drawable.perfil_barbearia, // Substitua pelo ID do seu recurso
                 navController = navController
             )
         }

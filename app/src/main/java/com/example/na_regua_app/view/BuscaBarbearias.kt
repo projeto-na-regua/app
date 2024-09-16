@@ -1,14 +1,6 @@
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,11 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -60,13 +48,13 @@ fun BuscaBarbearias(navController: NavHostController) {
                 item {
                     opcoesBuscaBarbearia(
                         onServiceClick = {
-                            navController.navigate("selecionarServico")
+                            navController.navigate("listagemBarbearias")
                         },
                         onDateClick = {
-                            navController.navigate("selecionarData")
+                            navController.navigate("listagemBarbearias")
                         },
                         onLocalClick = {
-                            navController.navigate("selecionarLocal")
+                            navController.navigate("listagemBarbearias")
                         }
                     )
                 }
@@ -188,7 +176,7 @@ fun SelecionarDataScreen(navController: NavHostController) {
 
                 // Botão de confirmação
                 Botao(
-                    onClick = {navController.navigate("buscarBarbearias")},
+                    onClick = { navController.navigate("buscarBarbearias") },
                     textButton = "Marcar Horário"
                 )
             }
@@ -200,7 +188,7 @@ fun SelecionarDataScreen(navController: NavHostController) {
 }
 
 @Composable
-fun SelecionarServicoScreen(navController: NavController) {
+fun SelecionarServicoScreen(navController: NavHostController) {
     Scaffold(
         topBar = {
             TopBarCustom(navController, "Selecionar Serviço", true)
@@ -273,6 +261,7 @@ fun opcoesServicos(onServiceClick: (String) -> Unit) {
         }
     }
 }
+
 @Composable
 fun OptionRow(icon: ImageVector, text: String, onClick: () -> Unit) {
     Row(
@@ -291,12 +280,12 @@ fun OptionRow(icon: ImageVector, text: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun textoAcimaOpcoesBusca(){
+fun textoAcimaOpcoesBusca() {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "a" )
+        Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "a")
         Text(
             text = "O que você busca ?",
             style = Typography.titleSmall
@@ -305,13 +294,17 @@ fun textoAcimaOpcoesBusca(){
 }
 
 
+
 @Preview
 @Composable
 fun MyAppNavHost(navController: NavHostController = rememberNavController()) {
-    NavHost(navController, startDestination = "buscaBarbearias") {
-        composable("buscaBarbearias") { BuscaBarbearias(navController) }
+    NavHost(navController, startDestination = "buscarBarbearias") {
+        composable("buscarBarbearias") { BuscaBarbearias(navController) }
         composable("selecionarServico") { SelecionarServicoScreen(navController) }
         composable("selecionarData") { SelecionarDataScreen(navController) }
         composable("selecionarLocal") { SelecionarLocalScreen(navController) }
+        composable("listagemBarbearias") {
+            // Tela de listagemBarbearias
+        }
     }
 }

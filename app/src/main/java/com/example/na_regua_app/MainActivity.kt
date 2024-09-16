@@ -24,6 +24,9 @@ import com.example.na_regua_app.view.PerfilUsuario
 import com.example.na_regua_app.view.SplashScreen
 import com.example.na_regua_app.view.TelaInicial
 import com.example.na_regua_app.view.dashboard.Dashboard
+import com.example.na_regua_app.view.Chat
+import com.example.na_regua_app.view.PerfilBarbearia
+import com.example.na_regua_app.view.PerfilUsuario
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +55,18 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("comunidade") {
                         Comunidade(navController)
+                    }
+                    composable("chat/{userName}/{profilePic}/{origin}") {backStackEntry ->
+                        val userName = backStackEntry.arguments?.getString("userName") ?: "Nome Desconhecido"
+                        val profilePic = backStackEntry.arguments?.getString("profilePic")?.toIntOrNull() ?: R.drawable.avatar_funcionario_default
+                        val origin = backStackEntry.arguments?.getString("origin") ?: "Origem Desconhecida"
+
+                        Chat(
+                            navController = navController,
+                            userName = userName,
+                            profilePic = profilePic,
+                            origin = origin
+                        )
                     }
                     composable("adicionar") {
                         Adicionar(navController)

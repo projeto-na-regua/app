@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.na_regua_app.components.Botao
 import com.example.na_regua_app.components.BotaoSpan
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 
@@ -79,12 +80,10 @@ fun CadastroBarbeariaInicio(
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                BotaoSpan(
+                Botao(
                     onClick = { navController.navigate("cadastroBarbeariaFotoUsername") },
-                    textButton = "Iniciar",
-                    textEsquerda = "Já possui conta?",
-                    textDireita = "Entre"
-                ) {}
+                    textButton = "Iniciar"
+                )
             }
         }
     )

@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.na_regua_app.components.Botao
 import com.example.na_regua_app.components.BotaoSpan
 import com.example.na_regua_app.components.Input
 import com.example.na_regua_app.components.LogoImage
@@ -128,20 +129,15 @@ fun Cadastro(
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                BotaoSpan(
+                Botao(
                     onClick = {
                         if(botaoClicado) {
-                            navController.navigate("login")
+                            navController.navigate("cadastroFim")
                         }
                         mostrarPrimeirasInputs = true
                         botaoClicado = true
                     },
-                    textButton = if (!botaoClicado) "Próximo" else "Cadastrar-se",
-                    textEsquerda = "Já possui conta?",
-                    textDireita = "Entre",
-                    onTextoDireitaClick = {
-                        navController.navigate("login")
-                    }
+                    textButton = "Próximo"
                 )
 
             }

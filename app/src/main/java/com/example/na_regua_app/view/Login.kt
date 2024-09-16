@@ -92,12 +92,12 @@ fun Login(navController: NavController) {
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 BotaoSpan(
-                    onClick = { navController.navigate("home")},
+                    onClick = { navController.navigate("homeUsuario")},
                     textButton = "Entrar",
                     textEsquerda = "Não possui conta?",
                     textDireita = "Cadastre-se",
                     onTextoDireitaClick = {
-                        navController.navigate("cadastro")
+                        navController.navigate("cadastroInicio")
                     }
                 )
             }

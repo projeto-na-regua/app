@@ -7,6 +7,7 @@ import ConfiguracoesSeuNegocio
 import ExcluirConta
 import ExcluirNegocio
 import Home
+import BuscaBarbearias
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,7 +34,6 @@ import com.example.na_regua_app.view.PerfilBarbearia
 import com.example.na_regua_app.view.PerfilUsuario
 import com.example.na_regua_app.view.dashboard.Dashboard
 import com.example.na_regua_app.view.Chat
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +46,12 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("agendamento") {
                         Agendamento(navController)
+                    }
+                    composable("buscarBarbearias") {
+                        BuscaBarbearias(navController)
+                    }
+                    composable("listagemBarbearias") {
+                        BuscaBarbearias(navController)
                     }
                     composable("telaInicial") {
                         TelaInicial(navController)

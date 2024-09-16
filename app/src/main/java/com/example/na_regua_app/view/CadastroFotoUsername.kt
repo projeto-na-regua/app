@@ -146,7 +146,7 @@ fun CadastroFotoUsername(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Botao(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("cadastro") },
                     textButton = "Próximo"
                 )
             }

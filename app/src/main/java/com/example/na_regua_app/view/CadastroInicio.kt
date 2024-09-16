@@ -85,13 +85,14 @@ fun CadastroInicio(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 BotaoSpan(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("cadastroFotoUsername") },
                     textButton = "Iniciar",
                     textEsquerda = "Já possui conta?",
-                    textDireita = "Entre"
-                ) {
-                    
-                }
+                    textDireita = "Entre",
+                    onTextoDireitaClick = {
+                        navController.navigate("login")
+                    }
+                )
             }
         }
     )

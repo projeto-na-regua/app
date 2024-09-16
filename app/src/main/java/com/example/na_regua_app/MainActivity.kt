@@ -7,13 +7,13 @@ import ConfiguracoesSeuNegocio
 import ExcluirConta
 import ExcluirNegocio
 import Home
+import BuscaBarbearias
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.na_regua_app.classes.usuarios
 import com.example.na_regua_app.ui.theme.NareguaappTheme
 import com.example.na_regua_app.view.Adicionar
 import com.example.na_regua_app.view.Agendamento
@@ -35,6 +35,8 @@ import com.example.na_regua_app.view.PerfilUsuario
 import com.example.na_regua_app.view.SplashScreen
 import com.example.na_regua_app.view.TelaInicial
 import com.example.na_regua_app.view.dashboard.Dashboard
+import com.example.na_regua_app.view.Chat
+>>>>>>>>> Temporary merge branch 2
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +50,12 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("agendamento") {
                         Agendamento(navController, usuarios()[1])
+                    }
+                    composable("buscarBarbearias") {
+                        BuscaBarbearias(navController)
+                    }
+                    composable("listagemBarbearias") {
+                        ListagemBarbearias(navController)
                     }
                     composable("telaInicial") {
                         TelaInicial(navController)

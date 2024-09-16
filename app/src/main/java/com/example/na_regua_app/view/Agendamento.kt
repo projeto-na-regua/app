@@ -1,6 +1,9 @@
 package com.example.na_regua_app.view
 
 import android.widget.CalendarView
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
@@ -26,6 +30,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -62,7 +68,6 @@ fun Agendamento(
     var selectedDate by remember { mutableStateOf<String?>(null) }
     var selectedTime by remember { mutableStateOf<String?>(null) }
     var showDialog by remember { mutableStateOf(false) }
-
 
     Scaffold(
         topBar = {
@@ -130,10 +135,14 @@ fun Agendamento(
             date = selectedDate!!,
             time = selectedTime!!,
             value = 24.90,
-            onDismiss = { showDialog = false }
+            onDismiss = { showDialog = false },
+            onConfirm = {
+                navController.navigate("agendaUsuario") // Navega para a tela agendaUsuario
+            }
         )
     }
 }
+
 
 @Composable
 fun ConfirmationDialog(
@@ -142,7 +151,8 @@ fun ConfirmationDialog(
     date: String,
     time: String,
     value: Double,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit // Adicionado callback para confirmação
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -204,7 +214,9 @@ fun ConfirmationDialog(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Botao(onClick = { onDismiss() }, textButton = "Confirmar")
+                Botao(onClick = {
+                    onConfirm() // Chama o callback de confirmação para navegação
+                }, textButton = "Confirmar")
             }
         }
     )
@@ -276,9 +288,10 @@ fun BoxSelecaobarbeiro(
         )
 
         val funcionarios = listOf(
-            Funcionario(1, nome = "Diego", imgPerfil = R.drawable.foto_perfil, dtype = "Barbeiro", email = "barbeiro@gmail.com"),
-            Funcionario(2, nome = "Beatriz V.", imgPerfil = R.drawable.barbeira2, dtype = "cabeleireira", email = "barbeiro@gmail.com"),
-            Funcionario(3, nome = "Roberto M.", imgPerfil = R.drawable.barbeiro1, dtype = "Barbeiro", email = "barbeiro@gmail.com")
+            Funcionario(1, nome = "Barbeiro 1", imgPerfil = R.drawable.foto_perfil, dtype = "Barbeiro", email = "barbeiro@gmail.com"),
+            Funcionario(2, nome = "Barbeiro 2", imgPerfil = R.drawable.barbeira2, dtype = "Barbeiro", email = "barbeiro@gmail.com"),
+            Funcionario(3, nome = "Barbeiro 3", imgPerfil = R.drawable.barbeiro1, dtype = "Barbeiro", email = "barbeiro@gmail.com")
+
         )
 
         Row(

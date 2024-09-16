@@ -64,7 +64,7 @@ fun MessageBubble(text: String, imagePainter: Int, isCurrentUser: Boolean) {
             Spacer(modifier = Modifier.size(8.dp)) // Espaço entre a imagem e o balão
         }
 
-        val bubbleShape = CustomBubbleShape()
+        val bubbleShape = CustomBubbleShape(isCurrentUser)
 
         // Balão com ajuste de alinhamento
         Box(
@@ -83,7 +83,7 @@ fun MessageBubble(text: String, imagePainter: Int, isCurrentUser: Boolean) {
         }
 
         if (isCurrentUser) {
-            Spacer(modifier = Modifier.size(8.dp)) // Espaço entre o balão e o círculo
+            Spacer(modifier = Modifier.size(8.dp))
 
             // Círculo à direita para o usuário atual
             Box(
@@ -100,6 +100,7 @@ fun MessageBubble(text: String, imagePainter: Int, isCurrentUser: Boolean) {
                     modifier = Modifier
                         .align(Alignment.Center)
                         .clip(CircleShape),
+                    contentScale = ContentScale.Crop
                 )
             }
         }
@@ -107,44 +108,78 @@ fun MessageBubble(text: String, imagePainter: Int, isCurrentUser: Boolean) {
 }
 
 
-class CustomBubbleShape : Shape {
+class CustomBubbleShape(private val isCurrentUser: Boolean) : Shape {
     override fun createOutline(
         size: Size,
         layoutDirection: androidx.compose.ui.unit.LayoutDirection,
         density: androidx.compose.ui.unit.Density
     ): androidx.compose.ui.graphics.Outline {
         val path = Path().apply {
-            // Começa no canto superior esquerdo com borda arredondada
-            moveTo(10f, 0f)
+            if (isCurrentUser) {
+                // Cauda no lado direito para o currentUser
+                moveTo(30f, 0f)
 
-            // Linha até o canto superior direito
-            lineTo(size.width - 10f, 0f)
+                // Linha até o canto superior direito
+                lineTo(size.width - 30f, 0f)
 
-            // Canto superior direito arredondado
-            quadraticBezierTo(size.width, 0f, size.width, 10f)
+                // Canto superior direito arredondado
+                quadraticBezierTo(size.width, 0f, size.width, 50f)
 
-            // Linha até o canto inferior direito
-            lineTo(size.width, size.height - 20f) // Ajuste para deixar espaço para a cauda
+                // Linha até o canto inferior direito
+                lineTo(size.width, size.height - 40f)
 
-            // Canto inferior direito arredondado
-            quadraticBezierTo(size.width, size.height, size.width - 10f, size.height)
+                // Canto inferior direito arredondado
+                quadraticBezierTo(size.width, size.height, size.width - 30f, size.height)
 
-            // Desenhar a cauda do balão
-            lineTo(size.width * 0.9f, size.height) // Início da cauda
-            lineTo(size.width * 0.85f, size.height + 10f) // Ponto da ponta da cauda
-            lineTo(size.width * 0.8f, size.height) // Fim da cauda
+                // Desenhar a cauda mais acentuada no lado direito
+                lineTo(size.width * 0.7f, size.height) // Ponto de início da cauda
+                lineTo(size.width * 0.9f, size.height + 30f) // Ponta acentuada da cauda
+                lineTo(size.width * 0.6f, size.height) // Volta para o balão
 
-            // Linha até o canto inferior esquerdo
-            lineTo(10f, size.height)
+                // Linha até o canto inferior esquerdo
+                lineTo(30f, size.height)
 
-            // Canto inferior esquerdo arredondado
-            quadraticBezierTo(0f, size.height, 0f, size.height - 10f)
+                // Canto inferior esquerdo arredondado
+                quadraticBezierTo(0f, size.height, 0f, size.height - 30f)
 
-            // Linha até o canto superior esquerdo
-            lineTo(0f, 10f)
+                // Linha até o canto superior esquerdo
+                lineTo(0f, 30f)
 
-            // Canto superior esquerdo arredondado
-            quadraticBezierTo(0f, 0f, 10f, 0f)
+                // Canto superior esquerdo arredondado
+                quadraticBezierTo(0f, 0f, 30f, 0f)
+            } else {
+                // Cauda no lado esquerdo para o outro usuário
+                moveTo(30f, 0f)
+
+                // Linha até o canto superior direito
+                lineTo(size.width - 30f, 0f)
+
+                // Canto superior direito arredondado
+                quadraticBezierTo(size.width, 0f, size.width, 50f)
+
+                // Linha até o canto inferior direito
+                lineTo(size.width, size.height - 30f)
+
+                // Canto inferior direito arredondado
+                quadraticBezierTo(size.width, size.height, size.width - 30f, size.height)
+
+                // Desenhar a cauda mais acentuada no lado esquerdo
+                lineTo(size.width * 0.3f, size.height) // Ponto de início da cauda
+                lineTo(size.width * 0.1f, size.height + 30f) // Ponta acentuada da cauda
+                lineTo(size.width * 0.4f, size.height) // Volta para o balão
+
+                // Linha até o canto inferior esquerdo
+                lineTo(30f, size.height)
+
+                // Canto inferior esquerdo arredondado
+                quadraticBezierTo(0f, size.height, 0f, size.height - 30f)
+
+                // Linha até o canto superior esquerdo
+                lineTo(0f, 30f)
+
+                // Canto superior esquerdo arredondado
+                quadraticBezierTo(0f, 0f, 30f, 0f)
+            }
         }
 
         return androidx.compose.ui.graphics.Outline.Generic(path)

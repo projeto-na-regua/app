@@ -50,6 +50,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.R
 import com.example.na_regua_app.classes.Funcionario
 import com.example.na_regua_app.classes.Servico
+import com.example.na_regua_app.classes.Usuario
+import com.example.na_regua_app.classes.usuarios
 import com.example.na_regua_app.components.BotaoAjustavel
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.SelecaoFuncionarios
@@ -63,7 +65,8 @@ import com.example.na_regua_app.ui.theme.Typography
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PerfilBarbearia(
-    navController: NavController
+    navController: NavController,
+    usuario: Usuario
 ) {
     Scaffold(
         topBar = {
@@ -76,7 +79,7 @@ fun PerfilBarbearia(
             )
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, usuario = usuario)
         }
     )
 }
@@ -284,8 +287,9 @@ fun PerfilBarbeariaContent(paddingValues: PaddingValues, navController: NavContr
 @Preview(showBackground = true)
 @Composable
 fun PerfilBarbeariaPreview() {
+    val usuarios = usuarios()
     val navController = rememberNavController()
-    PerfilBarbearia(navController = navController)
+    PerfilBarbearia(navController = navController, usuario = usuarios.first())
 }
 
 

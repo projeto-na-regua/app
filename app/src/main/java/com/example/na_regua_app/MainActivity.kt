@@ -13,6 +13,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.na_regua_app.classes.usuarios
 import com.example.na_regua_app.ui.theme.NareguaappTheme
 import com.example.na_regua_app.view.Adicionar
 import com.example.na_regua_app.view.Agendamento
@@ -20,19 +21,20 @@ import com.example.na_regua_app.view.Cadastro
 import com.example.na_regua_app.view.CadastroBarbeariaEndereco
 import com.example.na_regua_app.view.CadastroBarbeariaFim
 import com.example.na_regua_app.view.CadastroBarbeariaFotoNome
-import com.example.na_regua_app.view.Login
-import com.example.na_regua_app.view.Notificacoes
-import com.example.na_regua_app.view.SplashScreen
-import com.example.na_regua_app.view.TelaInicial
 import com.example.na_regua_app.view.CadastroBarbeariaInicio
 import com.example.na_regua_app.view.CadastroFim
 import com.example.na_regua_app.view.CadastroFotoUsername
 import com.example.na_regua_app.view.CadastroInicio
+import com.example.na_regua_app.view.Chat
+import com.example.na_regua_app.view.Gestao
 import com.example.na_regua_app.view.HomeUsuario
+import com.example.na_regua_app.view.Login
+import com.example.na_regua_app.view.Notificacoes
 import com.example.na_regua_app.view.PerfilBarbearia
 import com.example.na_regua_app.view.PerfilUsuario
+import com.example.na_regua_app.view.SplashScreen
+import com.example.na_regua_app.view.TelaInicial
 import com.example.na_regua_app.view.dashboard.Dashboard
-import com.example.na_regua_app.view.Chat
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,10 +44,10 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = "telaInicial") {
                     composable("home") {
-                        Home(navController)
+                        Home(navController, usuarios().first())
                     }
                     composable("agendamento") {
-                        Agendamento(navController)
+                        Agendamento(navController, usuarios()[1])
                     }
                     composable("telaInicial") {
                         TelaInicial(navController)
@@ -54,13 +56,13 @@ class MainActivity : ComponentActivity() {
                         SplashScreen(navController)
                     }
                     composable("notificacoes") {
-                        Notificacoes(navController)
+                        Notificacoes(navController, usuarios().first())
                     }
                     composable("dashboard") {
-                        Dashboard(navController)
+                        Dashboard(navController, usuarios().first())
                     }
                     composable("comunidade") {
-                        Comunidade(navController)
+                        Comunidade(navController, usuarios().first())
                     }
                     composable("chat/{userName}/{profilePic}/{origin}") { backStackEntry ->
                         val userName =
@@ -79,13 +81,13 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable("adicionar") {
-                        Adicionar(navController)
+                        Adicionar(navController, usuarios().first())
                     }
                     composable("perfilUsuario") {
-                        PerfilUsuario(navController)
+                        PerfilUsuario(navController, usuarios()[1])
                     }
                     composable("perfilBarbearia") {
-                        PerfilBarbearia(navController)
+                        PerfilBarbearia(navController, usuarios().first())
                     }
                     composable("login") {
                         Login(navController)
@@ -97,22 +99,22 @@ class MainActivity : ComponentActivity() {
                         CadastroBarbeariaInicio(navController)
                     }
                     composable("homeUsuario") {
-                        HomeUsuario(navController)
+                        HomeUsuario(navController, usuarios()[1])
                     }
                     composable("settings") {
-                        Configuracoes(navController)
+                        Configuracoes(navController, usuarios()[1])
                     }
                     composable("settingsprofile") {
-                        ConfiguracoesInformacoesPessoais(navController)
+                        ConfiguracoesInformacoesPessoais(navController, usuarios()[1])
                     }
                     composable("settingsbusiness") {
-                        ConfiguracoesSeuNegocio(navController)
+                        ConfiguracoesSeuNegocio(navController,usuarios().first())
                     }
                     composable("deleteaccount") {
-                        ExcluirConta(navController)
+                        ExcluirConta(navController, usuarios()[1])
                     }
                     composable("deletebusiness") {
-                        ExcluirNegocio(navController)
+                        ExcluirNegocio(navController,usuarios().first())
                     }
                     composable("cadastroBarbeariaFotoUsername"){
                         CadastroBarbeariaFotoNome(navController)
@@ -131,6 +133,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("cadastroFim"){
                         CadastroFim(navController)
+                    }
+                    composable("gestao"){
+                        Gestao(navController, usuarios().first())
                     }
                     }
                 }

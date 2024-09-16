@@ -3,19 +3,10 @@ package com.example.na_regua_app.view
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import android.content.ClipData.Item
-import androidx.compose.animation.core.withInfiniteAnimationFrameMillis
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -52,6 +43,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.R
+import com.example.na_regua_app.classes.Usuario
+import com.example.na_regua_app.classes.usuarios
 import com.example.na_regua_app.components.BarraPesquisar
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.CardImagemInfoBarbearia
@@ -61,7 +54,8 @@ import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 
 @Composable
 fun HomeUsuario(
-    navController: NavController
+    navController: NavController,
+    usuario: Usuario
 ) {
     var botaoClicado by remember { mutableStateOf(false) }
     var nomeBarbearia by remember { mutableStateOf("") }
@@ -79,7 +73,7 @@ fun HomeUsuario(
             )
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, usuario)
         }
     )
 }
@@ -270,5 +264,6 @@ fun HomeUsuarioContent(paddingValues: PaddingValues, navController: NavControlle
 @Preview
 @Composable
 fun HomeUsuarioPreview() {
-    HomeUsuario(navController = rememberNavController())
+    val usuarios = usuarios()
+    HomeUsuario(navController = rememberNavController(), usuarios.first())
 }

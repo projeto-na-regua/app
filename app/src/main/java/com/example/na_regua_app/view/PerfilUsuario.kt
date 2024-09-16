@@ -47,6 +47,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.R
 import com.example.na_regua_app.classes.Postagem
+import com.example.na_regua_app.classes.Usuario
+import com.example.na_regua_app.classes.usuarios
 import com.example.na_regua_app.components.BotaoAjustavel
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.PostCard
@@ -57,7 +59,8 @@ import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PerfilUsuario(
-    navController: NavController
+    navController: NavController,
+    usuario: Usuario
 ) {
     Scaffold(
         topBar = {
@@ -70,7 +73,7 @@ fun PerfilUsuario(
             )
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, usuario = usuario)
         }
     )
 }
@@ -278,7 +281,7 @@ fun PerfilUsuarioContent(paddingValues: PaddingValues, navController: NavControl
 @Composable
 fun PerfilUsuarioPreview() {
     val navController = rememberNavController()
-    PerfilUsuario(navController = navController)
+    PerfilUsuario(navController = navController, usuario = usuarios().first())
 }
 
 @Composable

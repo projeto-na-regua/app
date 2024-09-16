@@ -13,13 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.na_regua_app.classes.Usuario
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.TopBarCustom
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Adicionar(
-    navController: NavController
+    navController: NavController,
+    usuario: Usuario
 ) {
     Scaffold(
         topBar = {
@@ -42,7 +44,7 @@ fun Adicionar(
             }
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, usuario)
         }
     )
 }

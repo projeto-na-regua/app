@@ -43,6 +43,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.classes.Notificacao
+import com.example.na_regua_app.classes.Usuario
+import com.example.na_regua_app.classes.usuarios
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
@@ -56,7 +58,8 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Notificacoes(
-    navController: NavController
+    navController: NavController,
+    usuario: Usuario
 ) {
     Scaffold(
         topBar = {
@@ -68,7 +71,7 @@ fun Notificacoes(
             )
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, usuario)
         }
     )
 }
@@ -372,6 +375,7 @@ fun formatarDataHora(dataHora: LocalDateTime): String {
 @Preview(showBackground = true)
 @Composable
 fun NotificacoesPreview() {
+    val usuarios = usuarios()
     val navController = rememberNavController()
-    Notificacoes(navController = navController)
+    Notificacoes(navController = navController, usuarios.first())
 }

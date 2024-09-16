@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.R
+import com.example.na_regua_app.classes.Usuario
+import com.example.na_regua_app.classes.usuarios
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
@@ -48,7 +50,8 @@ data class Post(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Comunidade(
-    navController: NavController
+    navController: NavController,
+    usuario: Usuario
 ) {
     var posts by remember {
         mutableStateOf(
@@ -102,7 +105,7 @@ fun Comunidade(
             }
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, usuario)
         }
     )
 
@@ -394,7 +397,8 @@ fun UserPost(
 @Composable
 fun ComunidadePreviewDisplay() {
     val navController = rememberNavController()
-    Comunidade(navController)
+    val usuarios = usuarios()
+    Comunidade(navController,usuarios.first())
 }
 
 fun addPost(

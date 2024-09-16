@@ -51,6 +51,7 @@ fun ServiceCard(
             .clickable(enabled = isSelectable && onClick != null) {
                 onClick?.invoke()
             }
+
     ) {
         Row(
             modifier = Modifier

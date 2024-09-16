@@ -78,18 +78,19 @@ fun Login(navController: NavController) {
                         onValueChange = { novoValor -> senha = novoValor },
                         label = { Text("Senha") }
                     )
+                    Text(
+                        text = "Esqueci minha senha",
+                        modifier = Modifier
+                            .clickable { /* Ação para senha esquecida */ }
+                            .padding(top = 12.dp, end = 39.dp)
+                            .fillMaxWidth(),
+                        color = ORANGE_SECUNDARY,
+                        textAlign = TextAlign.End,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium
+                    )
                 }
-                Text(
-                    text = "Esqueci minha senha",
-                    modifier = Modifier
-                        .clickable { /* Ação para senha esquecida */ }
-                        .padding(top = 12.dp)
-                        .fillMaxWidth(),
-                    color = ORANGE_SECUNDARY,
-                    textAlign = TextAlign.End,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Medium
-                )
+
                 Spacer(modifier = Modifier.weight(1f))
                 BotaoSpan(
                     onClick = { navController.navigate("homeUsuario")},

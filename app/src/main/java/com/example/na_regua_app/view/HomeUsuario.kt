@@ -91,7 +91,7 @@ fun HomeUsuarioContent(paddingValues: PaddingValues, navController: NavControlle
         contentPadding = paddingValues,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
-            .padding(top = 20.dp)
+            .padding(vertical = 20.dp)
     ) {
         item {
             BarraPesquisar({ pesquisa -> navController.navigate("cadastro") }, navController)

@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
 package com.example.na_regua_app.view
 
@@ -87,59 +87,67 @@ fun Chat(
 fun ChatContent(paddingValues: PaddingValues, navController: NavController,userName: String, profilePic: Int, messages: List<String>, origin: String) {
     var descricao by remember { mutableStateOf("Envie uma mensagem para tirar suas dúvidas!") }
 
-
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .height(200.dp),
-        contentAlignment = Alignment.Center
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(paddingValues)
     ){
-        Column(verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = userName,
-                style = typography.titleLarge,
-                fontWeight = Bold,
-                color = BLUE_PRIMARY,
-                modifier = Modifier.padding(top = 25.dp)
-            )
+        Box(modifier = Modifier
+            .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ){
+            Column(modifier = Modifier.padding(top = 20.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = userName,
+                    style = typography.titleLarge,
+                    fontWeight = Bold,
+                    color = BLUE_PRIMARY
+                )
 
-            Spacer(modifier = Modifier.size(15.dp))
+                Spacer(modifier = Modifier.size(15.dp))
 
-            Text(
-                text = descricao,
-                style = typography.bodyLarge,
-                color = BLUE_PRIMARY,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)
-            .padding(bottom = 10.dp),
-        verticalArrangement = Arrangement.Bottom,
-    ) {
-
-        if (origin == "perfilUsuario") {
-            item {
-                MessageBubble("Olá, tudo bem?", profilePic, isCurrentUser = true)
-                MessageBubble("Estou bem sim!", R.drawable.foto_perfil, isCurrentUser = false)
+                Text(
+                    text = descricao,
+                    style = typography.bodyLarge,
+                    color = BLUE_PRIMARY,
+                    textAlign = TextAlign.Center
+                )
             }
-        } else if (origin == "perfilBarbearia") {
-            if (messages.size == 1) {
+        }
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 10.dp),
+            verticalArrangement = Arrangement.Bottom,
+        ) {
+
+            if (origin == "perfilUsuario") {
                 item {
-                    MessageBubble("Olá, tudo bem! Bem-vindo a $userName", profilePic, isCurrentUser = false)
-                    MessageBubble("Deseja marcar um horário? Visite nossa barbearia para saber mais sobre nossos serviços, funcionando de segunda a sexta, das 9:00 às 18:00 hrs", profilePic, isCurrentUser = false)
+                    MessageBubble("Olá, tudo bem?", profilePic, isCurrentUser = true)
+                    MessageBubble("Estou bem sim!", R.drawable.foto_perfil, isCurrentUser = false)
                 }
             }
-        }
 
-        items(messages.size) { index ->
-            val message = messages[index]
-            MessageBubble(message, profilePic, isCurrentUser = true)
+            items(messages.size) { index ->
+                val message = messages[index]
+                MessageBubble(message, profilePic, isCurrentUser = true)
+
+                if (origin == "perfilBarbearia" && index == 0) {
+                    MessageBubble(
+                        "Olá, tudo bem! Bem-vindo a $userName",
+                        R.drawable.perfil_barbearia,
+                        isCurrentUser = false
+                    )
+                    MessageBubble(
+                        "Deseja marcar um horário? Visite nossa barbearia para saber mais sobre nossos serviços, funcionando de segunda a sexta, das 9:00 às 18:00 hrs",
+                        R.drawable.perfil_barbearia,
+                        isCurrentUser = false
+                    )
+                }
+            }
         }
     }
 }
@@ -213,5 +221,5 @@ fun BottomBarChat(
 @Composable
 fun ChatPreview(){
     val navController = rememberNavController()
-    Chat(navController = navController, userName = "Diego", profilePic = R.drawable.barbeiro1, "perfilUsuario")
+    Chat(navController = navController, userName = "Dom Bigode", profilePic = R.drawable.barbeiro1, "perfilBarbearia")
 }

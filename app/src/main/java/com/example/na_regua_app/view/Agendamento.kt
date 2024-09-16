@@ -9,17 +9,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
@@ -37,7 +32,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,7 +49,6 @@ import com.example.na_regua_app.classes.Servico
 import com.example.na_regua_app.components.Botao
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.SelecaoFuncionarios
-import com.example.na_regua_app.components.ServiceCard
 import com.example.na_regua_app.components.ServiceList
 import com.example.na_regua_app.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
@@ -64,11 +62,10 @@ fun Agendamento(
     navController: NavController
 ) {
     var selectedService by remember { mutableStateOf<String?>(null) }
-    var selectedBarbeiro by remember { mutableStateOf<Int?>(null) }
+    var selectedBarbeiro by remember { mutableStateOf<String?>(null) }
     var selectedDate by remember { mutableStateOf<String?>(null) }
     var selectedTime by remember { mutableStateOf<String?>(null) }
     var showDialog by remember { mutableStateOf(false) }
-
 
     Scaffold(
         topBar = {
@@ -92,8 +89,8 @@ fun Agendamento(
                 }
 
                 item {
-                    BoxSelecaobarbeiro(navController = navController) { barbeiro ->
-                        selectedBarbeiro = barbeiro
+                    BoxSelecaobarbeiro(navController = navController) { barbeiroName ->
+                        selectedBarbeiro = barbeiroName
                     }
                 }
 
@@ -132,14 +129,18 @@ fun Agendamento(
     if (showDialog) {
         ConfirmationDialog(
             service = selectedService!!,
-            barbeiro = "Barbeiro ${selectedBarbeiro!! + 1}",
+            barbeiro = selectedBarbeiro!!,
             date = selectedDate!!,
             time = selectedTime!!,
             value = 24.90,
-            onDismiss = { showDialog = false }
+            onDismiss = { showDialog = false },
+            onConfirm = {
+                navController.navigate("agendaUsuario") // Navega para a tela agendaUsuario
+            }
         )
     }
 }
+
 
 @Composable
 fun ConfirmationDialog(
@@ -148,28 +149,72 @@ fun ConfirmationDialog(
     date: String,
     time: String,
     value: Double,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit // Adicionado callback para confirmação
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Resumo do Agendamento") },
+        title = {
+            Text(
+                "Resumo do Agendamento",
+                modifier = Modifier.fillMaxWidth(),
+                fontWeight = FontWeight.Bold,
+                color = BLUE_PRIMARY,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
+            )
+        },
         text = {
-            Column {
-                Text("Você selecionou:")
+            Column(modifier = Modifier.padding(start = 22.dp)){
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Você selecionou:\n")
+                        }
+                        append("\n") // Espaço entre o título e os itens
+
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Serviço: ")
+                        }
+                        append(service)
+
+                        append("\n")
+
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Barbeiro: ")
+                        }
+                        append(barbeiro)
+
+                        append("\n")
+
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Dia: ")
+                        }
+                        append(date)
+
+                        append("\n")
+
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Horário: ")
+                        }
+                        append(time)
+                    }
+                )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("Serviço: $service")
-                Text("Barbeiro: $barbeiro")
-                Text("Dia: $date")
-                Text("Horário: $time")
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("O valor do seu atendimento ficou em R$ ${value.format(2)}.")
+                Text(
+                    "O valor do seu atendimento ficou em R$ ${value.format(2)}.",
+                    modifier = Modifier.width(200.dp)
+                )
             }
         },
         confirmButton = {
-            Button(
-                onClick = onDismiss
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Confirmar", style = labelLargeOrange)
+                Botao(onClick = {
+                    onConfirm() // Chama o callback de confirmação para navegação
+                }, textButton = "Confirmar")
             }
         }
     )
@@ -226,9 +271,9 @@ fun BoxServicos(
 @Composable
 fun BoxSelecaobarbeiro(
     navController: NavController,
-    onBarbeiroSelected: (Int) -> Unit
+    onBarbeiroSelected: (String) -> Unit
 ) {
-    var selectedBarbeiro by remember { mutableStateOf<Int?>(null) }
+    var selectedBarbeiro by remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = Modifier
@@ -244,6 +289,7 @@ fun BoxSelecaobarbeiro(
             Funcionario(1, nome = "Barbeiro 1", imgPerfil = R.drawable.foto_perfil, dtype = "Barbeiro", email = "barbeiro@gmail.com"),
             Funcionario(2, nome = "Barbeiro 2", imgPerfil = R.drawable.barbeira2, dtype = "Barbeiro", email = "barbeiro@gmail.com"),
             Funcionario(3, nome = "Barbeiro 3", imgPerfil = R.drawable.barbeiro1, dtype = "Barbeiro", email = "barbeiro@gmail.com")
+
         )
 
         Row(
@@ -256,9 +302,9 @@ fun BoxSelecaobarbeiro(
                 SelecaoFuncionarios(
                     funcionario = funcionarios[index],
                     isSelectable = true,
-                    isSelected = selectedBarbeiro == index,
+                    isSelected = selectedBarbeiro == funcionarios[index].nome,
                     onClick = {
-                        selectedBarbeiro = index
+                        selectedBarbeiro = funcionarios[index].nome
                         onBarbeiroSelected(selectedBarbeiro!!)
                     }
                 )

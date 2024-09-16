@@ -56,7 +56,7 @@ import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.example.na_regua_app.ui.theme.WHITE_BACKGROUND
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun Home(
     navController: NavController

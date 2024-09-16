@@ -107,7 +107,7 @@ fun SelecionarLocalScreen(navController: NavHostController) {
                     texto = localAtual,
                     onClick = {
                         // Lógica ao selecionar o local atual
-                        navController.popBackStack() // Voltar para a tela anterior, ou fazer outra ação
+                        navController.navigate("buscarBarbearias") // Voltar para a tela anterior, ou fazer outra ação
                     }
                 )
 
@@ -127,7 +127,7 @@ fun SelecionarLocalScreen(navController: NavHostController) {
                             texto = endereco,
                             onClick = {
                                 // Lógica ao selecionar um local visitado
-                                navController.popBackStack() // Voltar para a tela anterior, ou fazer outra ação
+                                navController.navigate("buscarBarbearias") // Voltar para a tela anterior, ou fazer outra ação
                             }
                         )
                         Spacer(modifier = Modifier.height(15.dp)) // Espaço entre os endereços visitados
@@ -139,7 +139,7 @@ fun SelecionarLocalScreen(navController: NavHostController) {
                 Button(
                     onClick = {
                         // Lógica ao clicar no botão de confirmação
-                        navController.popBackStack() // Voltar para a tela anterior, ou fazer outra ação
+                        navController.navigate("buscarBarbearias") // Voltar para a tela anterior, ou fazer outra ação
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -188,7 +188,7 @@ fun SelecionarDataScreen(navController: NavHostController) {
 
                 // Botão de confirmação
                 Botao(
-                    onClick = {navController.popBackStack("buscaBarbearias", false)},
+                    onClick = {navController.navigate("buscarBarbearias")},
                     textButton = "Marcar Horário"
                 )
             }
@@ -214,8 +214,8 @@ fun SelecionarServicoScreen(navController: NavController) {
             ) {
                 item {
                     opcoesServicos { service ->
-                        // Lógica para lidar com a seleção de serviço e voltar para a tela principal
-                        navController.popBackStack("buscaBarbearias", false)
+                        // Redirecionar para a tela de listagemBarbearias
+                        navController.navigate("listagemBarbearias")
                     }
                 }
             }
@@ -268,12 +268,11 @@ fun opcoesServicos(onServiceClick: (String) -> Unit) {
     ) {
         listOf("Corte", "Alisamento", "Pintura", "Barba", "Hidratação").forEach { service ->
             OptionRow(icon = Icons.Default.DateRange, text = service) {
-                onServiceClick(service)
+                onServiceClick(service) // Alterado para usar a rota "listagemBarbearias"
             }
         }
     }
 }
-
 @Composable
 fun OptionRow(icon: ImageVector, text: String, onClick: () -> Unit) {
     Row(

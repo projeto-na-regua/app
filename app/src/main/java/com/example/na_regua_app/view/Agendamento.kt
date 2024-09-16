@@ -67,7 +67,6 @@ fun Agendamento(
     var selectedTime by remember { mutableStateOf<String?>(null) }
     var showDialog by remember { mutableStateOf(false) }
 
-
     Scaffold(
         topBar = {
             TopBarCustom(navController, "Perfil", true)
@@ -134,10 +133,14 @@ fun Agendamento(
             date = selectedDate!!,
             time = selectedTime!!,
             value = 24.90,
-            onDismiss = { showDialog = false }
+            onDismiss = { showDialog = false },
+            onConfirm = {
+                navController.navigate("agendaUsuario") // Navega para a tela agendaUsuario
+            }
         )
     }
 }
+
 
 @Composable
 fun ConfirmationDialog(
@@ -146,7 +149,8 @@ fun ConfirmationDialog(
     date: String,
     time: String,
     value: Double,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit // Adicionado callback para confirmação
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -208,7 +212,9 @@ fun ConfirmationDialog(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Botao(onClick = { onDismiss() }, textButton = "Confirmar")
+                Botao(onClick = {
+                    onConfirm() // Chama o callback de confirmação para navegação
+                }, textButton = "Confirmar")
             }
         }
     )

@@ -80,13 +80,11 @@ fun CadastroBarbeariaInicio(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 BotaoSpan(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("cadastroBarbeariaFotoUsername") },
                     textButton = "Iniciar",
                     textEsquerda = "Já possui conta?",
                     textDireita = "Entre"
-                ) {
-
-                }
+                ) {}
             }
         }
     )

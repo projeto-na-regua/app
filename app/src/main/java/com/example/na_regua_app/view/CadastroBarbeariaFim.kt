@@ -105,7 +105,7 @@ fun CadastroBarbeariaFim(
 
                 Spacer(modifier = Modifier.weight(1f))
                 Botao(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("home") },
                     textButton = "Ir para Página Inicial"
                 )
             }

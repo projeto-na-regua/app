@@ -1,5 +1,8 @@
 package com.example.na_regua_app.view
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import android.content.ClipData.Item
 import androidx.compose.animation.core.withInfiniteAnimationFrameMillis
 import androidx.compose.foundation.BorderStroke
@@ -17,26 +20,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,37 +36,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.R
 import com.example.na_regua_app.components.BarraPesquisar
-import com.example.na_regua_app.components.Botao
-import com.example.na_regua_app.components.BotaoSpan
 import com.example.na_regua_app.components.BottomBarCustom
 import com.example.na_regua_app.components.CardImagemInfoBarbearia
-import com.example.na_regua_app.components.Input
-import com.example.na_regua_app.components.InputCadastro
-import com.example.na_regua_app.components.LogoImage
-import com.example.na_regua_app.components.SelecaoFuncionarios
 import com.example.na_regua_app.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun HomeUsuario(
@@ -94,7 +72,8 @@ fun HomeUsuario(
         },
         content = { paddingValues ->
             HomeUsuarioContent(
-                paddingValues = paddingValues
+                paddingValues = paddingValues,
+                navController = navController
             )
         },
         bottomBar = {
@@ -104,14 +83,14 @@ fun HomeUsuario(
 }
 
 @Composable
-fun HomeUsuarioContent(paddingValues: PaddingValues) {
+fun HomeUsuarioContent(paddingValues: PaddingValues, navController: NavController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 80.dp)
     ) {
-        BarraPesquisar()
+        BarraPesquisar({pesquisa -> navController.navigate("cadastro")}, navController)
         Text(
             text = "Informações para você",
             color = BLUE_PRIMARY,
@@ -182,19 +161,19 @@ fun HomeUsuarioContent(paddingValues: PaddingValues) {
         ){
             item {
                 CardImagemInfoBarbearia(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("perfilBarbearia") },
                     nomeBarbearia = "Dom bigode",
                     distancia = "200",
                     isOpen = true
                 )
                 CardImagemInfoBarbearia(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("perfilBarbearia") },
                     nomeBarbearia = "Dom bigode",
                     distancia = "200",
                     isOpen = true
                 )
                 CardImagemInfoBarbearia(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("perfilBarbearia") },
                     nomeBarbearia = "Dom bigode",
                     distancia = "200",
                     isOpen = true
@@ -266,14 +245,18 @@ fun HomeUsuarioContent(paddingValues: PaddingValues) {
                 // Box com o ícone posicionado no BottomEnd
                 Box(
                     modifier = Modifier
-                        .size(35.dp)
+                        .clickable {
+                            navController.navigate("cadastroBarbearia")
+                        }
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(7.dp))
                         .background(color = BLUE_PRIMARY)
                         .padding(5.dp)
                         .align(Alignment.BottomEnd),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.icone_setinha),
+                        painter = painterResource(id = R.drawable.icone_setinha_svg),
                         contentDescription = ""
                     )
                 }

@@ -49,6 +49,41 @@ fun Botao(
 }
 
 @Composable
+fun Botao(
+    onClick: () -> Unit,
+    textButton: String,
+    imagePainter: Painter? = null // Adiciona um parâmetro para a imagem (opcional)
+) {
+    Button(
+        onClick = { onClick() },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = BLUE_PRIMARY
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .height(60.dp),
+        shape = RoundedCornerShape(12.dp),
+    ) {
+        imagePainter?.let {
+            Image(
+                painter = it,
+                contentDescription = null, // Pode ser nulo se a imagem for decorativa
+                modifier = Modifier
+                    .size(24.dp) // Tamanho da imagem
+                    .padding(end = 8.dp) // Espaçamento entre a imagem e o texto
+            )
+        }
+
+        Text(
+            text = textButton,
+            style = labelLargeOrange,
+            letterSpacing = 1.sp
+        )
+    }
+}
+
+@Composable
 fun BotaoComIcone(
     onClick: () -> Unit,
     textButton: String,

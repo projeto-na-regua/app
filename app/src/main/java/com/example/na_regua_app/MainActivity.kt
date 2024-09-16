@@ -19,6 +19,11 @@ import com.example.na_regua_app.view.Agendamento
 import com.example.na_regua_app.view.Cadastro
 import com.example.na_regua_app.view.Login
 import com.example.na_regua_app.view.Notificacoes
+import com.example.na_regua_app.view.SplashScreen
+import com.example.na_regua_app.view.TelaInicial
+import com.example.na_regua_app.view.Agendamento
+import com.example.na_regua_app.view.CadastroBarbeariaInicio
+import com.example.na_regua_app.view.HomeUsuario
 import com.example.na_regua_app.view.PerfilBarbearia
 import com.example.na_regua_app.view.PerfilUsuario
 import com.example.na_regua_app.view.SplashScreen
@@ -34,7 +39,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             NareguaappTheme {
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = "login") {
+                NavHost(navController = navController, startDestination = "homeUsuario") {
                     composable("home") {
                         Home(navController)
                     }
@@ -83,6 +88,11 @@ class MainActivity : ComponentActivity() {
                     composable("cadastro") {
                         Cadastro(navController)
                     }
+                    composable("cadastroBarbearia"){
+                        CadastroBarbeariaInicio(navController)
+                    }
+                    composable("homeUsuario"){
+                        HomeUsuario(navController)
                     composable("settings") {
                         Configuracoes(navController)
                     }

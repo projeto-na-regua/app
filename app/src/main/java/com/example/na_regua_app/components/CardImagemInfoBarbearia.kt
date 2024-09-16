@@ -3,6 +3,7 @@ package com.example.na_regua_app.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,7 +43,8 @@ fun CardImagemInfoBarbearia(
     isOpen: Boolean
 ) {
     Column(
-        modifier = Modifier.width(130.dp),
+        modifier = Modifier.width(130.dp)
+            .clickable { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Box(

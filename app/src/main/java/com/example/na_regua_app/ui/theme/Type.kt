@@ -72,7 +72,7 @@ val Typography = Typography(
 val labelLargeOrange = TextStyle(
     color = ORANGE_SECUNDARY,
     fontSize = 16.sp,
-    fontWeight = FontWeight.SemiBold,
+    fontWeight = FontWeight.Bold
     fontFamily = PlusJakartaSans
 )
 

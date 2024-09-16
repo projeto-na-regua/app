@@ -1,5 +1,8 @@
 package com.example.na_regua_app.view
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import android.content.ClipData.Item
 import androidx.compose.animation.core.withInfiniteAnimationFrameMillis
 import androidx.compose.foundation.BorderStroke
@@ -17,6 +20,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -66,6 +75,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.R
 import com.example.na_regua_app.components.BarraPesquisar
+import com.example.na_regua_app.components.BottomBarCustom
+import com.example.na_regua_app.components.CardImagemInfoBarbearia
+import com.example.na_regua_app.components.TopBarCustom
+import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
+import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.example.na_regua_app.components.Botao
 import com.example.na_regua_app.components.BotaoSpan
 import com.example.na_regua_app.components.BottomBarCustom
@@ -94,7 +108,8 @@ fun HomeUsuario(
         },
         content = { paddingValues ->
             HomeUsuarioContent(
-                paddingValues = paddingValues
+                paddingValues = paddingValues,
+                navController = navController
             )
         },
         bottomBar = {
@@ -104,14 +119,14 @@ fun HomeUsuario(
 }
 
 @Composable
-fun HomeUsuarioContent(paddingValues: PaddingValues) {
+fun HomeUsuarioContent(paddingValues: PaddingValues, navController: NavController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 80.dp)
     ) {
-        BarraPesquisar()
+        BarraPesquisar({pesquisa -> navController.navigate("cadastro")}, navController)
         Text(
             text = "Informações para você",
             color = BLUE_PRIMARY,
@@ -182,19 +197,19 @@ fun HomeUsuarioContent(paddingValues: PaddingValues) {
         ){
             item {
                 CardImagemInfoBarbearia(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("perfilBarbearia") },
                     nomeBarbearia = "Dom bigode",
                     distancia = "200",
                     isOpen = true
                 )
                 CardImagemInfoBarbearia(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("perfilBarbearia") },
                     nomeBarbearia = "Dom bigode",
                     distancia = "200",
                     isOpen = true
                 )
                 CardImagemInfoBarbearia(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("perfilBarbearia") },
                     nomeBarbearia = "Dom bigode",
                     distancia = "200",
                     isOpen = true
@@ -266,14 +281,18 @@ fun HomeUsuarioContent(paddingValues: PaddingValues) {
                 // Box com o ícone posicionado no BottomEnd
                 Box(
                     modifier = Modifier
-                        .size(35.dp)
+                        .clickable {
+                            navController.navigate("cadastroBarbearia")
+                        }
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(7.dp))
                         .background(color = BLUE_PRIMARY)
                         .padding(5.dp)
                         .align(Alignment.BottomEnd),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.icone_setinha),
+                        painter = painterResource(id = R.drawable.icone_setinha_svg),
                         contentDescription = ""
                     )
                 }

@@ -14,29 +14,37 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.na_regua_app.data.di.appModule
 import com.example.na_regua_app.ui.theme.NareguaappTheme
-import com.example.na_regua_app.view.Adicionar
-import com.example.na_regua_app.view.Agendamento
-import com.example.na_regua_app.view.Cadastro
-import com.example.na_regua_app.view.CadastroBarbeariaEndereco
-import com.example.na_regua_app.view.CadastroBarbeariaFim
-import com.example.na_regua_app.view.CadastroBarbeariaFotoNome
-import com.example.na_regua_app.view.Login
-import com.example.na_regua_app.view.Notificacoes
-import com.example.na_regua_app.view.SplashScreen
-import com.example.na_regua_app.view.TelaInicial
-import com.example.na_regua_app.view.CadastroBarbeariaInicio
-import com.example.na_regua_app.view.CadastroFim
-import com.example.na_regua_app.view.CadastroFotoUsername
-import com.example.na_regua_app.view.CadastroInicio
-import com.example.na_regua_app.view.HomeUsuario
-import com.example.na_regua_app.view.PerfilBarbearia
-import com.example.na_regua_app.view.PerfilUsuario
-import com.example.na_regua_app.view.dashboard.Dashboard
-import com.example.na_regua_app.view.Chat
+import com.example.na_regua_app.ui.view.Adicionar
+import com.example.na_regua_app.ui.view.Agendamento
+import com.example.na_regua_app.ui.view.Cadastro
+import com.example.na_regua_app.ui.view.CadastroBarbeariaEndereco
+import com.example.na_regua_app.ui.view.CadastroBarbeariaFim
+import com.example.na_regua_app.ui.view.CadastroBarbeariaFotoNome
+import com.example.na_regua_app.ui.view.Login
+import com.example.na_regua_app.ui.view.Notificacoes
+import com.example.na_regua_app.ui.view.SplashScreen
+import com.example.na_regua_app.ui.view.TelaInicial
+import com.example.na_regua_app.ui.view.CadastroBarbeariaInicio
+import com.example.na_regua_app.ui.view.CadastroFim
+import com.example.na_regua_app.ui.view.CadastroFotoUsername
+import com.example.na_regua_app.ui.view.CadastroInicio
+import com.example.na_regua_app.ui.view.HomeUsuario
+import com.example.na_regua_app.ui.view.PerfilBarbearia
+import com.example.na_regua_app.ui.view.PerfilUsuario
+import com.example.na_regua_app.ui.view.dashboard.Dashboard
+import com.example.na_regua_app.ui.view.Chat
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        startKoin {
+            androidContext(this@MainActivity)
+            modules(listOf(appModule))
+        }
         setContent {
             NareguaappTheme {
                 val navController = rememberNavController()

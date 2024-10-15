@@ -1,7 +1,5 @@
 package com.example.na_regua_app.ui.view
 
-import Espacamento
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -221,7 +218,7 @@ fun PerfilUsuarioContent(paddingValues: PaddingValues, navController: NavControl
                 )
             }
 
-            Espacamento(15.dp)
+            Spacer(modifier = Modifier.size(15.dp))
 
             //Uma listagem de exemplo que será subtituida pela resposta da API no backend.
             val exemploPosts = listOf(
@@ -321,10 +318,4 @@ fun PostList(posts: List<Postagem>) {
             PostCard(post = post)
         }
     }
-}
-
-
-@Composable
-fun Espacamento(espaco: Dp){
-    Spacer(modifier = Modifier.size(espaco))
 }

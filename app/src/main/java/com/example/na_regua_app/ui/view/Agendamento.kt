@@ -40,6 +40,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.R
 import com.example.na_regua_app.data.model.Funcionario
 import com.example.na_regua_app.data.model.Servico
+import com.example.na_regua_app.data.model.Usuario
+import com.example.na_regua_app.data.model.usuarios
 import com.example.na_regua_app.ui.components.Botao
 import com.example.na_regua_app.ui.components.BottomBarCustom
 import com.example.na_regua_app.ui.components.SelecaoFuncionarios
@@ -52,7 +54,8 @@ import com.example.na_regua_app.ui.theme.Typography
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Agendamento(
-    navController: NavController
+    navController: NavController,
+    usuario: Usuario
 ) {
     var selectedService by remember { mutableStateOf<String?>(null) }
     var selectedBarbeiro by remember { mutableStateOf<String?>(null) }
@@ -115,7 +118,7 @@ fun Agendamento(
             }
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, usuario)
         }
     )
 
@@ -128,7 +131,7 @@ fun Agendamento(
             value = 24.90,
             onDismiss = { showDialog = false },
             onConfirm = {
-                navController.navigate("agendaUsuario") // Navega para a tela agendaUsuario
+                navController.navigate("agendaUsuarios") // Navega para a tela agendaUsuario
             }
         )
     }
@@ -440,5 +443,6 @@ fun CalendarExample(
 @Preview
 @Composable
 fun AgendamentoPreview() {
-    Agendamento(navController = rememberNavController())
+    val usuarios = usuarios()
+    Agendamento(navController = rememberNavController(), usuario = usuarios[1])
 }

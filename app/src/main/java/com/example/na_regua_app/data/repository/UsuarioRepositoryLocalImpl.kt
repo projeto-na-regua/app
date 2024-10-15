@@ -17,7 +17,8 @@ class UsuarioRepositoryLocalImpl() : UsuarioRepository {
                     numero = 123,
                     complemento = "Apto 202",
                     cidade = "São Paulo",
-                    estado = "SP"
+                    estado = "SP",
+                    dtype = "Cliente"
                 )
         )
     }

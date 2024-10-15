@@ -12,7 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
@@ -22,13 +21,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.na_regua_app.R
+import com.example.na_regua_app.data.model.Usuario
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.example.na_regua_app.ui.theme.WHITE_BACKGROUND
 
 
 @Composable
-fun BottomBarCustom(navController: NavController){
+fun BottomBarCustom(navController: NavController, usuario: Usuario? = null){
+
 
     BottomAppBar(
         containerColor = Color.White,
@@ -52,55 +53,114 @@ fun BottomBarCustom(navController: NavController){
             }
             .padding(top = 2.dp),
         actions = {
-            Spacer(modifier = Modifier.weight(1f))
 
-            IconSpan(id = R.drawable.home_icon,
-                descripition = "Home",
-                navController = navController,
-                route = "home")
+            if(usuario?.dtype == "Barbeiro"){
 
-            Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(1f))
 
-            IconSpan(id = R.drawable.dash_icon,
-                descripition = "Dashboard",
-                navController = navController,
-                route = "dashboard")
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Box(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(54.dp)
-                    .clip(RoundedCornerShape(28))
-                    .background(BLUE_PRIMARY)
-                    .clickable {
-                        navController.navigate("adicionar")
-                    }
-            ) {
-                IconSpan(id = R.drawable.plus_icon,
-                    descripition = "Adicionar",
+                IconSpan(id = R.drawable.dash_icon,
+                    descripition = "Dashboard",
                     navController = navController,
-                    route = "adicionar")
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            IconSpan(id = R.drawable.comunnity_icon,
-                descripition = "Comunidade",
-                navController = navController,
-                route = "comunidade")
-
-            Spacer(modifier = Modifier.weight(1f))
+                    route = "dashboard")
 
 
-            IconSpan(id = R.drawable.person_icon,
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                IconSpan(id = R.drawable.servico_funcionario,
+                    descripition = "Servico Funcionario",
+                    navController = navController,
+                    route = "gestao")
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Box(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(54.dp)
+                        .clip(RoundedCornerShape(28))
+                        .background(BLUE_PRIMARY)
+                        .clickable {
+                            navController.navigate("home")
+                        }
+                ) {
+                    IconSpan(id = R.drawable.home_vazado,
+                        descripition = "Home",
+                        navController = navController,
+                        route = "home")
+                }
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                IconSpan(id = R.drawable.comunnity_icon,
+                    descripition = "Comunidade",
+                    navController = navController,
+                    route = "comunidade")
+
+                Spacer(modifier = Modifier.weight(1f))
+
+
+                IconSpan(id = R.drawable.person_icon,
+                    descripition = "Perfil",
+                    navController = navController,
+                    route = "perfilBarbearia")
+
+
+                Spacer(modifier = Modifier.weight(1f))
+
+
+            }else{
+                Spacer(modifier = Modifier.weight(1f))
+
+                IconSpan(id = R.drawable.calendar,
+                    descripition = "Calendar",
+                    navController = navController,
+                    route = "agendaUsuarios")
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                IconSpan(id = R.drawable.pesquisar,
+                    descripition = "Pesquisar",
+                    navController = navController,
+                    route = "buscarBarbearias")
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Box(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(54.dp)
+                        .clip(RoundedCornerShape(28))
+                        .background(BLUE_PRIMARY)
+                        .clickable {
+                            navController.navigate("homeUsuario")
+                        }
+                ) {
+                    IconSpan(id = R.drawable.home_vazado,
+                        descripition = "Home",
+                        navController = navController,
+                        route = "homeUsuario")
+                }
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                IconSpan(id = R.drawable.galeria,
+                    descripition = "Galeria",
+                    navController = navController,
+                    route = "galeria")
+
+                Spacer(modifier = Modifier.weight(1f))
+
+
+                IconSpan(id = R.drawable.person_icon,
                     descripition = "Perfil",
                     navController = navController,
                     route = "perfilUsuario")
 
 
-            Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(1f))
+            }
+
         },
     )
 }

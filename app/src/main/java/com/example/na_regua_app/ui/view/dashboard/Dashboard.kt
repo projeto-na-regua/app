@@ -34,6 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.na_regua_app.data.model.Usuario
+import com.example.na_regua_app.data.model.usuarios
 import com.example.na_regua_app.ui.components.BottomBarCustom
 import com.example.na_regua_app.ui.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
@@ -43,7 +45,8 @@ import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Dashboard(
-    navController: NavController
+    navController: NavController,
+    usuario: Usuario
 ) {
     Scaffold(
         topBar = {
@@ -53,7 +56,7 @@ fun Dashboard(
             DashboardContent(paddingValues)
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, usuario)
         }
     )
 }
@@ -145,5 +148,5 @@ fun TabContent(selectedTabIndex: Int) {
 @Composable
 fun DashboardPreview() {
     val navController = rememberNavController()
-    Dashboard(navController = navController)
+    Dashboard(navController = navController, usuarios().first())
 }

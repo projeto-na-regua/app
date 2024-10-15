@@ -47,8 +47,4 @@ object Rest {
         api.create(UsuarioService::class.java)
     }
 
-//    val agendamentoService by lazy {
-//        api.create(AgendamentoService::class.java)
-//    }
-
 }

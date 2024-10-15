@@ -6,7 +6,6 @@ import ConfiguracoesInformacoesPessoais
 import ConfiguracoesSeuNegocio
 import ExcluirConta
 import ExcluirNegocio
-import Home
 import BuscaBarbearias
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,8 +14,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.data.di.appModule
+import com.example.na_regua_app.data.model.usuarios
+import com.example.na_regua_app.screens.ListagemBarbearias
 import com.example.na_regua_app.ui.theme.NareguaappTheme
 import com.example.na_regua_app.ui.view.Adicionar
+import com.example.na_regua_app.ui.view.AgendaUsuario
 import com.example.na_regua_app.ui.view.Agendamento
 import com.example.na_regua_app.ui.view.Cadastro
 import com.example.na_regua_app.ui.view.CadastroBarbeariaEndereco
@@ -35,6 +37,9 @@ import com.example.na_regua_app.ui.view.PerfilBarbearia
 import com.example.na_regua_app.ui.view.PerfilUsuario
 import com.example.na_regua_app.ui.view.dashboard.Dashboard
 import com.example.na_regua_app.ui.view.Chat
+import com.example.na_regua_app.ui.view.Gestao
+import com.example.na_regua_app.ui.view.Home
+import com.example.na_regua_app.view.Galeria
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -50,16 +55,16 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = "telaInicial") {
                     composable("home") {
-                        Home(navController)
+                        Home(navController, usuarios().first())
                     }
                     composable("agendamento") {
-                        Agendamento(navController)
+                        Agendamento(navController, usuarios()[1])
                     }
                     composable("buscarBarbearias") {
-                        BuscaBarbearias(navController)
+                        BuscaBarbearias(navController, usuarios()[1])
                     }
                     composable("listagemBarbearias") {
-                        BuscaBarbearias(navController)
+                        ListagemBarbearias(navController, usuarios()[1])
                     }
                     composable("telaInicial") {
                         TelaInicial(navController)
@@ -68,13 +73,13 @@ class MainActivity : ComponentActivity() {
                         SplashScreen(navController)
                     }
                     composable("notificacoes") {
-                        Notificacoes(navController)
+                        Notificacoes(navController, usuarios().first())
                     }
                     composable("dashboard") {
-                        Dashboard(navController)
+                        Dashboard(navController, usuarios().first())
                     }
                     composable("comunidade") {
-                        Comunidade(navController)
+                        Comunidade(navController, usuarios().first())
                     }
                     composable("chat/{userName}/{profilePic}/{origin}") { backStackEntry ->
                         val userName =
@@ -93,13 +98,13 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable("adicionar") {
-                        Adicionar(navController)
+                        Adicionar(navController, usuarios().first())
                     }
                     composable("perfilUsuario") {
                         PerfilUsuario(navController)
                     }
                     composable("perfilBarbearia") {
-                        PerfilBarbearia(navController)
+                        PerfilBarbearia(navController, usuarios()[1])
                     }
                     composable("login") {
                         Login(navController)
@@ -111,22 +116,22 @@ class MainActivity : ComponentActivity() {
                         CadastroBarbeariaInicio(navController)
                     }
                     composable("homeUsuario") {
-                        HomeUsuario(navController)
+                        HomeUsuario(navController, usuarios()[1])
                     }
                     composable("settings") {
-                        Configuracoes(navController)
+                        Configuracoes(navController, usuarios()[1])
                     }
                     composable("settingsprofile") {
-                        ConfiguracoesInformacoesPessoais(navController)
+                        ConfiguracoesInformacoesPessoais(navController, usuarios()[1])
                     }
                     composable("settingsbusiness") {
-                        ConfiguracoesSeuNegocio(navController)
+                        ConfiguracoesSeuNegocio(navController,usuarios().first())
                     }
                     composable("deleteaccount") {
-                        ExcluirConta(navController)
+                        ExcluirConta(navController, usuarios()[1])
                     }
                     composable("deletebusiness") {
-                        ExcluirNegocio(navController)
+                        ExcluirNegocio(navController,usuarios().first())
                     }
                     composable("cadastroBarbeariaFotoUsername"){
                         CadastroBarbeariaFotoNome(navController)
@@ -145,6 +150,15 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("cadastroFim"){
                         CadastroFim(navController)
+                    }
+                    composable("gestao"){
+                        Gestao(navController, usuarios().first())
+                    }
+                    composable("galeria"){
+                        Galeria(navController, usuarios()[1])
+                    }
+                    composable("agendaUsuarios"){
+                        AgendaUsuario(navController, usuarios()[1])
                     }
                     }
                 }

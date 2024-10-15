@@ -13,29 +13,31 @@
         android:roundIcon="@drawable/logo_app_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.Nareguaapp"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config">
         <activity
-            android:name=".view.EcluirNegocio"
+            android:name=".ui.view.EcluirNegocio"
             android:exported="false"
             android:label="@string/title_activity_ecluir_negocio"
             android:theme="@style/Theme.Nareguaapp" />
         <activity
-            android:name=".view.ExcluirConta"
+            android:name=".ui.view.ExcluirConta"
             android:exported="false"
             android:label="@string/title_activity_excluir_conta"
             android:theme="@style/Theme.Nareguaapp" />
         <activity
-            android:name=".view.ConfiguracoesSeuNegocio"
+            android:name=".ui.view.ConfiguracoesSeuNegocio"
             android:exported="false"
             android:label="@string/title_activity_configuracoes_seu_negocio"
             android:theme="@style/Theme.Nareguaapp" />
         <activity
-            android:name=".view.ConfiguracoesInformacoesPessoais"
+            android:name=".ui.view.ConfiguracoesInformacoesPessoais"
             android:exported="false"
             android:label="@string/title_activity_configuracoes_informacoes_pessoais"
             android:theme="@style/Theme.Nareguaapp" />
         <activity
-            android:name=".view.Configuracoes"
+            android:name=".ui.view.Configuracoes"
             android:exported="false"
             android:label="@string/title_activity_configuracoes"
             android:theme="@style/Theme.Nareguaapp" /> <!-- Remova ou comente a linha abaixo -->

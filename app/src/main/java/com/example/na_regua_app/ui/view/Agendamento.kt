@@ -40,6 +40,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.R
 import com.example.na_regua_app.data.model.Funcionario
 import com.example.na_regua_app.data.model.Servico
+import com.example.na_regua_app.data.model.ServicoCardDTO
 import com.example.na_regua_app.data.model.Usuario
 import com.example.na_regua_app.data.model.usuarios
 import com.example.na_regua_app.ui.components.Botao
@@ -223,15 +224,17 @@ fun BoxServicos(
     navController: NavController,
     onServiceSelected: (String) -> Unit
 ) {
-    var selectedService by remember { mutableStateOf<Servico?>(null) }
+    var selectedService by remember { mutableStateOf<ServicoCardDTO?>(null) }
 
     val servicos = listOf(
-        Servico(
+        ServicoCardDTO(
+            id = 1,
             tituloServico = "Corte",
             descricao = "Corte simples de cabelo",
             preco = 25.00,
         ),
-        Servico(
+        ServicoCardDTO(
+            id = 2,
             tituloServico = "Corte + Escova",
             descricao = "Corte + escova",
             preco = 55.00,

@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.na_regua_app.data.model.Servico
+import com.example.na_regua_app.data.model.ServicoCardDTO
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.example.na_regua_app.ui.theme.Typography
@@ -34,7 +35,7 @@ import com.example.na_regua_app.ui.view.format
 
 @Composable
 fun ServiceCard(
-    servico: Servico,
+    servico: ServicoCardDTO,
     isSelectable: Boolean,  // parâmetro para controle de seleção
     isSelected: Boolean = false,
     onClick: (() -> Unit)? = null
@@ -101,18 +102,21 @@ fun ServiceCard(
 
 @Composable
 fun ServiceList(
-    services: List<Servico>,
+    services: List<ServicoCardDTO>,
     isSelectable: Boolean,
-    selectedService: Servico? = null,
-    onServiceClick: ((Servico) -> Unit)? = null
+    selectedService: ServicoCardDTO? = null,
+    onServiceClick: ((ServicoCardDTO) -> Unit)? = null
 ) {
-    Column (verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.clip(RoundedCornerShape(15.dp))) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.clip(RoundedCornerShape(15.dp))
+    ) {
         services.forEach { service ->
+            val isSelected = isSelectable && selectedService?.id == service.id
             ServiceCard(
                 servico = service,
                 isSelectable = isSelectable,
-                isSelected = isSelectable && selectedService == service,
+                isSelected = isSelected,  // Agora utiliza o 'isSelected' com base no 'id'
                 onClick = {
                     if (isSelectable && onServiceClick != null) {
                         onServiceClick(service)
@@ -122,5 +126,6 @@ fun ServiceList(
         }
     }
 }
+
 
 

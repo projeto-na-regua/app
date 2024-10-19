@@ -104,7 +104,7 @@ class MainActivity : ComponentActivity() {
                         PerfilUsuario(navController)
                     }
                     composable("perfilBarbearia") {
-                        PerfilBarbearia(navController, usuarios()[1])
+                        PerfilBarbearia(navController)
                     }
                     composable("login") {
                         Login(navController)
@@ -160,9 +160,9 @@ class MainActivity : ComponentActivity() {
                     composable("agendaUsuarios"){
                         AgendaUsuario(navController, usuarios()[1])
                     }
-                    }
                 }
             }
         }
     }
+}
 

@@ -1,6 +1,7 @@
 package com.example.na_regua_app.data.repository
 
 import com.example.na_regua_app.data.api.UsuarioService
+import com.example.na_regua_app.data.model.DadosCadastro
 import com.example.na_regua_app.data.model.Usuario
 import retrofit2.Response
 
@@ -10,5 +11,9 @@ class UsuarioRepositoryImpl(
 
     override suspend fun obterUsuario() : Response<Usuario> {
         return service.obterUsuario()
+    }
+
+    override suspend fun cadastrarUsuario(dadosCadastro: DadosCadastro): Response<String> {
+        return service.cadastrarUsuario(dadosCadastro)
     }
 }

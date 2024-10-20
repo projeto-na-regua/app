@@ -1,39 +1,22 @@
 package com.example.na_regua_app.ui.view
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -42,20 +25,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
+import com.example.na_regua_app.data.model.Usuario
 import com.example.na_regua_app.ui.components.Botao
-import com.example.na_regua_app.ui.components.BotaoSpan
-import com.example.na_regua_app.ui.components.Input
 import com.example.na_regua_app.ui.components.InputCadastro
-import com.example.na_regua_app.ui.components.LogoImage
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
+import com.example.na_regua_app.viewmodel.CadastroViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CadastroFotoUsername(
-    navController: NavController
+    navController: NavController,
+    cadastroViewModel: CadastroViewModel = koinViewModel()
 ) {
     var botaoClicado by remember { mutableStateOf(false) }
     var apelido by remember { mutableStateOf("") }
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        selectedImageUri = uri
+    }
 
     Scaffold(
         content = { paddingValues ->
@@ -98,21 +92,36 @@ fun CadastroFotoUsername(
                             .clip(CircleShape)
                             .background(color = Color.Black)
                     ) {
-                        Image(
-                            painter = painterResource(id = com.example.na_regua_app.R.drawable.png_background),
-                            contentDescription = "",
-                            contentScale = ContentScale.Crop, // Garante que a imagem preencha o círculo
-                            modifier = Modifier.clip(CircleShape) // Aplica a forma circular também na imagem
-                        )
+                        // Verificar se uma imagem foi selecionada
+                        if (selectedImageUri != null) {
+                            Image(
+                                painter = rememberAsyncImagePainter(selectedImageUri),
+                                contentDescription = "Imagem selecionada",
+                                contentScale = ContentScale.Crop, // Garante que a imagem preencha o círculo
+                                modifier = Modifier
+                                    .clip(CircleShape) // Aplica a forma circular também na imagem
+                            )
+                        } else {
+                            Image(
+                                painter = painterResource(id = com.example.na_regua_app.R.drawable.png_background),
+                                contentDescription = "Imagem padrão",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.clip(CircleShape)
+                            )
+                        }
                     }
-                    Button(onClick = { /*TODO*/},
+
+                    Button(
+                        onClick = {
+                            galleryLauncher.launch("image/*")
+                        },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = BLUE_PRIMARY
                         ),
                         modifier = Modifier
                             .fillMaxWidth(.55f)
                             .padding(top = 15.dp),
-                                shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(8.dp)
                     ) {
                         Image(
                             painter = painterResource(id = com.example.na_regua_app.R.drawable.icone_adicionar_foto),
@@ -120,14 +129,19 @@ fun CadastroFotoUsername(
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "Adicionar foto", color = ORANGE_SECUNDARY,
+                        Text(
+                            text = "Adicionar foto",
+                            color = ORANGE_SECUNDARY,
                             fontSize = 14.sp,
                             letterSpacing = 1.sp,
                             textAlign = TextAlign.Center
                         )
                     }
-                    Column (horizontalAlignment = Alignment.Start,
-                        modifier = Modifier.fillMaxWidth(1f)) {
+
+                    Column(
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier.fillMaxWidth(1f)
+                    ) {
                         Text(
                             text = "Este vai ser seu apelido",
                             modifier = Modifier.padding(top = 20.dp),
@@ -137,16 +151,24 @@ fun CadastroFotoUsername(
                             fontSize = 15.sp
                         )
                     }
+
                     InputCadastro(
                         value = apelido,
                         onValueChange = { novoValor -> apelido = novoValor },
                         label = { Text("Apelido") }
                     )
-
                 }
+
                 Spacer(modifier = Modifier.weight(1f))
+
+
+
                 Botao(
-                    onClick = { navController.navigate("cadastro") },
+                    onClick = {
+//                        cadastroViewModel.atualizarImgPerfil(selectedImageUri.toString())
+//                        cadastroViewModel.atualizarApelido(apelido)
+                        navController.navigate("cadastro")
+                              },
                     textButton = "Próximo"
                 )
             }

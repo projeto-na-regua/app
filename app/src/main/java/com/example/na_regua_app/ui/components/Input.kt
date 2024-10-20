@@ -20,7 +20,10 @@ fun Input(
     value: String,
     onValueChange: (String) -> Unit,
     label: @Composable (() -> Unit)? = null,
+    isError: Boolean = false // Novo parâmetro para definir se há erro
 ) {
+    val borderColor = if (isError) Color.Red else BLUE_PRIMARY // Define a cor da borda
+
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
@@ -30,11 +33,12 @@ fun Input(
             .height(70.dp),
         shape = RoundedCornerShape(12.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = BLUE_PRIMARY,
-            unfocusedBorderColor = BLUE_PRIMARY,
+            focusedBorderColor = borderColor,
+            unfocusedBorderColor = borderColor,
             focusedLabelColor = BLUE_PRIMARY,
             unfocusedLabelColor = BLUE_PRIMARY
-        )
+        ),
+        isError = isError
     )
 }
 
@@ -83,4 +87,3 @@ fun InputCadastro(
             .height(70.dp),
         shape = RoundedCornerShape(12.dp))
 }
-

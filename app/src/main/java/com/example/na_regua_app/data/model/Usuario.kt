@@ -5,7 +5,7 @@ data class Usuario(
     val email: String,
     val senha: String,
     val celular: String,
-    val imgPerfil: String,
+    var imgPerfil: String,
     val cep: String,
     val logradouro: String,
     val numero: Int,

@@ -198,6 +198,7 @@ fun Cadastro(
                             cadastroViewModel.enviarCadastro { success ->
                                 if (success) {
                                     // Navega para a tela final de cadastro
+                                    Toast.makeText(context, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show()
                                     navController.navigate("cadastroFim")
                                 } else {
                                     Toast.makeText(context, "Erro ao cadastrar. Tente novamente.", Toast.LENGTH_SHORT).show()

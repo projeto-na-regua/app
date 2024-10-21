@@ -1,6 +1,9 @@
 package com.example.na_regua_app.ui.view
 
 import android.content.ClipData.Item
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.withInfiniteAnimationFrameMillis
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -47,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.na_regua_app.ui.components.Botao
 import com.example.na_regua_app.ui.components.BotaoSpan
 import com.example.na_regua_app.ui.components.Input
@@ -55,14 +59,36 @@ import com.example.na_regua_app.ui.components.LogoImage
 import com.example.na_regua_app.ui.components.SelecaoFuncionarios
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
+import com.example.na_regua_app.viewmodel.CadastroBarbeariaViewModel
+import com.example.na_regua_app.viewmodel.CadastroViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CadastroBarbeariaFotoNome(
-    navController: NavController
+    navController: NavController,
+    cadastroBarbeariaViewModel: CadastroBarbeariaViewModel = koinViewModel()
 ) {
     var botaoClicado by remember { mutableStateOf(false) }
     var nomeBarbearia by remember { mutableStateOf("") }
     var descricaoBarbearia by remember { mutableStateOf("") }
+    var cpf by remember { mutableStateOf("") }
+
+    var imagemSelecionadaBanner by remember { mutableStateOf<Uri?>(null) }
+    var imagemSelecionadaPerfil by remember { mutableStateOf<Uri?>(null) }
+
+    val galleryLauncherBanner = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        imagemSelecionadaBanner = uri
+    }
+
+    val galleryLauncherPerfil = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        imagemSelecionadaPerfil = uri
+    }
+
+
 
     Scaffold(
         content = { paddingValues ->
@@ -121,15 +147,25 @@ fun CadastroBarbeariaFotoNome(
                                 )
 
                         ) {
-                            Image(
-                                painter = painterResource(id = com.example.na_regua_app.R.drawable.png_background),
-                                contentDescription = "",
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.fillMaxSize()
-                            )
+                            if(imagemSelecionadaBanner != null){
+                                Image(
+                                    painter = rememberAsyncImagePainter(imagemSelecionadaBanner),
+                                    contentDescription = "",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            } else {
+                                Image(
+                                    painter = painterResource(id = com.example.na_regua_app.R.drawable.png_background),
+                                    contentDescription = "",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
+
 
                         }
-                        Button(onClick = { /*TODO*/},
+                        Button(onClick = { galleryLauncherBanner.launch("image/*") },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = BLUE_PRIMARY
                             ),
@@ -169,14 +205,24 @@ fun CadastroBarbeariaFotoNome(
                                 .background(Color.Transparent)
                                 .border(1.dp, color = Color(0xFF9E9E9E), CircleShape)
                         ) {
-                            Image(
-                                painter = painterResource(id = com.example.na_regua_app.R.drawable.png_background),
-                                contentDescription = "",
-                                contentScale = ContentScale.Crop, // Isso garante que a imagem preencha o círculo corretamente
-                                modifier = Modifier.fillMaxSize() // Garante que a imagem ocupe o tamanho completo do Box
-                            )
+                            if(imagemSelecionadaPerfil != null){
+                                Image(
+                                    painter = rememberAsyncImagePainter(imagemSelecionadaPerfil),
+                                    contentDescription = "",
+                                    contentScale = ContentScale.Crop, // Isso garante que a imagem preencha o círculo corretamente
+                                    modifier = Modifier.fillMaxSize() // Garante que a imagem ocupe o tamanho completo do Box
+                                )
+                            } else {
+                                Image(
+                                    painter = painterResource(id = com.example.na_regua_app.R.drawable.png_background),
+                                    contentDescription = "",
+                                    contentScale = ContentScale.Crop, // Isso garante que a imagem preencha o círculo corretamente
+                                    modifier = Modifier.fillMaxSize() // Garante que a imagem ocupe o tamanho completo do Box
+                                )
+                            }
+
                         }
-                        Button(onClick = { /*TODO*/},
+                        Button(onClick = { galleryLauncherPerfil.launch("image/*")},
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = BLUE_PRIMARY
                             ),
@@ -197,6 +243,23 @@ fun CadastroBarbeariaFotoNome(
                                 textAlign = TextAlign.Center
                             )
                         }
+                        Column (horizontalAlignment = Alignment.Start,
+                            modifier = Modifier.fillMaxWidth(1f)) {
+                            Text(
+                                text = "Por segurança, informe seu CPF",
+                                modifier = Modifier.padding(top = 20.dp),
+                                color = Color(0xFF9E9E9E),
+                                fontStyle = FontStyle.Italic,
+                                letterSpacing = 1.sp,
+                                fontSize = 15.sp
+                            )
+                        }
+                        InputCadastro(
+                            value = cpf,
+                            onValueChange = { novoValor -> cpf = novoValor },
+                            label = { Text("CPF") }
+                        )
+
                         Column (horizontalAlignment = Alignment.Start,
                             modifier = Modifier.fillMaxWidth(1f)) {
                             Text(
@@ -236,7 +299,12 @@ fun CadastroBarbeariaFotoNome(
                         Spacer(modifier = Modifier.height(30.dp))
                     }
                     Botao(
-                        onClick = { navController.navigate("cadastroBarbeariaEndereco") },
+                        onClick = {
+//                            cadastroBarbeariaViewModel.atualizarImgBanner(imagemSelecionadaBanner)
+//                            cadastroBarbeariaViewModel.atualizarImgPerfil(imagemSelecionadaPerfil)
+//                            cadastroBarbeariaViewModel.atualizarDescricao(descricaoBarbearia)
+                            navController.navigate("cadastroBarbeariaEndereco/$cpf/$nomeBarbearia")
+                                  },
                         textButton = "Próximo"
                     )
                 }

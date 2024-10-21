@@ -11,7 +11,10 @@ import com.example.na_regua_app.data.repository.ServicoRepositoryImpl
 import com.example.na_regua_app.data.repository.UsuarioRepository
 import com.example.na_regua_app.data.repository.UsuarioRepositoryImpl
 import com.example.na_regua_app.data.repository.UsuarioRepositoryLocalImpl
+import com.example.na_regua_app.ui.view.Login
+import com.example.na_regua_app.viewmodel.CadastroBarbeariaViewModel
 import com.example.na_regua_app.viewmodel.CadastroViewModel
+import com.example.na_regua_app.viewmodel.LoginViewModel
 import com.example.na_regua_app.viewmodel.PerfilBarbeariaViewModel
 import com.example.na_regua_app.viewmodel.PerfilUsuarioViewModel
 import com.example.na_regua_app.viewmodel.ServicoViewModel
@@ -37,6 +40,8 @@ val appModule= module {
     single<ServicoRepository> { ServicoRepositoryImpl(get()) }
 
     // ViewModels
+    viewModel<LoginViewModel> { LoginViewModel(get())}
+    viewModel<CadastroBarbeariaViewModel> { CadastroBarbeariaViewModel(get())}
     viewModel<CadastroViewModel> { CadastroViewModel(get()) }
     viewModel<PerfilUsuarioViewModel> { PerfilUsuarioViewModel(get()) }
     viewModel<PerfilBarbeariaViewModel> { PerfilBarbeariaViewModel(get()) }

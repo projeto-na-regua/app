@@ -29,6 +29,7 @@ class LoginViewModel(
     }
 
     fun logar(context: Context, onResult: (Boolean) -> Unit) {
+
         val dadosLogin = DadosLogin(
             email = email.value,
             senha = senha.value,

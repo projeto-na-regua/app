@@ -5,6 +5,7 @@ import com.example.na_regua_app.data.model.Barbearia
 import com.example.na_regua_app.data.model.DadosCadastro
 import com.example.na_regua_app.data.model.DadosCadastroBarbearia
 import com.example.na_regua_app.data.model.DadosLogin
+import com.example.na_regua_app.data.model.UserDType
 import com.example.na_regua_app.data.model.Usuario
 import retrofit2.Response
 
@@ -26,5 +27,9 @@ class UsuarioRepositoryImpl(
 
     override suspend fun logar(dadosLogin: DadosLogin): Response<String> {
         return service.logar(dadosLogin)
+    }
+
+    override suspend fun admIsTrue(token: String): Response<UserDType> {
+        return service.admIsTrue(token)
     }
 }

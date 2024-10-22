@@ -58,7 +58,7 @@ fun BarraPesquisar(
                 painter = painterResource(id = R.drawable.icone_lupa),
                 contentDescription = "Ícone de lupa",
                 modifier = Modifier.size(28.dp)
-                    .clickable { navController.navigate("cadastro") }
+                    .clickable { navController.navigate("listagemBarbearias") }
             )
             Spacer(modifier = Modifier.width(8.dp))
             OutlinedTextField(

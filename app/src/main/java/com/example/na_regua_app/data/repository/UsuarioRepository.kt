@@ -4,6 +4,7 @@ import com.example.na_regua_app.data.model.Barbearia
 import com.example.na_regua_app.data.model.DadosCadastro
 import com.example.na_regua_app.data.model.DadosCadastroBarbearia
 import com.example.na_regua_app.data.model.DadosLogin
+import com.example.na_regua_app.data.model.UserDType
 import com.example.na_regua_app.data.model.Usuario
 import retrofit2.Response
 
@@ -15,5 +16,7 @@ interface UsuarioRepository {
     suspend fun cadastrarBarbearia(dadosCadastradosBarbearia: DadosCadastroBarbearia) : Response<Void>
 
     suspend fun logar(dadosLogin: DadosLogin) : Response<String>
+
+    suspend fun admIsTrue(token: String) : Response<UserDType>
 }
 

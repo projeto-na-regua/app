@@ -9,7 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.na_regua_app.data.model.DadosCadastroBarbearia
 import com.example.na_regua_app.data.model.DadosLogin
 import com.example.na_regua_app.data.repository.UsuarioRepository
+import com.example.na_regua_app.utils.obterUsuarioDtype
 import com.example.na_regua_app.utils.salvarToken
+import com.example.na_regua_app.utils.salvarUsuarioDtype
 import kotlinx.coroutines.launch
 
 
@@ -37,16 +39,38 @@ class LoginViewModel(
 
         viewModelScope.launch {
             try {
-                val response = usuarioRepository.logar(dadosLogin)
-                if (response.isSuccessful) {
-                    response.body()?.let { salvarToken(context, token = it) }
+                val responseLogin = usuarioRepository.logar(dadosLogin)
+                if (responseLogin.isSuccessful) {
+                    responseLogin.body()?.let { usuario ->
+                        val responseAdmIsTrue = usuarioRepository.admIsTrue(usuario)
+                        var admBody: Any? = null
+
+                        if (responseAdmIsTrue.isSuccessful) {
+                            admBody = responseAdmIsTrue.body()
+                            println("Resposta de admIsTrue: ${admBody.toString()}")
+                        } else {
+                            Log.e("LoginViewModel", "admIsTrue falhou com código: ${responseAdmIsTrue.code()}")
+                        }
+                        salvarToken(context, token = usuario)
+                        admBody?.let { salvarUsuarioDtype(context, admBody.toString()) }
+                        obterUsuarioDtype(context).collect { userDtype ->
+                            println("Valor do userDtype: $userDtype")
+                        }
+                    }
+                } else {
+                    Log.e("LoginViewModel", "Login falhou com código: ${responseLogin.code()}")
                 }
-                onResult(response.isSuccessful)
+
+                // Retorna o resultado da operação de login
+                onResult(responseLogin.isSuccessful)
+
             } catch (e: Exception) {
                 onResult(false)
                 Log.e("LoginViewModel", "Erro ao logar: ${e.message}")
             }
         }
+
+
     }
 }
 

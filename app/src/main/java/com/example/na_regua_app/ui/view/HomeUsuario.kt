@@ -90,7 +90,7 @@ fun HomeUsuarioContent(paddingValues: PaddingValues, navController: NavControlle
             .padding(vertical = 20.dp)
     ) {
         item {
-            BarraPesquisar({ pesquisa -> navController.navigate("cadastro") }, navController)
+            BarraPesquisar({ navController.navigate("listagemBarbearias") }, navController)
         }
 
         item {

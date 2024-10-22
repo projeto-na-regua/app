@@ -4,6 +4,7 @@ import com.example.na_regua_app.data.model.Barbearia
 import com.example.na_regua_app.data.model.DadosCadastro
 import com.example.na_regua_app.data.model.DadosCadastroBarbearia
 import com.example.na_regua_app.data.model.DadosLogin
+import com.example.na_regua_app.data.model.UserDType
 import com.example.na_regua_app.data.model.Usuario
 import retrofit2.Response
 
@@ -36,6 +37,10 @@ class UsuarioRepositoryLocalImpl() : UsuarioRepository {
     }
 
     override suspend fun logar(dadosLogin: DadosLogin): Response<String> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun admIsTrue(token: String): Response<UserDType> {
         TODO("Not yet implemented")
     }
 

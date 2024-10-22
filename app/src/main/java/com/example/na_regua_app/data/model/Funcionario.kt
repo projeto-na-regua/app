@@ -4,7 +4,7 @@ data class Funcionario(
     val id: Int,
     val nome: String,
     val email: String,
-    val imgPerfil: Int? = null,
-    val dtype: String
+    val imgPerfil: String,
+    val especialidade: String
 )
 

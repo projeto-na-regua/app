@@ -61,6 +61,7 @@ import com.example.na_regua_app.ui.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.example.na_regua_app.ui.theme.Typography
+import com.example.na_regua_app.viewmodel.FuncionarioViewModel
 import com.example.na_regua_app.viewmodel.PerfilBarbeariaViewModel
 import com.example.na_regua_app.viewmodel.ServicoViewModel
 import org.koin.compose.viewmodel.koinViewModel
@@ -71,11 +72,12 @@ import org.koin.compose.viewmodel.koinViewModel
 fun PerfilBarbearia(
     navController: NavController,
     perfilBarbeariaViewModel: PerfilBarbeariaViewModel = koinViewModel(),
-    servicoViewModel: ServicoViewModel = koinViewModel()
-
+    servicoViewModel: ServicoViewModel = koinViewModel(),
+    funcionarioViewModel: FuncionarioViewModel = koinViewModel()
 ) {
     val barbearia by perfilBarbeariaViewModel.barbearia.collectAsState()
     val servicos by servicoViewModel.servicos.collectAsState()
+    val funcionarios by funcionarioViewModel.funcionarios.collectAsState()
 
     LaunchedEffect(Unit) {
         servicoViewModel.obterServicosPorStatus()
@@ -91,7 +93,8 @@ fun PerfilBarbearia(
                 paddingValues = paddingValues,
                 navController = navController,
                 barbearia = barbearia,
-                servicos = servicos
+                servicos = servicos,
+                funcionarios = funcionarios
             )
         },
         bottomBar = {
@@ -102,7 +105,12 @@ fun PerfilBarbearia(
 
 
 @Composable
-fun PerfilBarbeariaContent(paddingValues: PaddingValues, navController: NavController, barbearia: Barbearia?, servicos: List<ServicoCardDTO>) {
+fun PerfilBarbeariaContent(paddingValues: PaddingValues,
+                           navController: NavController,
+                           barbearia: Barbearia?,
+                           servicos: List<ServicoCardDTO>,
+                           funcionarios: List<Funcionario>?
+) {
 
     if (barbearia != null) {
         var nomeBarbearia by remember { mutableStateOf(barbearia.nomeNegocio) }
@@ -187,7 +195,7 @@ fun PerfilBarbeariaContent(paddingValues: PaddingValues, navController: NavContr
                             .weight(0.8f)
                             .padding(end = 12.dp)
                             .align(Alignment.Bottom),
-                            onClick = { /*TODO*/ },
+                            onClick = { navController.navigate("settingsbusiness") },
                             textButton = "Editar perfil",
                             imagePainter = painterResource(R.drawable.edit_icon)
                         )
@@ -266,13 +274,12 @@ fun PerfilBarbeariaContent(paddingValues: PaddingValues, navController: NavContr
                         Espacamento(espaco = 8.dp)
                     }
                     item {
-                        BoxFuncionarios(navController)
+                        BoxFuncionarios(navController, funcionarios)
                         Espacamento(espaco = 8.dp)
                     }
                 }
             }
 
-            // Fixed buttons at the bottom
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -344,22 +351,33 @@ fun PerfilBarbeariaContent(paddingValues: PaddingValues, navController: NavContr
 
                 Espacamento(espaco = 8.dp)
 
-                val servicosExibidos = if (verMais) servicos else servicos.take(2)
-                ServiceList(services = servicosExibidos, isSelectable = false)
-
-                if (servicos.size > 2) {
-                    TextButton(
-                        onClick = { verMais = !verMais },
+                if (servicos.isEmpty()) {
+                    Text(
+                        text = "Nenhum serviço cadastrado",
+                        style = Typography.bodyMedium,
+                        color = Color.Gray,
                         modifier = Modifier
-                            .padding(0.dp)
-                            .align(Alignment.CenterHorizontally),
-                        contentPadding = PaddingValues(0.dp)
-                    ) {
-                        Text(
-                            text = if (verMais) "Visualizar menos" else "Visualizar mais",
-                            color = ORANGE_SECUNDARY,
-                            modifier = Modifier.padding(0.dp)
-                        )
+                            .align(Alignment.CenterHorizontally)
+                            .padding(16.dp)
+                    )
+                } else {
+                    val servicosExibidos = if (verMais) servicos else servicos.take(2)
+                    ServiceList(services = servicosExibidos, isSelectable = false)
+
+                    if (servicos.size > 2) {
+                        TextButton(
+                            onClick = { verMais = !verMais },
+                            modifier = Modifier
+                                .padding(0.dp)
+                                .align(Alignment.CenterHorizontally),
+                            contentPadding = PaddingValues(0.dp)
+                        ) {
+                            Text(
+                                text = if (verMais) "Visualizar menos" else "Visualizar mais",
+                                color = ORANGE_SECUNDARY,
+                                modifier = Modifier.padding(0.dp)
+                            )
+                        }
                     }
                 }
             }
@@ -368,7 +386,7 @@ fun PerfilBarbeariaContent(paddingValues: PaddingValues, navController: NavContr
 
 
 @Composable
-fun BoxFuncionarios(navController: NavController){
+fun BoxFuncionarios(navController: NavController, funcionarios: List<Funcionario>?){
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -379,24 +397,20 @@ fun BoxFuncionarios(navController: NavController){
             style = Typography.titleMedium,
         )
 
-        val funcionarios = listOf(
-            Funcionario(1, nome = "Diego", imgPerfil = R.drawable.foto_perfil, dtype =  "Administrador", email = "barbeiro@gmail.com"),
-            Funcionario(2, nome = "Beatriz V.", imgPerfil = R.drawable.barbeira2,  dtype ="Barbeira", email = "barbeiro@gmail.com"),
-            Funcionario(3, nome = "Roberto M.", imgPerfil = R.drawable.barbeiro1,  dtype ="Barbeiro", email = "barbeiro@gmail.com")
-        )
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            repeat(3) { index ->
-                Box(modifier = Modifier.clickable {
-                    navController.navigate("perfilUsuario")
-                }) {
+            funcionarios?.forEach { funcionario ->
+                Box(
+                    modifier = Modifier.clickable {
+                        navController.navigate("perfilUsuario")
+                    }
+                ) {
                     SelecaoFuncionarios(
-                        funcionario = funcionarios[index],
+                        funcionario = funcionario,
                         isSelectable = false,
                         exibirInformacoes = true
                     )

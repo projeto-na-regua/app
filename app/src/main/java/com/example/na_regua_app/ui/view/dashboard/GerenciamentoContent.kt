@@ -30,7 +30,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.na_regua_app.R
 import com.example.na_regua_app.data.model.DiaSemana
 import com.example.na_regua_app.data.model.Funcionario
 import com.example.na_regua_app.data.model.ItemMenuDropDown
@@ -38,9 +37,6 @@ import com.example.na_regua_app.data.model.criarListaDiaSemana
 import com.example.na_regua_app.ui.components.DropDownMenu
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
-import com.example.na_regua_app.ui.view.Espacamento
-import com.example.na_regua_app.ui.theme.RED_DELETE
-import com.example.na_regua_app.ui.theme.Typography
 import com.example.na_regua_app.ui.view.Espacamento
 
 @Composable
@@ -52,8 +48,8 @@ fun GerenciamentoContent() {
             id = 0,
             nome= "Marcos V.",
             email =  "marcos@email.com",
-            imgPerfil =  R.drawable.foto_perfil,
-            dtype = "Barbeiro"
+            imgPerfil =  "R.drawable.foto_perfil",
+            especialidade = "Barbeiro"
         )
     )
 

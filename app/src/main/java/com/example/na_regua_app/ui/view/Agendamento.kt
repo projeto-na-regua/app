@@ -37,9 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.na_regua_app.R
 import com.example.na_regua_app.data.model.Funcionario
-import com.example.na_regua_app.data.model.Servico
 import com.example.na_regua_app.data.model.ServicoCardDTO
 import com.example.na_regua_app.data.model.Usuario
 import com.example.na_regua_app.data.model.usuarios
@@ -285,9 +283,9 @@ fun BoxSelecaobarbeiro(
         )
 
         val funcionarios = listOf(
-            Funcionario(1, nome = "Barbeiro 1", imgPerfil = R.drawable.foto_perfil, dtype = "Barbeiro", email = "barbeiro@gmail.com"),
-            Funcionario(2, nome = "Barbeiro 2", imgPerfil = R.drawable.barbeira2, dtype = "Barbeiro", email = "barbeiro@gmail.com"),
-            Funcionario(3, nome = "Barbeiro 3", imgPerfil = R.drawable.barbeiro1, dtype = "Barbeiro", email = "barbeiro@gmail.com")
+            Funcionario(1, nome = "Barbeiro 1", imgPerfil = "R.drawable.foto_perfil", especialidade = "Barbeiro", email = "barbeiro@gmail.com"),
+            Funcionario(2, nome = "Barbeiro 2", imgPerfil = "R.drawable.barbeira2", especialidade = "Barbeiro", email = "barbeiro@gmail.com"),
+            Funcionario(3, nome = "Barbeiro 3", imgPerfil = "R.drawable.barbeiro1", especialidade = "Barbeiro", email = "barbeiro@gmail.com")
 
         )
 

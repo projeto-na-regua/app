@@ -1,5 +1,7 @@
 package com.example.na_regua_app.ui.view
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,19 +36,22 @@ import com.example.na_regua_app.ui.components.BotaoSpan
 import com.example.na_regua_app.ui.components.Input
 import com.example.na_regua_app.ui.components.LogoImage
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
+import com.example.na_regua_app.viewmodel.CadastroBarbeariaViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CadastroBarbeariaEndereco(
-    navController: NavController
+    navController: NavController,
+    cadastroBarbeariaViewModel: CadastroBarbeariaViewModel = koinViewModel(),
+    cpf: String,
+    nomeDoNegocio: String
 ) {
     var cep by remember { mutableStateOf("") }
     var logradouro by remember { mutableStateOf("") }
+    var numero by remember { mutableStateOf("") }
     var cidade by remember { mutableStateOf("") }
     var estado by remember { mutableStateOf("") }
-    var bairro by remember { mutableStateOf("") }
-    var numero by remember {
-        mutableStateOf("")
-    }
+    val context = LocalContext.current
 
     Scaffold(
         content = { paddingValues ->
@@ -106,12 +112,6 @@ fun CadastroBarbeariaEndereco(
                     }
                     Input(
                         modifier = Modifier.fillMaxWidth(),
-                        value = bairro,
-                        onValueChange = { novoValor -> bairro = novoValor },
-                        label = { Text("Bairro") }
-                    )
-                    Input(
-                        modifier = Modifier.fillMaxWidth(),
                         value = cidade,
                         onValueChange = { novoValor -> cidade = novoValor },
                         label = { Text("Cidade") }
@@ -126,7 +126,32 @@ fun CadastroBarbeariaEndereco(
 
                 Spacer(modifier = Modifier.weight(1f))
                 Botao(
-                    onClick = {navController.navigate("cadastroBarbeariaFim")},
+                    onClick = {
+                        cadastroBarbeariaViewModel.atualizarCpf(cpf)
+                        cadastroBarbeariaViewModel.atualizarNomeDoNegocio(nomeDoNegocio)
+                        cadastroBarbeariaViewModel.atualizarCep(cep)
+                        cadastroBarbeariaViewModel.atualizarLogradouro(logradouro)
+                        cadastroBarbeariaViewModel.atualizarNumero(numero)
+                        cadastroBarbeariaViewModel.atualizarCidade(cidade)
+                        cadastroBarbeariaViewModel.atualizarEstado(estado)
+
+                        println("$cpf, $nomeDoNegocio, ${cadastroBarbeariaViewModel.cep.value}, ${cadastroBarbeariaViewModel.logradouro.value}, ${cadastroBarbeariaViewModel.numero.value}, ${cadastroBarbeariaViewModel.cidade.value}, ${cadastroBarbeariaViewModel.estado.value} ")
+
+                        cadastroBarbeariaViewModel.enviarCadastroBarbearia { success ->
+                            if (success) {
+                                Log.d("CadastroBarbearia", "Cadastro realizado com sucesso!")
+                                Toast.makeText(context, "Cadastro de barbearia realizado com sucesso!", Toast.LENGTH_SHORT).show()
+
+                                // Tente a navegação aqui
+                                navController.navigate("cadastroBarbeariaFim") {
+                                    popUpTo("cadastroBarbeariaEndereco") { inclusive = true }
+                                }
+                            } else {
+                                Log.d("CadastroBarbearia", "Erro ao cadastrar a barbearia.")
+                                Toast.makeText(context, "Erro ao cadastrar a barbearia. Tente novamente.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                              },
                     textButton =  "Próximo"
                 )
 
@@ -139,4 +164,8 @@ fun CadastroBarbeariaEndereco(
 @Composable
 fun CadastroBarbeariaEnderecoPreview() {
     CadastroBarbeariaEndereco(navController = rememberNavController())
+}
+
+fun <NavHostController> CadastroBarbeariaEndereco(navController: NavHostController) {
+
 }

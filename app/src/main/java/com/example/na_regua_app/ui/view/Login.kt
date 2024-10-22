@@ -1,5 +1,7 @@
 package com.example.na_regua_app.ui.view
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,23 +18,32 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.ui.components.BotaoSpan
 import com.example.na_regua_app.ui.components.Input
 import com.example.na_regua_app.ui.components.LogoImage
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
+import com.example.na_regua_app.utils.salvarToken
+import com.example.na_regua_app.viewmodel.LoginViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun Login(navController: NavController) {
+fun Login(
+    navController: NavController,
+    loginViewModel: LoginViewModel = koinViewModel()
+) {
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Scaffold(
         content = { paddingValues ->
@@ -93,7 +104,25 @@ fun Login(navController: NavController) {
 
                 Spacer(modifier = Modifier.weight(1f))
                 BotaoSpan(
-                    onClick = { navController.navigate("homeUsuario")},
+                    onClick = {
+
+                        loginViewModel.atualizarEmail("joaosilva1@example.com")
+                        loginViewModel.atualizarSenha("senhaSegura123")
+
+                        loginViewModel.logar(context) { success ->
+                            if (success) {
+                                Log.d("Login", "Login realizado com sucesso!")
+                                Toast.makeText(context, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show()
+                                // Tente a navegação aqui
+                                navController.navigate("homeUsuario") {
+                                    popUpTo("homeUsuario") { inclusive = true }
+                                }
+                            } else {
+                                Log.d("Login", "Erro ao realizar o login.")
+                                Toast.makeText(context, "Erro ao realizar o login. Tente novamente.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                              },
                     textButton = "Entrar",
                     textEsquerda = "Não possui conta?",
                     textDireita = "Cadastre-se",
@@ -110,5 +139,7 @@ fun Login(navController: NavController) {
 @Preview
 @Composable
 fun LoginPreview() {
-    Login(navController = rememberNavController())
+    val navController = rememberNavController()
+    Login(navController)
 }
+

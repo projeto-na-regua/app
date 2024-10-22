@@ -136,8 +136,19 @@ class MainActivity : ComponentActivity() {
                     composable("cadastroBarbeariaFotoUsername"){
                         CadastroBarbeariaFotoNome(navController)
                     }
-                    composable("cadastroBarbeariaEndereco"){
-                        CadastroBarbeariaEndereco(navController)
+                    composable("cadastroBarbeariaEndereco/{cpf}/{nomeDoNegocio}"){backStackEntry ->
+                        val cpf =
+                            backStackEntry.arguments?.getString("cpf") ?: "CPF Vazio"
+                        val nomeDoNegocio =
+                            backStackEntry.arguments?.getString("nomeDoNegocio") ?: "Sem nome do negócio"
+
+
+                        CadastroBarbeariaEndereco(
+                            navController = navController,
+                            cpf = cpf,
+                            nomeDoNegocio = nomeDoNegocio
+                        )
+
                     }
                     composable("cadastroBarbeariaFim"){
                         CadastroBarbeariaFim(navController)

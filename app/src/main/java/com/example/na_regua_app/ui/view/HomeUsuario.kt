@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -51,6 +52,7 @@ import com.example.na_regua_app.ui.components.CardImagemInfoBarbearia
 import com.example.na_regua_app.ui.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
+import com.example.na_regua_app.utils.obterToken
 
 @Composable
 fun HomeUsuario(
@@ -145,6 +147,7 @@ fun HomeUsuarioContent(paddingValues: PaddingValues, navController: NavControlle
         }
 
         item {
+
             Text(
                 text = "Pesquisas recentes",
                 color = BLUE_PRIMARY,

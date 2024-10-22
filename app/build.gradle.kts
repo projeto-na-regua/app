@@ -73,6 +73,9 @@ dependencies {
     // Retrofit2
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+
 
     // Coil
     implementation("io.coil-kt:coil-compose:2.6.0")
@@ -80,6 +83,9 @@ dependencies {
     // Koin
     implementation("io.insert-koin:koin-android:4.0.0")
     implementation("io.insert-koin:koin-compose-viewmodel:4.0.0")
+
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     // AndroidX
     implementation(libs.androidx.core.ktx)

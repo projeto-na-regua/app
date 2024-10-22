@@ -1,6 +1,9 @@
 package com.example.na_regua_app.data.repository
 
+import com.example.na_regua_app.data.model.Barbearia
 import com.example.na_regua_app.data.model.DadosCadastro
+import com.example.na_regua_app.data.model.DadosCadastroBarbearia
+import com.example.na_regua_app.data.model.DadosLogin
 import com.example.na_regua_app.data.model.Usuario
 import retrofit2.Response
 
@@ -25,6 +28,14 @@ class UsuarioRepositoryLocalImpl() : UsuarioRepository {
     }
 
     override suspend fun cadastrarUsuario(dadosCadastro: DadosCadastro): Response<String> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun cadastrarBarbearia(dadosCadastradosBarbearia: DadosCadastroBarbearia): Response<Void> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun logar(dadosLogin: DadosLogin): Response<String> {
         TODO("Not yet implemented")
     }
 

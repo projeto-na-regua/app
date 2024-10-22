@@ -1,6 +1,11 @@
 package com.example.na_regua_app.data.api
 
+import android.content.Context
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import com.example.na_regua_app.BuildConfig
+import com.example.na_regua_app.utils.obterToken
+import com.example.na_regua_app.utils.obterTokenSincrono
 import okhttp3.Interceptor
 import okhttp3.Interceptor.Chain
 import okhttp3.OkHttpClient
@@ -9,16 +14,21 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.util.concurrent.TimeUnit
 
 object Rest {
 
     class apiInterceptor : Interceptor {
         override fun intercept(chain: Chain): Response {
+
+//            val token = obterTokenSincrono(context)
+
             val oldRequest = chain.request()
             val newRequest = Request.Builder()
                 .url(oldRequest.url)
                 .method(oldRequest.method, oldRequest.body)
-                .header("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE5Iiwibm9tZSI6IlJpYW4gTmVyaXMiLCJzZW5oYSI6InNlbmhhMTIzIiwiZW1haWwiOiJyaWFuQGdtYWlsLmNvbSIsImV4cCI6MTcyOTM3MDY3NjU3OX0.pTmX97b60XPDji4bWXIgGhjzRpf8ufL7YyqoUwDQ5Kc")
+                .header("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI3Iiwibm9tZSI6Ikpvw6NvIFNpbHZhIiwic2VuaGEiOiJzZW5oYVNlZ3VyYTEyMyIsImVtYWlsIjoiam9hb3NpbHZhM0BleGFtcGxlLmNvbSIsImV4cCI6MTcyOTQ3NTYyNDU4MX0.19zUbWh_vbk-sOF90bl9Bb99NW20sNznKbqULUk_XkY")
                 .build()
             return chain.proceed(newRequest)
         }
@@ -28,14 +38,19 @@ object Rest {
         OkHttpClient
             .Builder()
             .addInterceptor(apiInterceptor())
+            .connectTimeout(30, TimeUnit.SECONDS) // Aumente para 30 segundos ou mais
+            .readTimeout(30, TimeUnit.SECONDS)    // Aumente para 30 segundos ou mais
+            .writeTimeout(30, TimeUnit.SECONDS)   // Aumente para 30 segundos ou mais
             .build()
     }
 
     val api = Retrofit.Builder()
         .baseUrl(BuildConfig.API_BASE_URL)
         .client(client)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(ScalarsConverterFactory.create()) // Para strings
+        .addConverterFactory(GsonConverterFactory.create()) // Para objetos JSON
         .build()
+
 
 
     val usuarioService by lazy { api.create(UsuarioService::class.java) }

@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.na_regua_app.R
 import com.example.na_regua_app.data.model.Funcionario
 import com.example.na_regua_app.data.model.Usuario
@@ -74,8 +75,8 @@ fun GestaoContent(paddingValues: PaddingValues) {
             id = 0,
             nome = "Marcos V.",
             email = "marcos@email.com",
-            imgPerfil = R.drawable.foto_perfil,
-            dtype = "Barbeiro"
+            imgPerfil = "R.drawable.foto_perfil",
+            especialidade = "Barbeiro"
         )
     )
 
@@ -188,7 +189,7 @@ fun CardFuncionario(funcionario: Funcionario){
             Box {
                 if (funcionario.imgPerfil != null) {
                     Image(
-                        painter = painterResource(id = funcionario.imgPerfil),
+                        painter = rememberAsyncImagePainter(model = funcionario.imgPerfil),
                         contentDescription = "Imagem do Funcionário",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier

@@ -18,7 +18,7 @@ object Rest {
             val newRequest = Request.Builder()
                 .url(oldRequest.url)
                 .method(oldRequest.method, oldRequest.body)
-                .header("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE5Iiwibm9tZSI6IlJpYW4gTmVyaXMiLCJzZW5oYSI6InNlbmhhMTIzIiwiZW1haWwiOiJyaWFuQGdtYWlsLmNvbSIsImV4cCI6MTcyOTM3MDY3NjU3OX0.pTmX97b60XPDji4bWXIgGhjzRpf8ufL7YyqoUwDQ5Kc")
+                .header("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE5Iiwibm9tZSI6IlJpYW4gTmVyaXMiLCJzZW5oYSI6InNlbmhhMTIzIiwiZW1haWwiOiJyaWFuQGdtYWlsLmNvbSIsImV4cCI6MTcyOTQ1ODk3MzkwMH0.OEx93ViSkwIoABwsc-vYmYnmLByV834WbvuI7ayqExo")
                 .build()
             return chain.proceed(newRequest)
         }
@@ -41,5 +41,6 @@ object Rest {
     val usuarioService by lazy { api.create(UsuarioService::class.java) }
     val barbeariaService by lazy { api.create(BarbeariaService::class.java) }
     val servicoService by lazy { api.create(ServicoService::class.java) }
+    val funcionarioService by lazy { api.create(FuncionarioService::class.java) }
 
 }

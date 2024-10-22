@@ -87,11 +87,11 @@ fun PerfilUsuarioContent(paddingValues: PaddingValues, navController: NavControl
 
     if (usuario != null) {
         var nomeUsuario by remember { mutableStateOf(usuario.nome) }
-        //Buscar no backend de onde virá os dados abaixo:
+
         var seguindo by remember { mutableStateOf(2) }
         var seguidores by remember { mutableStateOf(0) }
         var numeroDePostagens by remember { mutableStateOf(2) }
-        //---
+
         var imgPerfil by remember { mutableStateOf(usuario.imgPerfil) }
 
 
@@ -296,7 +296,6 @@ fun PerfilUsuarioContent(paddingValues: PaddingValues, navController: NavControl
             }
         }
     } else {
-        // Mostre uma mensagem de carregamento ou erro...
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(text = "Carregando perfil...", color = Color.Gray)
         }

@@ -1,16 +1,20 @@
 package com.example.na_regua_app.data.di
 
 import com.example.na_regua_app.data.api.BarbeariaService
+import com.example.na_regua_app.data.api.FuncionarioService
 import com.example.na_regua_app.data.api.Rest
 import com.example.na_regua_app.data.api.ServicoService
 import com.example.na_regua_app.data.api.UsuarioService
 import com.example.na_regua_app.data.repository.BarbeariaRepository
 import com.example.na_regua_app.data.repository.BarbeariaRepositoryImpl
+import com.example.na_regua_app.data.repository.FuncionarioRepository
+import com.example.na_regua_app.data.repository.FuncionarioRepositoryImpl
 import com.example.na_regua_app.data.repository.ServicoRepository
 import com.example.na_regua_app.data.repository.ServicoRepositoryImpl
 import com.example.na_regua_app.data.repository.UsuarioRepository
 import com.example.na_regua_app.data.repository.UsuarioRepositoryImpl
 import com.example.na_regua_app.data.repository.UsuarioRepositoryLocalImpl
+import com.example.na_regua_app.viewmodel.FuncionarioViewModel
 import com.example.na_regua_app.viewmodel.PerfilBarbeariaViewModel
 import com.example.na_regua_app.viewmodel.PerfilUsuarioViewModel
 import com.example.na_regua_app.viewmodel.ServicoViewModel
@@ -23,6 +27,7 @@ val appModule= module {
     single<UsuarioService> { Rest.usuarioService }
     single<BarbeariaService> { Rest.barbeariaService }
     single<ServicoService> { Rest.servicoService }
+    single<FuncionarioService> { Rest.funcionarioService }
 
     // Repositories
     single<UsuarioRepository> {
@@ -34,9 +39,11 @@ val appModule= module {
 
     single<BarbeariaRepository> { BarbeariaRepositoryImpl(get()) }
     single<ServicoRepository> { ServicoRepositoryImpl(get()) }
+    single<FuncionarioRepository> { FuncionarioRepositoryImpl(get()) }
 
     // ViewModels
     viewModel<PerfilUsuarioViewModel> { PerfilUsuarioViewModel(get()) }
     viewModel<PerfilBarbeariaViewModel> { PerfilBarbeariaViewModel(get()) }
     viewModel<ServicoViewModel> { ServicoViewModel(get()) }
+    viewModel<FuncionarioViewModel> { FuncionarioViewModel(get()) }
 }

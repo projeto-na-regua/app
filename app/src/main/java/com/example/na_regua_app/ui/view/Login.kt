@@ -25,14 +25,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.ui.components.BotaoSpan
 import com.example.na_regua_app.ui.components.Input
 import com.example.na_regua_app.ui.components.LogoImage
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
-import com.example.na_regua_app.utils.salvarToken
 import com.example.na_regua_app.viewmodel.LoginViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -106,7 +104,7 @@ fun Login(
                 BotaoSpan(
                     onClick = {
 
-                        loginViewModel.atualizarEmail("joaosilva1@example.com")
+                        loginViewModel.atualizarEmail("joaosilva4@example.com")
                         loginViewModel.atualizarSenha("senhaSegura123")
 
                         loginViewModel.logar(context) { success ->

@@ -5,9 +5,11 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
 import androidx.lifecycle.viewModelScope
 import com.example.na_regua_app.data.model.DadosCadastroBarbearia
 import com.example.na_regua_app.data.model.DadosLogin
+import com.example.na_regua_app.data.model.UserDType
 import com.example.na_regua_app.data.repository.UsuarioRepository
 import com.example.na_regua_app.utils.obterUsuarioDtype
 import com.example.na_regua_app.utils.salvarToken
@@ -37,38 +39,55 @@ class LoginViewModel(
             senha = senha.value,
         )
 
-        viewModelScope.launch {
-            try {
-                val responseLogin = usuarioRepository.logar(dadosLogin)
-                if (responseLogin.isSuccessful) {
-                    responseLogin.body()?.let { usuario ->
-                        val responseAdmIsTrue = usuarioRepository.admIsTrue(usuario)
-                        var admBody: Any? = null
+                viewModelScope.launch {
+                    try {
+                        val responseLogin = usuarioRepository.logar(dadosLogin)
+                        if (responseLogin.isSuccessful) {
+                            responseLogin.body()?.let { usuario ->
+                                // Verificar se o usuário tem acesso de administrador
+                                val responseAdmIsTrue = usuarioRepository.admIsTrue(usuario)
+                                var admBody: Any? = null
 
-                        if (responseAdmIsTrue.isSuccessful) {
-                            admBody = responseAdmIsTrue.body()
-                            println("Resposta de admIsTrue: ${admBody.toString()}")
+                                if (responseAdmIsTrue.isSuccessful) {
+                                    admBody = responseAdmIsTrue.body()  // Captura o retorno do admIsTrue
+                                    println("Resposta de admIsTrue: ${admBody.toString()}")
+                                } else {
+                                    Log.e("LoginViewModel", "admIsTrue falhou com código: ${responseAdmIsTrue.code()}")
+                                }
+
+                                salvarToken(context, token = usuario)
+                                admBody?.let {
+                                    val userDtype = responseAdmIsTrue.body()
+                                        ?.let { it1 -> UserDType(nome = it1.nome, dtype = it1.dtype, adm = it1.adm) }
+                                    if (userDtype != null) {
+                                        salvarUsuarioDtype(context, userDtype)
+                                    }
+                                }
+
+                                viewModelScope.launch {
+                                    obterUsuarioDtype(context).collect { userDtype ->
+                                        userDtype?.let {
+                                            println("Nome do usuário: ${it.nome}")
+                                            println("DType do usuário: ${it.dtype}")
+                                            println("isAdm: ${it.adm}")
+                                        } ?: run {
+                                            println("Usuário não encontrado")
+                                        }
+                                    }
+                                }
+                            }
                         } else {
-                            Log.e("LoginViewModel", "admIsTrue falhou com código: ${responseAdmIsTrue.code()}")
+                            Log.e("LoginViewModel", "Login falhou com código: ${responseLogin.code()}")
                         }
-                        salvarToken(context, token = usuario)
-                        admBody?.let { salvarUsuarioDtype(context, admBody.toString()) }
-                        obterUsuarioDtype(context).collect { userDtype ->
-                            println("Valor do userDtype: $userDtype")
-                        }
+                        onResult(responseLogin.isSuccessful)
+                    } catch (e: Exception) {
+                        onResult(false)
+                        Log.e("LoginViewModel", "Erro ao logar: ${e.message}")
                     }
-                } else {
-                    Log.e("LoginViewModel", "Login falhou com código: ${responseLogin.code()}")
                 }
 
-                // Retorna o resultado da operação de login
-                onResult(responseLogin.isSuccessful)
 
-            } catch (e: Exception) {
-                onResult(false)
-                Log.e("LoginViewModel", "Erro ao logar: ${e.message}")
-            }
-        }
+
 
 
     }

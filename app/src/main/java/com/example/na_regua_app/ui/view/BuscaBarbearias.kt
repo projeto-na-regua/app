@@ -1,321 +1,186 @@
-import androidx.compose.foundation.border
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.net.Uri
+import android.widget.DatePicker
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.Place
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.na_regua_app.data.model.Usuario
-import com.example.na_regua_app.data.model.usuarios
+import com.example.na_regua_app.R
 import com.example.na_regua_app.ui.components.Botao
-import com.example.na_regua_app.ui.components.BottomBarCustom
 import com.example.na_regua_app.ui.components.TopBarCustom
-import com.example.na_regua_app.ui.theme.Typography
-import com.example.na_regua_app.ui.view.CalendarExample
+import java.util.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BuscaBarbearias(navController: NavHostController,
-                    usuario: Usuario
-) {
+fun BuscaBarbearias(navController: NavHostController) {
+    var servico by remember { mutableStateOf("") }
+    var dataSelecionada by remember { mutableStateOf("") }
+    var horaSelecionada by remember { mutableStateOf("") }
+    var dataParaBackend by remember { mutableStateOf("") }
+    var horaParaBackend by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    val calendar = Calendar.getInstance()
+
     Scaffold(
         topBar = {
             TopBarCustom(navController, "Busca", true)
         },
         content = { paddingValues ->
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(14.dp)
-            ) {
-                item {
-                    textoAcimaOpcoesBusca()
-                }
-                item {
-                    opcoesBuscaBarbearia(
-                        onServiceClick = {
-                            navController.navigate("listagemBarbearias")
-                        },
-                        onDateClick = {
-                            navController.navigate("listagemBarbearias")
-                        },
-                        onLocalClick = {
-                            navController.navigate("listagemBarbearias")
-                        }
-                    )
-                }
-            }
-        },
-        bottomBar = {
-            BottomBarCustom(navController, usuario)
-        }
-    )
-}
-
-@Composable
-fun SelecionarLocalScreen(navController: NavHostController, usuario: Usuario) {
-    val localAtual = "Rua Fictícia, 123 - Centro"
-    val enderecosVisitados = listOf(
-        "Rua Exemplo, 456 - Bairro A",
-        "Avenida Teste, 789 - Bairro B",
-        "Travessa Simulação, 1011 - Bairro C"
-    )
-
-    Scaffold(
-        topBar = {
-            TopBarCustom(navController, "Selecionar Local", true)
-        },
-        content = { paddingValues ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(14.dp)
+                    .padding(14.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text(
-                    text = "Localização Atual",
-                    style = Typography.bodyMedium,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-                OpcaoEndereco(
-                    texto = localAtual,
-                    onClick = {
-                        // Lógica ao selecionar o local atual
-                        navController.navigate("buscarBarbearias") // Voltar para a tela anterior, ou fazer outra ação
-                    }
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = "Locais Visitados",
-                    style = Typography.bodyMedium,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(enderecosVisitados) { endereco ->
-                        OpcaoEndereco(
-                            texto = endereco,
-                            onClick = {
-                                // Lógica ao selecionar um local visitado
-                                navController.navigate("buscarBarbearias") // Voltar para a tela anterior, ou fazer outra ação
-                            }
+                // Campo para selecionar serviço
+                OutlinedTextField(
+                    value = servico,
+                    onValueChange = { servico = it },
+                    label = { Text("Selecionar serviço") },
+                    modifier = Modifier.fillMaxWidth(),
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.tesourinha),
+                            contentDescription = "Selecionar serviço"
                         )
-                        Spacer(modifier = Modifier.height(15.dp)) // Espaço entre os endereços visitados
-                    }
-                }
+                    },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Color.LightGray,
+                        unfocusedBorderColor = Color.LightGray
+                    )
+                )
+
+                // Botão para selecionar data
+                OutlinedTextField(
+                    value = dataSelecionada,
+                    onValueChange = {}, // Não permite entrada de texto
+                    label = { Text("Selecionar data") },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.DateRange,
+                            contentDescription = "Selecionar data"
+                        )
+                    },
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            // Abre o DatePickerDialog ao clicar no ícone
+                            val datePickerDialog = DatePickerDialog(
+                                context,
+                                { _, year, month, dayOfMonth ->
+                                    val selectedDate = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year)
+                                    dataSelecionada = selectedDate // Atualiza a data selecionada
+
+                                    // Formato para o backend
+                                    dataParaBackend = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+                                },
+                                calendar.get(Calendar.YEAR),
+                                calendar.get(Calendar.MONTH),
+                                calendar.get(Calendar.DAY_OF_MONTH)
+                            )
+                            datePickerDialog.show()
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.DateRange,
+                                contentDescription = "Selecionar data"
+                            )
+                        }
+                    },
+                    readOnly = true, // Não permite edição
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Color.LightGray,
+                        unfocusedBorderColor = Color.LightGray
+                    )
+                )
+
+                // Campo para selecionar hora
+                OutlinedTextField(
+                    value = horaSelecionada,
+                    onValueChange = {}, // Não permite entrada de texto
+                    label = { Text("Selecionar hora") },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    leadingIcon = {
+                        Image(
+                            painter = painterResource(id = R.drawable.icone_hora),
+                            contentDescription = "Selecionar hora",
+                            modifier = Modifier.size(24.dp)
+                        )
+                    },
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            // Abre o TimePickerDialog ao clicar no ícone
+                            val timePickerDialog = TimePickerDialog(
+                                context,
+                                { _, hourOfDay, minute ->
+                                    val selectedTime = String.format("%02d:%02d", hourOfDay, minute)
+                                    horaSelecionada = selectedTime // Atualiza a hora selecionada
+
+                                    // Formato para o backend
+                                    horaParaBackend = String.format("%02d:%02d:%02d", hourOfDay, minute, 0)
+                                },
+                                calendar.get(Calendar.HOUR_OF_DAY),
+                                calendar.get(Calendar.MINUTE),
+                                true // Formato 24 horas
+                            )
+                            timePickerDialog.show()
+                        }) {
+                            Image(
+                                painter = painterResource(id = R.drawable.icone_hora),
+                                contentDescription = "Selecionar hora",
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    },
+                    readOnly = true, // Não permite edição
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Color.LightGray,
+                        unfocusedBorderColor = Color.LightGray
+                    )
+                )
 
                 Spacer(modifier = Modifier.weight(1f))
-
-                Button(
-                    onClick = {
-                        // Lógica ao clicar no botão de confirmação
-                        navController.navigate("buscarBarbearias") // Voltar para a tela anterior, ou fazer outra ação
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp)
-                ) {
-                    Text(text = "Confirmar")
-                }
-            }
-        },
-        bottomBar = {
-            BottomBarCustom(navController, usuario)
-        }
-    )
-}
-
-@Composable
-fun SelecionarDataScreen(navController: NavHostController, usuario: Usuario) {
-    var selectedDate by remember { mutableStateOf<String?>(null) }
-
-    Scaffold(
-        topBar = {
-            TopBarCustom(navController, "Selecionar Data", true)
-        },
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(14.dp)
-            ) {
-                // Exibir o calendário
-                CalendarExample { date ->
-                    selectedDate = date
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Exibir a data selecionada (se houver)
-                selectedDate?.let {
-                    Text(
-                        text = "Data selecionada: $it",
-                        style = Typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
-                }
-
-                // Botão de confirmação
-                Botao(
-                    onClick = {navController.navigate("buscarBarbearias")},
-                    textButton = "Marcar Horário"
-                )
-            }
-        },
-        bottomBar = {
-            BottomBarCustom(navController, usuario)
-        }
-    )
-}
-
-@Composable
-fun SelecionarServicoScreen(navController: NavController, usuario: Usuario) {
-    Scaffold(
-        topBar = {
-            TopBarCustom(navController, "Selecionar Serviço", true)
-        },
-        content = { paddingValues ->
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(14.dp)
-            ) {
-                item {
-                    opcoesServicos { service ->
-                        // Redirecionar para a tela de listagemBarbearias
-                        navController.navigate("listagemBarbearias")
+                Botao(onClick = {
+                    if (servico.isNotEmpty() && dataSelecionada.isNotEmpty() && horaSelecionada.isNotEmpty()) {
+                        // Passa os dados no formato que o backend espera
+                        val route = "listagemBarbearias/${Uri.encode(servico)}/${Uri.encode(dataParaBackend)}/${Uri.encode(horaParaBackend)}"
+                        println("Navegando para: $route")
+                        navController.navigate(route)
+                    } else {
+                        println("Por favor, preencha todos os campos antes de pesquisar.")
                     }
-                }
+                }, textButton = "Pesquisar")
+
+                Spacer(modifier = Modifier.weight(.05f))
             }
-        },
-        bottomBar = {
-            BottomBarCustom(navController, usuario)
         }
     )
 }
-
-@Composable
-fun OpcaoEndereco(texto: String, onClick: () -> Unit) {
-    // Estilo de cartão para endereços, sem ícones
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .border(1.dp, Color.Gray, shape = RoundedCornerShape(8.dp))
-            .padding(16.dp)
-            .padding(vertical = 8.dp)
-    ) {
-        Text(
-            text = texto,
-            style = Typography.titleSmall
-        )
-    }
-}
-
-@Composable
-fun opcoesBuscaBarbearia(
-    onServiceClick: () -> Unit,
-    onDateClick: () -> Unit,
-    onLocalClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        OptionRow(icon = Icons.Default.DateRange, text = "Selecionar serviço", onClick = onServiceClick)
-        OptionRow(icon = Icons.Default.DateRange, text = "Selecionar data", onClick = onDateClick)
-        OptionRow(icon = Icons.Default.DateRange, text = "Selecionar local", onClick = onLocalClick)
-    }
-}
-
-@Composable
-fun opcoesServicos(onServiceClick: (String) -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        listOf("Corte", "Alisamento", "Pintura", "Barba", "Hidratação").forEach { service ->
-            OptionRow(icon = Icons.Default.DateRange, text = service) {
-                onServiceClick(service) // Alterado para usar a rota "listagemBarbearias"
-            }
-        }
-    }
-}
-@Composable
-fun OptionRow(icon: ImageVector, text: String, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp)
-            .clickable(onClick = onClick)
-            .border(1.dp, Color.Gray, shape = RoundedCornerShape(8.dp))
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(imageVector = icon, contentDescription = text)
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(text = text, style = Typography.titleSmall)
-    }
-}
-
-@Composable
-fun textoAcimaOpcoesBusca(){
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "a" )
-        Text(
-            text = "O que você busca ?",
-            style = Typography.titleSmall
-        )
-    }
-}
-
 
 @Preview
 @Composable
 fun MyAppNavHost(navController: NavHostController = rememberNavController()) {
     NavHost(navController, startDestination = "buscaBarbearias") {
-        composable("buscaBarbearias") { BuscaBarbearias(navController, usuarios()[0]) }
-        composable("selecionarServico") { SelecionarServicoScreen(navController,usuarios()[0]) }
-        composable("selecionarData") { SelecionarDataScreen(navController,usuarios()[0]) }
-        composable("selecionarLocal") { SelecionarLocalScreen(navController, usuarios()[0]) }
+        composable("buscaBarbearias") { BuscaBarbearias(navController) }
     }
 }

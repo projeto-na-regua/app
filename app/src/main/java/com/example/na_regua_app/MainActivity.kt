@@ -1,12 +1,13 @@
 package com.example.na_regua_app
 
+import BuscaBarbearias
 import Comunidade
 import Configuracoes
 import ConfiguracoesInformacoesPessoais
 import ConfiguracoesSeuNegocio
 import ExcluirConta
 import ExcluirNegocio
-import BuscaBarbearias
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,8 +15,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.data.di.appModule
+import com.example.na_regua_app.data.model.BarbeariaArgs
 import com.example.na_regua_app.data.model.usuarios
-import com.example.na_regua_app.screens.ListagemBarbearias
 import com.example.na_regua_app.ui.theme.NareguaappTheme
 import com.example.na_regua_app.ui.view.Adicionar
 import com.example.na_regua_app.ui.view.AgendaUsuario
@@ -24,21 +25,22 @@ import com.example.na_regua_app.ui.view.Cadastro
 import com.example.na_regua_app.ui.view.CadastroBarbeariaEndereco
 import com.example.na_regua_app.ui.view.CadastroBarbeariaFim
 import com.example.na_regua_app.ui.view.CadastroBarbeariaFotoNome
-import com.example.na_regua_app.ui.view.Login
-import com.example.na_regua_app.ui.view.Notificacoes
-import com.example.na_regua_app.ui.view.SplashScreen
-import com.example.na_regua_app.ui.view.TelaInicial
 import com.example.na_regua_app.ui.view.CadastroBarbeariaInicio
 import com.example.na_regua_app.ui.view.CadastroFim
 import com.example.na_regua_app.ui.view.CadastroFotoUsername
 import com.example.na_regua_app.ui.view.CadastroInicio
-import com.example.na_regua_app.ui.view.HomeUsuario
-import com.example.na_regua_app.ui.view.PerfilBarbearia
-import com.example.na_regua_app.ui.view.PerfilUsuario
-import com.example.na_regua_app.ui.view.dashboard.Dashboard
 import com.example.na_regua_app.ui.view.Chat
 import com.example.na_regua_app.ui.view.Gestao
 import com.example.na_regua_app.ui.view.Home
+import com.example.na_regua_app.ui.view.HomeUsuario
+import com.example.na_regua_app.ui.view.ListagemBarbearias
+import com.example.na_regua_app.ui.view.Login
+import com.example.na_regua_app.ui.view.Notificacoes
+import com.example.na_regua_app.ui.view.PerfilBarbearia
+import com.example.na_regua_app.ui.view.PerfilUsuario
+import com.example.na_regua_app.ui.view.SplashScreen
+import com.example.na_regua_app.ui.view.TelaInicial
+import com.example.na_regua_app.ui.view.dashboard.Dashboard
 import com.example.na_regua_app.view.Galeria
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -61,10 +63,40 @@ class MainActivity : ComponentActivity() {
                         Agendamento(navController, usuarios()[1])
                     }
                     composable("buscarBarbearias") {
-                        BuscaBarbearias(navController, usuarios()[1])
+                        BuscaBarbearias(navController)
                     }
-                    composable("listagemBarbearias") {
-                        ListagemBarbearias(navController, usuarios()[1])
+                    composable("listagemBarbearias/{servico}/{data}/{hora}") { backStackEntry ->
+                        val servico = backStackEntry.arguments?.getString("servico")
+                        val data = backStackEntry.arguments?.getString("data")
+                        val hora = backStackEntry.arguments?.getString("hora")
+
+                        // Criar um objeto BarbeariaArgs com os parâmetros
+                        val args = BarbeariaArgs(
+                            servico = Uri.decode(servico ?: ""),
+                            data = Uri.decode(data ?: ""),
+                            hora = Uri.decode(hora ?: "")
+                        )
+
+                        ListagemBarbearias(
+                            navController = navController,
+                            usuario = usuarios()[1],
+                            args = args
+                        )
+                    }
+
+                    composable("listagemBarbearias/{nomeBarbearia}") { backStackEntry ->
+                        val nomeBarbearia = backStackEntry.arguments?.getString("nomeBarbearia")
+
+                        // Criar um objeto BarbeariaArgs com os parâmetros
+                        val args = BarbeariaArgs(
+                            nomeBarbearia = nomeBarbearia
+                        )
+
+                        ListagemBarbearias(
+                            navController = navController,
+                            usuario = usuarios()[1],
+                            args = args
+                        )
                     }
                     composable("telaInicial") {
                         TelaInicial(navController)
@@ -148,7 +180,6 @@ class MainActivity : ComponentActivity() {
                             cpf = cpf,
                             nomeDoNegocio = nomeDoNegocio
                         )
-
                     }
                     composable("cadastroBarbeariaFim"){
                         CadastroBarbeariaFim(navController)

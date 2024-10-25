@@ -122,7 +122,7 @@ class MainActivity : ComponentActivity() {
                         Configuracoes(navController, usuarios()[1])
                     }
                     composable("settingsprofile") {
-                        ConfiguracoesInformacoesPessoais(navController, usuarios()[1])
+                        ConfiguracoesInformacoesPessoais(navController, usuarios().first())
                     }
                     composable("settingsbusiness") {
                         ConfiguracoesSeuNegocio(navController,usuarios().first())

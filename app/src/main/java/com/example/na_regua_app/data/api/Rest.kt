@@ -57,4 +57,5 @@ object Rest {
     val barbeariaService by lazy { api.create(BarbeariaService::class.java) }
     val servicoService by lazy { api.create(ServicoService::class.java) }
     val funcionarioService by lazy { api.create(FuncionarioService::class.java) }
+    val chatService by lazy { api.create(ChatService::class.java) }
 }

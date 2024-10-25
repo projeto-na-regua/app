@@ -15,10 +15,6 @@ class ChatViewModel(private val chatRepository: ChatRepository) : ViewModel() {
     private val _chatPostResponse = MutableLiveData<Response<ChatPost>>()
     val chatPostResponse: LiveData<Response<ChatPost>> = _chatPostResponse
 
-    // LiveData para ChatImagePost
-    private val _chatImagePostResponse = MutableLiveData<Response<ChatImagePost>>()
-    val chatImagePostResponse: LiveData<Response<ChatImagePost>> = _chatImagePostResponse
-
     // LiveData para ChatOpen
     private val _chatOpenResponse = MutableLiveData<Response<ChatOpen>>()
     val chatOpenResponse: LiveData<Response<ChatOpen>> = _chatOpenResponse
@@ -32,18 +28,10 @@ class ChatViewModel(private val chatRepository: ChatRepository) : ViewModel() {
     val chatBarbeariaSideResponse: LiveData<Response<ChatBarbeariaSide>> = _chatBarbeariaSideResponse
 
     // Função para postar mensagem de chat
-    fun postarChat(id: Int, mensagem: String, tipo: String) {
+    fun postarChat(id: Int, mensagem: String, tipo: String, imagem: String) {
         viewModelScope.launch {
-            val response = chatRepository.postarChat(id, mensagem, tipo)
+            val response = chatRepository.postarChat(id, mensagem, tipo, imagem)
             _chatPostResponse.value = response
-        }
-    }
-
-    // Função para postar imagem no chat
-    fun postarImagemChat(id: Int, mensagem: String, tipo: String) {
-        viewModelScope.launch {
-            val response = chatRepository.postarImagemChat(id, mensagem, tipo)
-            _chatImagePostResponse.value = response
         }
     }
 

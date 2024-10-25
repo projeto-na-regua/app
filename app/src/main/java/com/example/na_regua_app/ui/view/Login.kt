@@ -104,6 +104,8 @@ fun Login(
                 BotaoSpan(
                     onClick = {
 
+            loginViewModel.atualizarSenha(senha)
+
                         loginViewModel.atualizarEmail("joaosilva4@example.com")
                         loginViewModel.atualizarSenha("senhaSegura123")
 

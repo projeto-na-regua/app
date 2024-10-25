@@ -32,4 +32,13 @@ class UsuarioRepositoryImpl(
     override suspend fun admIsTrue(token: String): Response<UserDType> {
         return service.admIsTrue(token)
     }
+
+    override suspend fun editarPerfil(usuario: Usuario): Response<Void> {
+       return service.editarPerfil(usuario)
+    }
+
+//    override suspend fun editarImagemPerfil(file: String): Boolean {
+//        TODO("Not yet implemented")
+//    }
+
 }

@@ -12,6 +12,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 
 
 interface UsuarioService {
@@ -38,4 +39,13 @@ interface UsuarioService {
     suspend fun admIsTrue(
         @Header("Authorization") token: String
     ) : Response<UserDType>
+
+    // Novo método para editar o perfil do usuário
+    @PUT("usuarios/editar-perfil")
+    suspend fun editarPerfil(@Body usuario: Usuario): Response<Void>
+
+//    // Novo método para editar a imagem de perfil do usuário
+//    @Multipart
+//    @POST("usuarios/editar-img-perfil")
+//    suspend fun editarImagemPerfil(@Part file: String): Response<Void>
 }

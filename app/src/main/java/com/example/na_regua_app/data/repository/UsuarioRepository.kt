@@ -9,14 +9,18 @@ import com.example.na_regua_app.data.model.Usuario
 import retrofit2.Response
 
 interface UsuarioRepository {
-    suspend fun obterUsuario() : Response<Usuario>
+    suspend fun obterUsuario(): Response<Usuario>
 
     suspend fun cadastrarUsuario(dadosCadastro: DadosCadastro): Response<String>
 
-    suspend fun cadastrarBarbearia(dadosCadastradosBarbearia: DadosCadastroBarbearia) : Response<Void>
+    suspend fun cadastrarBarbearia(dadosCadastradosBarbearia: DadosCadastroBarbearia): Response<Void>
 
-    suspend fun logar(dadosLogin: DadosLogin) : Response<String>
+    suspend fun logar(dadosLogin: DadosLogin): Response<String>
 
-    suspend fun admIsTrue(token: String) : Response<UserDType>
+    suspend fun admIsTrue(token: String): Response<UserDType>
+
+    suspend fun editarPerfil(usuario: Usuario): Response<Void>
+
+//    suspend fun editarImagemPerfil(file: String): Boolean
 }
 

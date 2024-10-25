@@ -4,6 +4,7 @@ import com.example.na_regua_app.data.model.Barbearia
 import com.example.na_regua_app.data.model.DadosCadastro
 import com.example.na_regua_app.data.model.DadosCadastroBarbearia
 import com.example.na_regua_app.data.model.DadosLogin
+import com.example.na_regua_app.data.model.UserDType
 import com.example.na_regua_app.data.model.Usuario
 import com.github.tehras.charts.bar.BarChartData
 import retrofit2.Response
@@ -32,4 +33,9 @@ interface UsuarioService {
     suspend fun logar(
         @Body dadosLogin: DadosLogin
     ) : Response<String>
+
+    @GET("usuarios/user")
+    suspend fun admIsTrue(
+        @Header("Authorization") token: String
+    ) : Response<UserDType>
 }

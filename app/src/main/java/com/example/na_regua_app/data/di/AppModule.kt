@@ -3,6 +3,7 @@ package com.example.na_regua_app.data.di
 import com.example.na_regua_app.data.api.BarbeariaService
 import com.example.na_regua_app.data.api.ChatService
 import com.example.na_regua_app.data.api.FuncionarioService
+import com.example.na_regua_app.data.api.PesquisaService
 import com.example.na_regua_app.data.api.Rest
 import com.example.na_regua_app.data.api.ServicoService
 import com.example.na_regua_app.data.api.UsuarioService
@@ -12,6 +13,8 @@ import com.example.na_regua_app.data.repository.ChatRepository
 import com.example.na_regua_app.data.repository.ChatRepositoryImpl
 import com.example.na_regua_app.data.repository.FuncionarioRepository
 import com.example.na_regua_app.data.repository.FuncionarioRepositoryImpl
+import com.example.na_regua_app.data.repository.PesquisaRepository
+import com.example.na_regua_app.data.repository.PesquisaRepositoryImpl
 import com.example.na_regua_app.data.repository.ServicoRepository
 import com.example.na_regua_app.data.repository.ServicoRepositoryImpl
 import com.example.na_regua_app.data.repository.UsuarioRepository
@@ -25,6 +28,7 @@ import com.example.na_regua_app.viewmodel.LoginViewModel
 import com.example.na_regua_app.viewmodel.FuncionarioViewModel
 import com.example.na_regua_app.viewmodel.PerfilBarbeariaViewModel
 import com.example.na_regua_app.viewmodel.PerfilUsuarioViewModel
+import com.example.na_regua_app.viewmodel.PesquisaViewModel
 import com.example.na_regua_app.viewmodel.ServicoViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -37,6 +41,7 @@ val appModule= module {
     single<ServicoService> { Rest.servicoService }
     single<FuncionarioService> { Rest.funcionarioService }
     single<ChatService> { Rest.chatService }
+    single<PesquisaService> { Rest.pesquisaService }
 
     // Repositories
     single<UsuarioRepository> {
@@ -50,8 +55,10 @@ val appModule= module {
     single<ServicoRepository> { ServicoRepositoryImpl(get()) }
     single<FuncionarioRepository> { FuncionarioRepositoryImpl(get()) }
     single<ChatRepository> { ChatRepositoryImpl(get()) }
+    single<PesquisaRepository> { PesquisaRepositoryImpl(get()) }
 
     // ViewModels
+    viewModel<PesquisaViewModel> { PesquisaViewModel(get()) }
     viewModel<LoginViewModel> { LoginViewModel(get())}
     viewModel<CadastroBarbeariaViewModel> { CadastroBarbeariaViewModel(get())}
     viewModel<CadastroViewModel> { CadastroViewModel(get()) }

@@ -24,11 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.navigation.NavController
 import com.example.na_regua_app.R
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
@@ -37,11 +35,10 @@ import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 @Composable
 fun BarraPesquisar(
     onSearch: (String) -> Unit,
-    navController: NavController
-    ) {
-    val textState = remember { mutableStateOf(TextFieldValue("")) }
-    val keyboardController = LocalSoftwareKeyboardController.current // Controlador para o teclado
-
+    navController: NavController,
+    nomeBarbearia: String
+) {
+    val textState = remember { mutableStateOf(TextFieldValue(nomeBarbearia)) }
 
     Box(
         modifier = Modifier
@@ -57,8 +54,17 @@ fun BarraPesquisar(
             Image(
                 painter = painterResource(id = R.drawable.icone_lupa),
                 contentDescription = "Ícone de lupa",
-                modifier = Modifier.size(28.dp)
-                    .clickable { navController.navigate("cadastro") }
+                modifier = Modifier
+                    .size(28.dp)
+                    .clickable {
+                        if (textState.value.text.isNotEmpty()) {
+                            val route = "listagemBarbearias/${textState.value.text}"
+                            println("Navegando para: $route")
+                            navController.navigate(route)
+                        } else {
+                            println("Por favor, preencha todos os campos antes de pesquisar.")
+                        }
+                    }
             )
             Spacer(modifier = Modifier.width(8.dp))
             OutlinedTextField(
@@ -74,20 +80,14 @@ fun BarraPesquisar(
                 },
                 modifier = Modifier.weight(1f),
                 singleLine = true,
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Send // Mostra o botão "Enviar" no teclado
-                ),
-                keyboardActions = KeyboardActions(
-                    onSend = {
-                        onSearch(textState.value.text) // Dispara a ação de pesquisa
-                        keyboardController?.hide() // Esconde o teclado após enviar
-                    }
-                ),
+                keyboardOptions = KeyboardOptions.Default, // Remove ImeAction personalizada
+                keyboardActions = KeyboardActions.Default, // Remove a ação de "Enviar"
                 colors = androidx.compose.material3.TextFieldDefaults.outlinedTextFieldColors(
                     containerColor = Color.Transparent,
                     focusedBorderColor = Color.Transparent,
                     unfocusedBorderColor = Color.Transparent,
-                    focusedTextColor = Color.White
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White
                 )
             )
 
@@ -95,8 +95,11 @@ fun BarraPesquisar(
             Image(
                 painter = painterResource(id = R.drawable.icone_filtro),
                 contentDescription = "Ícone de filtro",
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier
+                    .size(28.dp)
+                    .clickable { navController.navigate("buscarBarbearias") }
             )
         }
     }
 }
+

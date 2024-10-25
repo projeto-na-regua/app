@@ -2,6 +2,7 @@ package com.example.na_regua_app.data.di
 
 import com.example.na_regua_app.data.api.BarbeariaService
 import com.example.na_regua_app.data.api.FuncionarioService
+import com.example.na_regua_app.data.api.PesquisaService
 import com.example.na_regua_app.data.api.Rest
 import com.example.na_regua_app.data.api.ServicoService
 import com.example.na_regua_app.data.api.UsuarioService
@@ -9,6 +10,8 @@ import com.example.na_regua_app.data.repository.BarbeariaRepository
 import com.example.na_regua_app.data.repository.BarbeariaRepositoryImpl
 import com.example.na_regua_app.data.repository.FuncionarioRepository
 import com.example.na_regua_app.data.repository.FuncionarioRepositoryImpl
+import com.example.na_regua_app.data.repository.PesquisaRepository
+import com.example.na_regua_app.data.repository.PesquisaRepositoryImpl
 import com.example.na_regua_app.data.repository.ServicoRepository
 import com.example.na_regua_app.data.repository.ServicoRepositoryImpl
 import com.example.na_regua_app.data.repository.UsuarioRepository
@@ -21,6 +24,7 @@ import com.example.na_regua_app.viewmodel.LoginViewModel
 import com.example.na_regua_app.viewmodel.FuncionarioViewModel
 import com.example.na_regua_app.viewmodel.PerfilBarbeariaViewModel
 import com.example.na_regua_app.viewmodel.PerfilUsuarioViewModel
+import com.example.na_regua_app.viewmodel.PesquisaViewModel
 import com.example.na_regua_app.viewmodel.ServicoViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -32,6 +36,7 @@ val appModule= module {
     single<BarbeariaService> { Rest.barbeariaService }
     single<ServicoService> { Rest.servicoService }
     single<FuncionarioService> { Rest.funcionarioService }
+    single<PesquisaService> { Rest.pesquisaService }
 
     // Repositories
     single<UsuarioRepository> {
@@ -44,8 +49,10 @@ val appModule= module {
     single<BarbeariaRepository> { BarbeariaRepositoryImpl(get()) }
     single<ServicoRepository> { ServicoRepositoryImpl(get()) }
     single<FuncionarioRepository> { FuncionarioRepositoryImpl(get()) }
+    single<PesquisaRepository> { PesquisaRepositoryImpl(get()) }
 
     // ViewModels
+    viewModel<PesquisaViewModel> { PesquisaViewModel(get()) }
     viewModel<LoginViewModel> { LoginViewModel(get())}
     viewModel<CadastroBarbeariaViewModel> { CadastroBarbeariaViewModel(get())}
     viewModel<CadastroViewModel> { CadastroViewModel(get()) }

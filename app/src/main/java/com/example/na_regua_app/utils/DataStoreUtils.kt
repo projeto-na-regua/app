@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.flow.first
+import com.google.gson.Gson
 
 val Context.dataStore by preferencesDataStore(name = "api_preferences")
 val tokenPreferencesKey = stringPreferencesKey(name = "api_token")
@@ -34,14 +35,18 @@ fun obterTokenSincrono(context: Context): String {
     }
 }
 
-suspend fun salvarUsuarioDtype(context: Context, userDtype: String) {
+suspend fun salvarUsuarioDtype(context: Context, userDtype: UserDType) {
+    val gson = Gson()
+    val userDtypeJson = gson.toJson(userDtype)  // Serializa o objeto para JSON
     context.dataStore.edit { preferences ->
-        preferences[userDtypePreferencesKey] = userDtype
+        preferences[userDtypePreferencesKey] = userDtypeJson
     }
 }
 
-fun obterUsuarioDtype(context: Context): Flow<String> {
+fun obterUsuarioDtype(context: Context): Flow<UserDType?> {
+    val gson = Gson()
     return context.dataStore.data.map { preferences ->
-        preferences[userDtypePreferencesKey] ?: "VAZIO"
+        val userDtypeJson = preferences[userDtypePreferencesKey] ?: return@map null
+        gson.fromJson(userDtypeJson, UserDType::class.java)  // Deserializa o JSON para um objeto UserDType
     }
 }

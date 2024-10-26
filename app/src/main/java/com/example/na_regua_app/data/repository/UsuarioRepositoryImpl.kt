@@ -7,6 +7,8 @@ import com.example.na_regua_app.data.model.DadosCadastroBarbearia
 import com.example.na_regua_app.data.model.DadosLogin
 import com.example.na_regua_app.data.model.UserDType
 import com.example.na_regua_app.data.model.Usuario
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 
 class UsuarioRepositoryImpl(
@@ -17,12 +19,13 @@ class UsuarioRepositoryImpl(
         return service.obterUsuario()
     }
 
-    override suspend fun cadastrarUsuario(dadosCadastro: DadosCadastro): Response<String> {
-        return service.cadastrarUsuario(dadosCadastro)
+    override suspend fun cadastrarUsuario(userJson: RequestBody, imagem: MultipartBody.Part?): Response<String>{
+        return service.cadastrarUsuario(userJson, imagem)
     }
 
-    override suspend fun cadastrarBarbearia(dadosCadastradosBarbearia: DadosCadastroBarbearia) : Response<Void> {
-        return service.cadastrarBarbearia("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE4Iiwibm9tZSI6IkRvdWdsYXMgUXVlaXJveiIsInNlbmhhIjoic2VuaGExMTEiLCJlbWFpbCI6ImRvdWdsYXNAZ21haWwuY29tIiwiZXhwIjoxNzI5NDczMDY5OTMzfQ.x2j66-wsxG815js5eGKhXsLH998k2WaL8SJcJR7uLcs", dadosCadastradosBarbearia)
+
+    override suspend fun cadastrarBarbearia(barbearia: RequestBody, perfil: MultipartBody.Part?, banner: MultipartBody.Part?) : Response<Void> {
+        return service.cadastrarBarbearia("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwIiwibm9tZSI6Ikpvw6NvIGRhIFNpbHZhIiwic2VuaGEiOiJzZW5oYTEyMzQiLCJlbWFpbCI6ImpvYW8uc2lsdmFAZXhhbXBsZS5jb20iLCJleHAiOjE3Mjk5MDM1MTkxNzl9.7mQIMpRyXFlUzNot13H27P24yag89_gO7MI9Vsm25Lc", barbearia, perfil, banner)
     }
 
     override suspend fun logar(dadosLogin: DadosLogin): Response<String> {
@@ -32,4 +35,13 @@ class UsuarioRepositoryImpl(
     override suspend fun admIsTrue(token: String): Response<UserDType> {
         return service.admIsTrue(token)
     }
+
+    override suspend fun editarPerfil(usuario: Usuario): Response<Void> {
+       return service.editarPerfil(usuario)
+    }
+
+//    override suspend fun editarImagemPerfil(file: String): Boolean {
+//        TODO("Not yet implemented")
+//    }
+
 }

@@ -13,35 +13,54 @@ import com.example.na_regua_app.data.repository.UsuarioRepositoryLocalImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
-class PerfilUsuarioViewModel(
-    private val usuarioRepository: UsuarioRepository
-) : ViewModel() {
+class PerfilUsuarioViewModel(private val usuarioRepository: UsuarioRepository) : ViewModel() {
 
     private val _usuario = MutableStateFlow<Usuario?>(null)
-    val usuario: StateFlow<Usuario?> get() = _usuario
+    val usuario: StateFlow<Usuario?> = _usuario
 
     init {
         obterUsuario()
     }
 
-    private fun obterUsuario() {
+     private  fun obterUsuario() {
         viewModelScope.launch {
-            try {
-                val usuarioData = usuarioRepository.obterUsuario()
-                if (usuarioData.isSuccessful) {
-                    _usuario.value = usuarioData.body()
-                    Log.d("PerfilUsuarioViewModel", "Dados do usuário: $usuarioData")
-                } else {
-                    Log.e("PerfilUsuarioViewModel", "Erro na resposta: ${usuarioData.code()}")
-                    Log.e("PerfilUsuarioViewModel", "Cabeçalhos: ${usuarioData.headers()}")
-                    Log.e("PerfilUsuarioViewModel", "Erro ao obter usuário: ${usuarioData.errorBody()?.string()}")
-                    _usuario.value = null
-                }
-            } catch (e: Exception) {
-                Log.e("PerfilUsuarioViewModel", "Erro ao obter usuário: ${e.message}")
-                _usuario.value = null
+            val response = usuarioRepository.obterUsuario()
+            if (response.isSuccessful) {
+                _usuario.value = response.body()
+            } else {
+
             }
         }
+    }
+
+    fun obterUsuarioBody(onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val response = usuarioRepository.obterUsuario()
+
+                if (response.isSuccessful) {
+                    // Supondo que você quer armazenar o usuário em algum lugar
+                    _usuario.value = response.body() // Salve o usuário, se necessário
+                    onResult(true) // Chame o callback com sucesso
+                } else {
+                    Log.e("PerfilUsuarioViewModel", "Erro na resposta: ${response.code()}")
+                    Log.e("PerfilUsuarioViewModel", "Cabeçalhos: ${response.headers()}")
+                    Log.e("PerfilUsuarioViewModel", "Erro ao obter usuário: ${response.errorBody()?.string()}")
+                    _usuario.value = null
+                    Log.e("PerfilUsuarioViewModel", "Erro: $response")
+                    onResult(false) // Chame o callback com erro
+                }
+            } catch (e: Exception) {
+                onResult(false) // Chame o callback com erro
+                Log.e("PerfilUsuarioViewModel", "Erro ao obter usuario: ${e.message}")
+            }
+        }
+    }
+
+
+    suspend fun editarPerfil(usuario: Usuario): Response<Void> {
+        return usuarioRepository.editarPerfil(usuario)
     }
 }

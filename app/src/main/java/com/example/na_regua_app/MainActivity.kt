@@ -42,6 +42,7 @@ import com.example.na_regua_app.ui.view.SplashScreen
 import com.example.na_regua_app.ui.view.TelaInicial
 import com.example.na_regua_app.ui.view.dashboard.Dashboard
 import com.example.na_regua_app.view.Galeria
+import com.example.na_regua_app.viewmodel.CadastroViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -141,8 +142,12 @@ class MainActivity : ComponentActivity() {
                     composable("login") {
                         Login(navController)
                     }
-                    composable("cadastro") {
-                        Cadastro(navController)
+                    composable("cadastro/{imagemUri}") {
+                            backStackEntry ->
+                        val imagemUri =
+                            backStackEntry.arguments?.getString("imagemUri") ?: "Sem imagem"
+
+                        Cadastro(navController, imagemUri)
                     }
                     composable("cadastroBarbearia") {
                         CadastroBarbeariaInicio(navController)
@@ -154,7 +159,7 @@ class MainActivity : ComponentActivity() {
                         Configuracoes(navController, usuarios()[1])
                     }
                     composable("settingsprofile") {
-                        ConfiguracoesInformacoesPessoais(navController, usuarios()[1])
+                        ConfiguracoesInformacoesPessoais(navController, usuarios().first())
                     }
                     composable("settingsbusiness") {
                         ConfiguracoesSeuNegocio(navController,usuarios().first())
@@ -168,17 +173,22 @@ class MainActivity : ComponentActivity() {
                     composable("cadastroBarbeariaFotoUsername"){
                         CadastroBarbeariaFotoNome(navController)
                     }
-                    composable("cadastroBarbeariaEndereco/{cpf}/{nomeDoNegocio}"){backStackEntry ->
+                    composable("cadastroBarbeariaEndereco/{cpf}/{nomeDoNegocio}/{imagemSelecionadaBanner}/{imagemSelecionadaPerfil}"){backStackEntry ->
                         val cpf =
                             backStackEntry.arguments?.getString("cpf") ?: "CPF Vazio"
                         val nomeDoNegocio =
                             backStackEntry.arguments?.getString("nomeDoNegocio") ?: "Sem nome do negócio"
-
+                        val imagemSelecionadaBanner =
+                            backStackEntry.arguments?.getString("imagemSelecionadaBanner") ?: "Sem foto de banner"
+                        val imagemSelecionadaPerfil =
+                            backStackEntry.arguments?.getString("imagemSelecionadaPerfil") ?: "Sem foto de perfil"
 
                         CadastroBarbeariaEndereco(
                             navController = navController,
                             cpf = cpf,
-                            nomeDoNegocio = nomeDoNegocio
+                            nomeDoNegocio = nomeDoNegocio,
+                            imagemPerfil = imagemSelecionadaPerfil,
+                            imagemBanner = imagemSelecionadaBanner
                         )
                     }
                     composable("cadastroBarbeariaFim"){

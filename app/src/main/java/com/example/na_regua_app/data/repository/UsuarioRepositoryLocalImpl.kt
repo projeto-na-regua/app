@@ -54,5 +54,9 @@ class UsuarioRepositoryLocalImpl() : UsuarioRepository {
         TODO("Not yet implemented")
     }
 
+    override suspend fun editarPerfil(usuario: Usuario): Response<Void> {
+        TODO("Not yet implemented")
+    }
+
 
 }

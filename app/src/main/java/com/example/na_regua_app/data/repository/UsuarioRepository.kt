@@ -11,15 +11,19 @@ import okhttp3.RequestBody
 import retrofit2.Response
 
 interface UsuarioRepository {
-    suspend fun obterUsuario() : Response<Usuario>
+    suspend fun obterUsuario(): Response<Usuario>
 
     suspend fun cadastrarUsuario(userJson: RequestBody, imagem: MultipartBody.Part?): Response<String>
 
 
     suspend fun cadastrarBarbearia(barbearia: RequestBody, perfil: MultipartBody.Part?, banner: MultipartBody.Part?) : Response<Void>
 
-    suspend fun logar(dadosLogin: DadosLogin) : Response<String>
+    suspend fun logar(dadosLogin: DadosLogin): Response<String>
 
-    suspend fun admIsTrue(token: String) : Response<UserDType>
+    suspend fun admIsTrue(token: String): Response<UserDType>
+
+    suspend fun editarPerfil(usuario: Usuario): Response<Void>
+
+//    suspend fun editarImagemPerfil(file: String): Boolean
 }
 

@@ -1,6 +1,11 @@
 package com.example.na_regua_app.data.api
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.na_regua_app.BuildConfig
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializer
 import okhttp3.Interceptor
 import okhttp3.Interceptor.Chain
 import okhttp3.OkHttpClient
@@ -10,8 +15,11 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
+@RequiresApi(Build.VERSION_CODES.O)
 object Rest {
 
     class apiInterceptor() : Interceptor {
@@ -28,6 +36,13 @@ object Rest {
             return chain.proceed(newRequest)
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val gson: Gson = GsonBuilder()
+        .registerTypeAdapter(LocalDateTime::class.java, JsonDeserializer { json, _, _ ->
+            LocalDateTime.parse(json.asString, DateTimeFormatter.ISO_DATE_TIME)
+        })
+        .create()
 
     val logging = HttpLoggingInterceptor().apply {
         setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -50,7 +65,7 @@ object Rest {
             .baseUrl(BuildConfig.API_BASE_URL)
             .client(client)
             .addConverterFactory(ScalarsConverterFactory.create()) // Para strings
-            .addConverterFactory(GsonConverterFactory.create()) // Para objetos JSON
+            .addConverterFactory(GsonConverterFactory.create(gson)) // Para objetos JSON
             .build()
     }
 
@@ -60,4 +75,5 @@ object Rest {
     val funcionarioService by lazy { api.create(FuncionarioService::class.java) }
     val chatService by lazy { api.create(ChatService::class.java) }
     val pesquisaService by lazy { api.create(PesquisaService::class.java) }
+    val agendamentoService by lazy { api.create(AgendamentoService::class.java) }
 }

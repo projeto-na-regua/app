@@ -33,7 +33,7 @@ class LoginViewModel(
         senha.value = novaSenha
     }
 
-
+    @SuppressLint("SuspiciousIndentation")
     fun logar(context: Context, onResult: (Boolean) -> Unit) {
 
         val dadosLogin = DadosLogin(

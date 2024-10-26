@@ -1,5 +1,6 @@
 package com.example.na_regua_app.data.di
 
+import com.example.na_regua_app.data.api.AgendamentoService
 import com.example.na_regua_app.data.api.BarbeariaService
 import com.example.na_regua_app.data.api.ChatService
 import com.example.na_regua_app.data.api.FuncionarioService
@@ -7,6 +8,8 @@ import com.example.na_regua_app.data.api.PesquisaService
 import com.example.na_regua_app.data.api.Rest
 import com.example.na_regua_app.data.api.ServicoService
 import com.example.na_regua_app.data.api.UsuarioService
+import com.example.na_regua_app.data.repository.AgendamentoRepository
+import com.example.na_regua_app.data.repository.AgendamentoRepositoryImpl
 import com.example.na_regua_app.data.repository.BarbeariaRepository
 import com.example.na_regua_app.data.repository.BarbeariaRepositoryImpl
 import com.example.na_regua_app.data.repository.ChatRepository
@@ -22,6 +25,7 @@ import com.example.na_regua_app.data.repository.UsuarioRepositoryImpl
 import com.example.na_regua_app.data.repository.UsuarioRepositoryLocalImpl
 import com.example.na_regua_app.ui.view.Login
 import com.example.na_regua_app.ui.viewmodel.ChatViewModel
+import com.example.na_regua_app.viewmodel.AgendamentoViewModel
 import com.example.na_regua_app.viewmodel.CadastroBarbeariaViewModel
 import com.example.na_regua_app.viewmodel.CadastroViewModel
 import com.example.na_regua_app.viewmodel.LoginViewModel
@@ -43,6 +47,7 @@ val appModule= module {
     single<FuncionarioService> { Rest.funcionarioService }
     single<ChatService> { Rest.chatService }
     single<PesquisaService> { Rest.pesquisaService }
+    single<AgendamentoService> { Rest.agendamentoService }
 
     // Repositories
     single<UsuarioRepository> {
@@ -57,8 +62,10 @@ val appModule= module {
     single<FuncionarioRepository> { FuncionarioRepositoryImpl(get()) }
     single<ChatRepository> { ChatRepositoryImpl(get()) }
     single<PesquisaRepository> { PesquisaRepositoryImpl(get()) }
+    single<AgendamentoRepository> { AgendamentoRepositoryImpl(get()) }
 
     // ViewModels
+    viewModel<AgendamentoViewModel> { AgendamentoViewModel(get()) }
     viewModel<PesquisaViewModel> { PesquisaViewModel(get()) }
     viewModel<LoginViewModel> { LoginViewModel(get())}
     viewModel<CadastroBarbeariaViewModel> { CadastroBarbeariaViewModel(get())}

@@ -26,6 +26,7 @@ import com.example.na_regua_app.viewmodel.PerfilBarbeariaViewModel
 import com.example.na_regua_app.viewmodel.PerfilUsuarioViewModel
 import com.example.na_regua_app.viewmodel.PesquisaViewModel
 import com.example.na_regua_app.viewmodel.ServicoViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 

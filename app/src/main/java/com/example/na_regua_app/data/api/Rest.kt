@@ -1,17 +1,11 @@
 package com.example.na_regua_app.data.api
 
-import android.content.Context
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.LocalContext
 import com.example.na_regua_app.BuildConfig
-import com.example.na_regua_app.utils.obterToken
-import com.example.na_regua_app.utils.obterTokenSincrono
 import okhttp3.Interceptor
 import okhttp3.Interceptor.Chain
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -19,16 +13,16 @@ import java.util.concurrent.TimeUnit
 
 object Rest {
 
-    class apiInterceptor : Interceptor {
+    class apiInterceptor() : Interceptor {
         override fun intercept(chain: Chain): Response {
 
-//            val token = obterTokenSincrono(context)
+//          val token = obterTokenSincrono(context)
 
             val oldRequest = chain.request()
             val newRequest = Request.Builder()
                 .url(oldRequest.url)
                 .method(oldRequest.method, oldRequest.body)
-                .header("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE5Iiwibm9tZSI6ImRvdWdsYXMiLCJzZW5oYSI6InNlbmhhMTExIiwiZW1haWwiOiJkb3VnbGFzQGdtYWlsLmNvbSIsImV4cCI6MTcyOTg5MzYzMTM2MX0.9hkiA7XD48nHr14gu7MkIyVN8UI_6uyrl0uBT2PGSro")
+                .header("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyIiwibm9tZSI6InRlc3RlY2xpZW50ZSIsInNlbmhhIjoidGVzdGUxMjMiLCJlbWFpbCI6InRlc3RlQGNsaWVudGUuY29tIiwiZXhwIjoxNzI5OTA2NDI4NTExfQ.bE7cGsZNkPtqYvtdJWr3yO9qUWMhE09eXJ2sQ_XnkPo")
                 .build()
             return chain.proceed(newRequest)
         }
@@ -44,14 +38,15 @@ object Rest {
             .build()
     }
 
-    val api = Retrofit.Builder()
-        .baseUrl(BuildConfig.API_BASE_URL)
-        .client(client)
-        .addConverterFactory(ScalarsConverterFactory.create()) // Para strings
-        .addConverterFactory(GsonConverterFactory.create()) // Para objetos JSON
-        .build()
 
-
+    val api by lazy {
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.API_BASE_URL)
+            .client(client)
+            .addConverterFactory(ScalarsConverterFactory.create()) // Para strings
+            .addConverterFactory(GsonConverterFactory.create()) // Para objetos JSON
+            .build()
+    }
 
     val usuarioService by lazy { api.create(UsuarioService::class.java) }
     val barbeariaService by lazy { api.create(BarbeariaService::class.java) }

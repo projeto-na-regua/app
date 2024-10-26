@@ -1,5 +1,6 @@
 package com.example.na_regua_app.ui.view
 
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -36,15 +37,18 @@ import com.example.na_regua_app.ui.components.BotaoSpan
 import com.example.na_regua_app.ui.components.Input
 import com.example.na_regua_app.ui.components.LogoImage
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
+import com.example.na_regua_app.utils.uriToFile
 import com.example.na_regua_app.viewmodel.CadastroBarbeariaViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CadastroBarbeariaEndereco(
     navController: NavController,
-    cadastroBarbeariaViewModel: CadastroBarbeariaViewModel = koinViewModel(),
     cpf: String,
-    nomeDoNegocio: String
+    nomeDoNegocio: String,
+    imagemPerfil: String,
+    imagemBanner: String,
+    cadastroBarbeariaViewModel: CadastroBarbeariaViewModel = koinViewModel()
 ) {
     var cep by remember { mutableStateOf("") }
     var logradouro by remember { mutableStateOf("") }
@@ -52,6 +56,8 @@ fun CadastroBarbeariaEndereco(
     var cidade by remember { mutableStateOf("") }
     var estado by remember { mutableStateOf("") }
     val context = LocalContext.current
+    val imagemPerfilFile = uriToFile(Uri.parse(imagemPerfil), context)
+    val imagemBannerFile = uriToFile(Uri.parse(imagemBanner), context)
 
     Scaffold(
         content = { paddingValues ->
@@ -137,7 +143,7 @@ fun CadastroBarbeariaEndereco(
 
                         println("$cpf, $nomeDoNegocio, ${cadastroBarbeariaViewModel.cep.value}, ${cadastroBarbeariaViewModel.logradouro.value}, ${cadastroBarbeariaViewModel.numero.value}, ${cadastroBarbeariaViewModel.cidade.value}, ${cadastroBarbeariaViewModel.estado.value} ")
 
-                        cadastroBarbeariaViewModel.enviarCadastroBarbearia { success ->
+                        cadastroBarbeariaViewModel.enviarCadastroBarbearia(imagemBannerFile = imagemBannerFile, imagemPerfilFile = imagemPerfilFile) { success ->
                             if (success) {
                                 Log.d("CadastroBarbearia", "Cadastro realizado com sucesso!")
                                 Toast.makeText(context, "Cadastro de barbearia realizado com sucesso!", Toast.LENGTH_SHORT).show()

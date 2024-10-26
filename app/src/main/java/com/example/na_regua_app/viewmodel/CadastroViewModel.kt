@@ -6,7 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.na_regua_app.data.model.DadosCadastro
 import com.example.na_regua_app.data.repository.UsuarioRepository
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 
 class CadastroViewModel(
     private val usuarioRepository: UsuarioRepository
@@ -24,6 +30,8 @@ class CadastroViewModel(
 //    var complemento = mutableStateOf("")
     var cidade = mutableStateOf("")
     var estado = mutableStateOf("")
+    var username = mutableStateOf("")
+    var imagem = mutableStateOf("")
 
 //    fun atualizarApelido(novoApelido: String){
 //        apelido.value = novoApelido
@@ -73,28 +81,52 @@ class CadastroViewModel(
         estado.value = novoEstado
     }
 
+    fun atualizarUsername(novoUsername: String) {
+        username.value = novoUsername
+    }
 
-    fun enviarCadastro(onResult: (Boolean) -> Unit) {
+    fun atualizarImagem(novaImagem: String) {
+        imagem.value = novaImagem
+    }
+
+
+    fun enviarCadastro(imagemFile: File?, onResult: (Boolean) -> Unit) {
         val dadosCadastro = DadosCadastro(
-            nome = nome.value,
-            email = email.value,
-            senha = senha.value,
-            celular = celular.value,
-            cep = cep.value,
-            logradouro = logradouro.value,
-            numero = numero.value,
-            cidade = cidade.value,
-            estado = estado.value
+            nome = "João da Silva",
+            email = "joao.silva@example.com",
+            senha = "senha1234",
+            celular = "11987654321",
+            cep = "05882000",
+            logradouro = "Rua Henrique Sam Mindlin",
+            numero = "1263",
+            cidade = "São Paulo",
+            estado = "SP",
+            username = "joaodasilva",
+            imagemPerfil = imagem.value
         )
 
         viewModelScope.launch {
             try {
-                // Certifique-se de que o retorno seja verificado
-                val response = usuarioRepository.cadastrarUsuario(dadosCadastro)
-                onResult(response.isSuccessful) // Verifique se a resposta foi bem-sucedida
+                // Serializar o JSON do objeto `dadosCadastro`
+                val userJson = Gson().toJson(dadosCadastro)
+                    .toRequestBody("application/json".toMediaTypeOrNull())
+
+                // Preparar a imagem como `MultipartBody.Part` (caso exista)
+                val imagemPart = if (imagemFile != null) {
+                    MultipartBody.Part.createFormData(
+                        "imagem",
+                        imagemFile.name,
+                        imagemFile.asRequestBody("image/*".toMediaTypeOrNull())
+                    )
+                } else {
+                    null
+                }
+
+                // Enviar a requisição ao repositório com `userJson` e `imagemPart`
+                val response = usuarioRepository.cadastrarUsuario(userJson, imagemPart)
+                onResult(response.isSuccessful) // Verificar se a resposta foi bem-sucedida
             } catch (e: Exception) {
                 onResult(false)
-                // Log ou exiba a exceção para debugar
                 Log.e("CadastroViewModel", "Erro ao enviar cadastro: ${e.message}")
             }
         }

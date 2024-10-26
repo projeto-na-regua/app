@@ -88,6 +88,8 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     // AndroidX
+    implementation("androidx.activity:activity-ktx:1.7.0")
+    implementation("androidx.compose.ui:ui:1.5.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -115,5 +117,8 @@ dependencies {
 
     // LogInterceptor
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10")
+
+    //Permissões
+    implementation("com.google.accompanist:accompanist-permissions:0.30.1")
 
 }

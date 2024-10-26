@@ -28,19 +28,24 @@ object Rest {
             val newRequest = Request.Builder()
                 .url(oldRequest.url)
                 .method(oldRequest.method, oldRequest.body)
-                .header("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI3Iiwibm9tZSI6Ikpvw6NvIFNpbHZhIiwic2VuaGEiOiJzZW5oYVNlZ3VyYTEyMyIsImVtYWlsIjoiam9hb3NpbHZhM0BleGFtcGxlLmNvbSIsImV4cCI6MTcyOTQ3NTYyNDU4MX0.19zUbWh_vbk-sOF90bl9Bb99NW20sNznKbqULUk_XkY")
+                .header("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwIiwibm9tZSI6Ikpvw6NvIGRhIFNpbHZhIiwic2VuaGEiOiJzZW5oYTEyMzQiLCJlbWFpbCI6ImpvYW8uc2lsdmFAZXhhbXBsZS5jb20iLCJleHAiOjE3Mjk5MTIzNjE4MzJ9.Zjp-ymGZeY7mBJyMC-yb51d0OknuYVvAj2suEryqgDw")
                 .build()
             return chain.proceed(newRequest)
         }
     }
 
+    val logging = HttpLoggingInterceptor().apply {
+        setLevel(HttpLoggingInterceptor.Level.BODY)
+    }
+
     val client by lazy {
         OkHttpClient
             .Builder()
+            .addInterceptor(logging)
             .addInterceptor(apiInterceptor())
-            .connectTimeout(30, TimeUnit.SECONDS) // Aumente para 30 segundos ou mais
-            .readTimeout(30, TimeUnit.SECONDS)    // Aumente para 30 segundos ou mais
-            .writeTimeout(30, TimeUnit.SECONDS)   // Aumente para 30 segundos ou mais
+            .connectTimeout(60, TimeUnit.SECONDS) // Aumente para 30 segundos ou mais
+            .readTimeout(60, TimeUnit.SECONDS)    // Aumente para 30 segundos ou mais
+            .writeTimeout(60, TimeUnit.SECONDS)   // Aumente para 30 segundos ou mais
             .build()
     }
 

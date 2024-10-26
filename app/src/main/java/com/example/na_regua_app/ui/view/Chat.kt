@@ -2,6 +2,10 @@
 
 package com.example.na_regua_app.ui.view
 
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -25,6 +29,7 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -38,6 +43,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
@@ -51,10 +57,13 @@ import com.example.na_regua_app.ui.components.MessageBubble
 import com.example.na_regua_app.ui.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
+import com.example.na_regua_app.ui.viewmodel.ChatViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun Chat(
     navController: NavController,
+    chatViewModel: ChatViewModel = koinViewModel(),
     userName: String,
     profilePic: Int,
     origin: String
@@ -76,8 +85,8 @@ fun Chat(
             )
         },
         bottomBar = {
-            BottomBarChat { message ->
-                messages = messages + message
+            BottomBarChat(chatViewModel) {  message, uri ->
+                chatViewModel.postarChat(id = 1, message, origin, uri.toString())
             }
         }
     )
@@ -124,40 +133,30 @@ fun ChatContent(paddingValues: PaddingValues, navController: NavController,userN
             verticalArrangement = Arrangement.Bottom,
         ) {
 
-            if (origin == "perfilUsuario") {
-                item {
-                    MessageBubble("Olá, tudo bem?", profilePic, isCurrentUser = true)
-                    MessageBubble("Estou bem sim!", R.drawable.foto_perfil, isCurrentUser = false)
-                }
-            }
-
             items(messages.size) { index ->
-                val message = messages[index]
-                MessageBubble(message, profilePic, isCurrentUser = true)
 
-                if (origin == "perfilBarbearia" && index == 0) {
-                    MessageBubble(
-                        "Olá, tudo bem! Bem-vindo a $userName",
-                        R.drawable.perfil_barbearia,
-                        isCurrentUser = false
-                    )
-                    MessageBubble(
-                        "Deseja marcar um horário? Visite nossa barbearia para saber mais sobre nossos serviços, funcionando de segunda a sexta, das 9:00 às 18:00 hrs",
-                        R.drawable.perfil_barbearia,
-                        isCurrentUser = false
-                    )
-                }
+
             }
         }
     }
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomBarChat(
-    onMessageSent: (String) -> Unit
+    viewModel: ChatViewModel,
+    onMessageSent: (String, Uri?) -> Unit
 ) {
     var postMessage by remember { mutableStateOf("") }
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        selectedImageUri = uri
+    }
 
     Row(
         modifier = Modifier
@@ -172,10 +171,15 @@ fun BottomBarChat(
                     .border(1.dp, Color(0xFFCBD5E0), RoundedCornerShape(12.dp)),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(painter = painterResource(id = R.drawable.attachment_icon),
-                    contentDescription = "Anexar",
-                    tint = Color(0xFFCBD5E0)
-                )
+                IconButton(onClick = {
+                    launcher.launch("image/*")
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.attachment_icon),
+                        contentDescription = "Anexar",
+                        tint = Color(0xFFCBD5E0)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -201,9 +205,10 @@ fun BottomBarChat(
                 .size(50.dp)
                 .background(color = BLUE_PRIMARY, shape = RoundedCornerShape(12.dp))
                 .clickable {
-                    if (postMessage.isNotBlank()) {
-                        onMessageSent(postMessage)
+                    if (postMessage.isNotBlank() || selectedImageUri != null) {
+                        onMessageSent(postMessage, selectedImageUri)
                         postMessage = ""
+                        selectedImageUri = null
                     }
                 },
             contentAlignment = Alignment.Center
@@ -217,9 +222,10 @@ fun BottomBarChat(
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun ChatPreview(){
     val navController = rememberNavController()
-    Chat(navController = navController, userName = "Dom Bigode", profilePic = R.drawable.barbeiro1, "perfilBarbearia")
+    //Chat(navController = navController, userName = "Dom Bigode", profilePic = R.drawable.barbeiro1, "perfilBarbearia")
 }

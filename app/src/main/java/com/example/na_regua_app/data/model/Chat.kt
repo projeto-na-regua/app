@@ -7,8 +7,7 @@ data class ChatPost (
     val tipo: String,
     val imgPerfil: String,
     val midia: String,
-    val status: String,
-    val imagem: String
+    val status: String
 )
 
 data class ChatOpen (

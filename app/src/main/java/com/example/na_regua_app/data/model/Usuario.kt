@@ -13,6 +13,7 @@ data class Usuario(
     val cidade: String,
     val estado: String,
     val dtype: String,
+    val username: String
 )
 
 fun usuarios(): List<Usuario> {
@@ -29,7 +30,8 @@ fun usuarios(): List<Usuario> {
             complemento = "Apto 101",
             cidade = "São Paulo",
             estado = "SP",
-            dtype = "Barbeiro"
+            dtype = "Barbeiro",
+            username = "@melissa"
         ),
         Usuario(
             nome = "Vitor Souza",
@@ -43,7 +45,8 @@ fun usuarios(): List<Usuario> {
             complemento = "Casa",
             cidade = "Rio de Janeiro",
             estado = "RJ",
-            dtype = "Cliente"
+            dtype = "Cliente",
+            username = "@vitor"
         )
     )
 }

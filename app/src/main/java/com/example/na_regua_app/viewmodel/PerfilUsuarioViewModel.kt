@@ -34,6 +34,7 @@ class PerfilUsuarioViewModel(
                     Log.d("PerfilUsuarioViewModel", "Dados do usuário: $usuarioData")
                 } else {
                     Log.e("PerfilUsuarioViewModel", "Erro na resposta: ${usuarioData.code()}")
+                    Log.e("PerfilUsuarioViewModel", "Cabeçalhos: ${usuarioData.headers()}")
                     Log.e("PerfilUsuarioViewModel", "Erro ao obter usuário: ${usuarioData.errorBody()?.string()}")
                     _usuario.value = null
                 }

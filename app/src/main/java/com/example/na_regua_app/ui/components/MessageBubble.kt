@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,14 +31,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.na_regua_app.R
+import com.example.na_regua_app.data.model.ChatPost
 import com.example.na_regua_app.ui.theme.WHITE_BACKGROUND
 
 @Composable
-fun MessageBubble(text: String, imagePainter: Int, isCurrentUser: Boolean) {
+fun MessageBubble(chatPost: ChatPost) {
+    val isCurrentUser = chatPost.tipo == "usuario"
+    val imgPerfil = chatPost.imgPerfil
+    val mensagem = chatPost.conteudo
+    val imagemAnexada = chatPost.midia
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = if (isCurrentUser) Arrangement.End else Arrangement.Start, // Alinha à esquerda ou direita
+        horizontalArrangement = if (isCurrentUser) Arrangement.End else Arrangement.Start,
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
@@ -51,9 +60,9 @@ fun MessageBubble(text: String, imagePainter: Int, isCurrentUser: Boolean) {
                         shape = CircleShape
                     )
             ) {
-                Image(
-                    painter = painterResource(id = imagePainter),
-                    contentDescription = "Ícone de usuário",
+                AsyncImage(
+                    model = imgPerfil,
+                    contentDescription = "Imagem de perfil",
                     modifier = Modifier
                         .align(Alignment.Center)
                         .clip(CircleShape),
@@ -74,8 +83,22 @@ fun MessageBubble(text: String, imagePainter: Int, isCurrentUser: Boolean) {
                 .background(if (isCurrentUser) Color(0xFF0B2236) else Color(0xFFEEEFF1)) // Cor diferente para outro usuário
                 .padding(bottom = 16.dp, top = 12.dp, start = 12.dp, end = 12.dp)
         ) {
+            if(!imagemAnexada.isNullOrEmpty()){
+
+                AsyncImage(
+                    model = imagemAnexada,
+                    contentDescription = "Imagem anexada",
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .border(1.dp, Color.Gray, RoundedCornerShape(8.dp)),
+                    contentScale = ContentScale.Crop
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+
             Text(
-                text = text,
+                text = mensagem,
                 color = if (isCurrentUser) Color.White else Color.Black, // Cor do texto
                 fontSize = 16.sp,
                 textAlign = TextAlign.Start
@@ -94,9 +117,9 @@ fun MessageBubble(text: String, imagePainter: Int, isCurrentUser: Boolean) {
                         shape = CircleShape
                     )
             ) {
-                Image(
-                    painter = painterResource(id = imagePainter), // Imagem recebida como parâmetro
-                    contentDescription = "Ícone de usuário",
+                AsyncImage(
+                    model = imgPerfil,
+                    contentDescription = "Imagem de perfil",
                     modifier = Modifier
                         .align(Alignment.Center)
                         .clip(CircleShape),
@@ -191,7 +214,7 @@ class CustomBubbleShape(private val isCurrentUser: Boolean) : Shape {
 @Composable
 fun MessageBubblePreview() {
     Column{
-        MessageBubble("Olá, tudo bem?", R.drawable.foto_perfil, isCurrentUser = true)
-        MessageBubble("Estou bem sim!", R.drawable.barbeiro1, isCurrentUser = false)
+//        MessageBubble()
+//        MessageBubble()
     }
 }

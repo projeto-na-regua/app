@@ -23,7 +23,8 @@ class UsuarioRepositoryLocalImpl() : UsuarioRepository {
                     complemento = "Apto 202",
                     cidade = "São Paulo",
                     estado = "SP",
-                    dtype = "Cliente"
+                    dtype = "Cliente",
+                    username = "@joaoSilva"
                 )
         )
     }

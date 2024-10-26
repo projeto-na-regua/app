@@ -27,6 +27,12 @@ class ChatViewModel(private val chatRepository: ChatRepository) : ViewModel() {
     private val _chatBarbeariaSideResponse = MutableLiveData<Response<ChatBarbeariaSide>>()
     val chatBarbeariaSideResponse: LiveData<Response<ChatBarbeariaSide>> = _chatBarbeariaSideResponse
 
+
+    init {
+        chatUserSide()
+    }
+
+
     // Função para postar mensagem de chat
     fun postarChat(id: Int, mensagem: String, tipo: String, imagem: String) {
         viewModelScope.launch {

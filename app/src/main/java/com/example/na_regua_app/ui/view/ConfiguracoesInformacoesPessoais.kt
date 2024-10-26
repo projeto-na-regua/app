@@ -286,7 +286,7 @@ fun EditarInformacoesDialog(
                         val usuarioAtualizado = Usuario(
                             nome, email, usuario.senha, celular,
                             usuario.imgPerfil, usuario.cep, logradouro,
-                            numero.toInt(), complemento, cidade, estado, usuario.dtype
+                            numero.toInt(), complemento, cidade, estado, usuario.dtype, usuario.username
                         )
                         // Chama a função de edição de perfil
                         CoroutineScope(Dispatchers.IO).launch {

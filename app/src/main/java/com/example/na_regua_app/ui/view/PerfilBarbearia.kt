@@ -293,14 +293,13 @@ fun PerfilBarbeariaContent(paddingValues: PaddingValues,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    val userName by remember { mutableStateOf("Dom Bigode") }
-                    val profilePic by remember { mutableIntStateOf(R.drawable.barbeiro1) }
-                    val profilePicString = profilePic.toString()
+                    val userName by remember { mutableStateOf(nomeBarbearia) }
+                    //val profilePic by remember { mutableStateOf() }
                     val origin by remember { mutableStateOf("pefilBarbearia") }
 
                     BotaoAjustavel(
                         modifier = Modifier.weight(1.5f),
-                        onClick = { navController.navigate("chat/$userName/$profilePicString/$origin") },
+                        onClick = { navController.navigate("chat/$userName/$/$origin") },
                         textButton = "Enviar mensagem",
                         imagePainter = painterResource(R.drawable.send_icon)
                     )

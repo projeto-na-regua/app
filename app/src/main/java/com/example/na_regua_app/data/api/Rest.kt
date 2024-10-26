@@ -23,7 +23,7 @@ object Rest {
             val newRequest = Request.Builder()
                 .url(oldRequest.url)
                 .method(oldRequest.method, oldRequest.body)
-                .header("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwIiwibm9tZSI6Ikpvw6NvIGRhIFNpbHZhIiwic2VuaGEiOiJzZW5oYTEyMzQiLCJlbWFpbCI6ImpvYW8uc2lsdmFAZXhhbXBsZS5jb20iLCJleHAiOjE3Mjk5MTIzNjE4MzJ9.Zjp-ymGZeY7mBJyMC-yb51d0OknuYVvAj2suEryqgDw")
+                .header("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE5Iiwibm9tZSI6IkRvdWdsYXMgUXVlaXJveiIsInNlbmhhIjoic2VuaGExMTEiLCJlbWFpbCI6ImRvdWdsYXNAZ21haWwuY29tIiwiZXhwIjoxNzI5OTg0MTYwMTEwfQ.agGGj8N8s2tisHDKJYRRkz5SrP6gbd_ol7BerVJP4y0")
                 .build()
             return chain.proceed(newRequest)
         }
@@ -38,9 +38,9 @@ object Rest {
             .Builder()
             .addInterceptor(logging)
             .addInterceptor(apiInterceptor())
-            .connectTimeout(60, TimeUnit.SECONDS) // Aumente para 30 segundos ou mais
-            .readTimeout(60, TimeUnit.SECONDS)    // Aumente para 30 segundos ou mais
-            .writeTimeout(60, TimeUnit.SECONDS)   // Aumente para 30 segundos ou mais
+            .connectTimeout(120, TimeUnit.SECONDS) // Aumente para 30 segundos ou mais
+            .readTimeout(120, TimeUnit.SECONDS)    // Aumente para 30 segundos ou mais
+            .writeTimeout(120, TimeUnit.SECONDS)   // Aumente para 30 segundos ou mais
             .build()
     }
 

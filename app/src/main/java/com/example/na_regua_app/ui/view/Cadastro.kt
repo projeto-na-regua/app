@@ -1,20 +1,14 @@
 package com.example.na_regua_app.ui.view
 
+import android.content.Context
+import android.database.Cursor
+import android.net.Uri
+import android.provider.MediaStore
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -24,27 +18,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.na_regua_app.data.api.UsuarioService
 import com.example.na_regua_app.ui.components.Botao
 import com.example.na_regua_app.ui.components.Input
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
+import com.example.na_regua_app.utils.uriToFile
 import com.example.na_regua_app.viewmodel.CadastroViewModel
 import org.koin.compose.viewmodel.koinViewModel
+import java.io.File
 
 @Composable
 fun Cadastro(
     navController: NavController,
+    imagemUri: String,
     cadastroViewModel: CadastroViewModel = koinViewModel()
 ) {
+
     var nome by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var celular by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     var confirmarSenha by remember { mutableStateOf("") }
     val context = LocalContext.current
-
 
     var cep by remember { mutableStateOf("") }
     var logradouro by remember { mutableStateOf("") }
@@ -54,6 +49,9 @@ fun Cadastro(
 
     var mostrarPrimeirasInputs by remember { mutableStateOf(false) }
     var botaoClicado by remember { mutableStateOf(false) }
+
+    // Transformar imagemUri em File
+    val imagemFile = uriToFile(Uri.parse(imagemUri), context)
 
     Scaffold(
         content = { paddingValues ->
@@ -71,8 +69,7 @@ fun Cadastro(
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    if(!mostrarPrimeirasInputs) {
-
+                    if (!mostrarPrimeirasInputs) {
                         Text(
                             text = "Informações pessoais!",
                             fontSize = 24.sp,
@@ -123,7 +120,6 @@ fun Cadastro(
                             isError = senha != confirmarSenha // Marca como erro se as senhas forem diferentes
                         )
                     } else {
-
                         Text(
                             text = "Seu endereço",
                             fontSize = 24.sp,
@@ -148,9 +144,9 @@ fun Cadastro(
                             onValueChange = { novoValor -> cep = novoValor },
                             label = { Text("Cep") }
                         )
-                        Row (
+                        Row(
                             modifier = Modifier.fillMaxWidth()
-                        ){
+                        ) {
                             Input(
                                 modifier = Modifier.weight(.7f),
                                 value = logradouro,
@@ -195,7 +191,7 @@ fun Cadastro(
                             cadastroViewModel.atualizarEstado(estado)
 
                             // Chama o método para enviar o cadastro
-                            cadastroViewModel.enviarCadastro { success ->
+                            cadastroViewModel.enviarCadastro(imagemFile) { success ->
                                 if (success) {
                                     // Navega para a tela final de cadastro
                                     Toast.makeText(context, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show()
@@ -219,16 +215,5 @@ fun Cadastro(
 @Preview
 @Composable
 fun CadastroPreview() {
-    Cadastro(navController = rememberNavController())
+    Cadastro(navController = rememberNavController(), imagemUri = "")
 }
-
-
-
-
-
-
-
-
-
-
-

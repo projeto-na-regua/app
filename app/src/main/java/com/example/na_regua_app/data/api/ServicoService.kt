@@ -12,4 +12,9 @@ interface ServicoService {
         @Path("status") status: String
     ) : Response<List<Servico>>
 
+    @GET("/servicos/client-side/{idBarbearia}")
+    suspend fun obterServicosCliente(
+        @Path("idBarbearia") idBarbearia: Int
+    ) : Response<List<Servico>>
+
 }

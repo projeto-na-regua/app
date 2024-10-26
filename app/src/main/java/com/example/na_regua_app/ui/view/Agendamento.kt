@@ -1,6 +1,8 @@
 package com.example.na_regua_app.ui.view
 
+import android.util.Log
 import android.widget.CalendarView
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,12 +23,16 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -36,10 +43,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.data.model.Funcionario
 import com.example.na_regua_app.data.model.ServicoCardDTO
-import com.example.na_regua_app.data.model.Usuario
 import com.example.na_regua_app.data.model.usuarios
 import com.example.na_regua_app.ui.components.Botao
 import com.example.na_regua_app.ui.components.BottomBarCustom
@@ -49,18 +56,36 @@ import com.example.na_regua_app.ui.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.example.na_regua_app.ui.theme.Typography
+import com.example.na_regua_app.viewmodel.AgendamentoViewModel
+import com.example.na_regua_app.viewmodel.FuncionarioViewModel
+import com.example.na_regua_app.viewmodel.PerfilBarbeariaViewModel
+import com.example.na_regua_app.viewmodel.ServicoViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Agendamento(
     navController: NavController,
-    usuario: Usuario
+    idBarbearia: Int,
+    isBarbeiro: Boolean,
+    servicoViewModel: ServicoViewModel = koinViewModel(),
+    funcionarioViewModel: FuncionarioViewModel = koinViewModel(),
+    agendamentoViewModel: AgendamentoViewModel = koinViewModel()
 ) {
-    var selectedService by remember { mutableStateOf<String?>(null) }
-    var selectedBarbeiro by remember { mutableStateOf<String?>(null) }
+    var selectedService by remember { mutableStateOf<ServicoCardDTO?>(null) }
+    var selectedBarbeiro by remember { mutableStateOf<Funcionario?>(null) }
     var selectedDate by remember { mutableStateOf<String?>(null) }
     var selectedTime by remember { mutableStateOf<String?>(null) }
     var showDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        servicoViewModel.obterServicosPorStatus(idBarbearia = idBarbearia, isBarbeiro = isBarbeiro)
+        funcionarioViewModel.obterFuncionarios(idBarbearia = idBarbearia, isBarbeiro = isBarbeiro)
+    }
+
+    val servicos by servicoViewModel.servicos.collectAsState()
+    val funcionarios by funcionarioViewModel.funcionarios.collectAsState()
+    val horarios by agendamentoViewModel.horarios.collectAsState()
 
     Scaffold(
         topBar = {
@@ -74,7 +99,7 @@ fun Agendamento(
                     .padding(14.dp)
             ) {
                 item {
-                    BoxServicos(navController = navController) { service ->
+                    BoxServicos(navController = navController, servicos) { service ->
                         selectedService = service
                     }
                 }
@@ -84,8 +109,10 @@ fun Agendamento(
                 }
 
                 item {
-                    BoxSelecaobarbeiro(navController = navController) { barbeiroName ->
-                        selectedBarbeiro = barbeiroName
+                    funcionarios?.let {
+                        BoxSelecaoBarbeiro(navController = navController, it) { barbeiroName ->
+                            selectedBarbeiro = barbeiroName
+                        }
                     }
                 }
 
@@ -94,9 +121,19 @@ fun Agendamento(
                 }
 
                 item {
-                    BoxSelecaoDataEHora(navController = navController) { date, time ->
-                        selectedDate = date
-                        selectedTime = time
+                    selectedBarbeiro?.id?.let { barbeiroId ->
+                        selectedService?.id?.let { servicoId ->
+                            BoxSelecaoDataEHora(
+                                navController = navController,
+                                agendamentoViewModel = agendamentoViewModel,
+                                selectedBarbearia = idBarbearia,
+                                selectedBarbeiro = barbeiroId,
+                                selectedServico = servicoId
+                            ) { date, time ->
+                                selectedDate = date
+                                selectedTime = time
+                            }
+                        }
                     }
                 }
 
@@ -117,24 +154,42 @@ fun Agendamento(
             }
         },
         bottomBar = {
-            BottomBarCustom(navController, usuario)
+            BottomBarCustom(navController)
         }
     )
 
     if (showDialog) {
         ConfirmationDialog(
-            service = selectedService!!,
-            barbeiro = selectedBarbeiro!!,
+            service = selectedService!!.tituloServico,
+            barbeiro = selectedBarbeiro!!.nome,
             date = selectedDate!!,
             time = selectedTime!!,
-            value = 24.90,
-            onDismiss = { showDialog = false },
-            onConfirm = {
-                navController.navigate("agendaUsuarios") // Navega para a tela agendaUsuario
+            value = selectedService!!.preco,
+            onDismiss = { showDialog = false }
+        ) {
+            agendamentoViewModel.adicionarAgendamento(
+                selectedDate!!,
+                selectedTime!!,
+                selectedService!!.id,
+                selectedBarbeiro!!.id,
+                idBarbearia
+            ) { success ->
+
+                if (success) {
+                    Log.d("Agendamento", "Agendamento realizado com sucesso!")
+                    Toast.makeText(context, "Agendamento realizado com sucesso!", Toast.LENGTH_SHORT).show()
+                    navController.navigate("agendaUsuarios") {
+                        popUpTo("agendaUsuarios") { inclusive = true }
+                    }
+                } else {
+                    Log.d("Agendamento", "Erro ao agendar.")
+                    Toast.makeText(context, "Erro ao agendar. Tente novamente.", Toast.LENGTH_SHORT).show()
+                }
             }
-        )
+        }
     }
 }
+
 
 
 @Composable
@@ -145,7 +200,7 @@ fun ConfirmationDialog(
     time: String,
     value: Double,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit // Adicionado callback para confirmação
+    onConfirm: () -> Unit
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -220,24 +275,10 @@ fun Double.format(digits: Int) = "%.${digits}f".format(this)
 @Composable
 fun BoxServicos(
     navController: NavController,
-    onServiceSelected: (String) -> Unit
+    servicos: List<ServicoCardDTO>,
+    onServiceSelected: (ServicoCardDTO) -> Unit // Altere para passar o objeto completo
 ) {
     var selectedService by remember { mutableStateOf<ServicoCardDTO?>(null) }
-
-    val servicos = listOf(
-        ServicoCardDTO(
-            id = 1,
-            tituloServico = "Corte",
-            descricao = "Corte simples de cabelo",
-            preco = 25.00,
-        ),
-        ServicoCardDTO(
-            id = 2,
-            tituloServico = "Corte + Escova",
-            descricao = "Corte + escova",
-            preco = 55.00,
-        )
-    )
 
     Box(
         modifier = Modifier
@@ -252,25 +293,38 @@ fun BoxServicos(
                 text = "Serviços",
                 style = Typography.titleMedium
             )
-            ServiceList(
-                services = servicos,
-                isSelectable = true,
-                selectedService = selectedService,
-                onServiceClick = { service ->
-                    selectedService = service
-                    onServiceSelected(service.tituloServico)  // Retorna o título do serviço selecionado
-                }
-            )
+
+            if (servicos.isEmpty()) {
+                Text(
+                    text = "Nenhum serviço cadastrado",
+                    style = Typography.bodyMedium,
+                    color = Color.Gray,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(16.dp)
+                )
+            } else {
+                ServiceList(
+                    services = servicos,
+                    isSelectable = true,
+                    selectedService = selectedService,
+                    onServiceClick = { service ->
+                        selectedService = service
+                        onServiceSelected(service)
+                    }
+                )
+            }
         }
     }
 }
 
 @Composable
-fun BoxSelecaobarbeiro(
+fun BoxSelecaoBarbeiro(
     navController: NavController,
-    onBarbeiroSelected: (String) -> Unit
+    funcionarios: List<Funcionario>,
+    onBarbeiroSelected: (Funcionario) -> Unit
 ) {
-    var selectedBarbeiro by remember { mutableStateOf<String?>(null) }
+    var selectedBarbeiro by remember { mutableStateOf<Funcionario?>(null) }
 
     Column(
         modifier = Modifier
@@ -282,26 +336,19 @@ fun BoxSelecaobarbeiro(
             style = Typography.titleMedium,
         )
 
-        val funcionarios = listOf(
-            Funcionario(1, nome = "Barbeiro 1", imgPerfil = "R.drawable.foto_perfil", especialidade = "Barbeiro", email = "barbeiro@gmail.com"),
-            Funcionario(2, nome = "Barbeiro 2", imgPerfil = "R.drawable.barbeira2", especialidade = "Barbeiro", email = "barbeiro@gmail.com"),
-            Funcionario(3, nome = "Barbeiro 3", imgPerfil = "R.drawable.barbeiro1", especialidade = "Barbeiro", email = "barbeiro@gmail.com")
-
-        )
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            repeat(3) { index ->
+            funcionarios.forEach { funcionario ->
                 SelecaoFuncionarios(
-                    funcionario = funcionarios[index],
+                    funcionario = funcionario,
                     isSelectable = true,
-                    isSelected = selectedBarbeiro == funcionarios[index].nome,
+                    isSelected = selectedBarbeiro == funcionario,
                     onClick = {
-                        selectedBarbeiro = funcionarios[index].nome
+                        selectedBarbeiro = funcionario
                         onBarbeiroSelected(selectedBarbeiro!!)
                     }
                 )
@@ -313,76 +360,76 @@ fun BoxSelecaobarbeiro(
 @Composable
 fun BoxSelecaoDataEHora(
     navController: NavController,
+    agendamentoViewModel: AgendamentoViewModel,
+    selectedBarbeiro: Int,
+    selectedServico: Int,
+    selectedBarbearia: Int,
     onDateTimeSelected: (String, String) -> Unit
 ) {
     var selectedDate by remember { mutableStateOf<String?>(null) }
     var selectedTime by remember { mutableStateOf<String?>(null) }
+    val horarios by agendamentoViewModel.horarios.collectAsState()
 
-    Column(
+    // Defina a altura do LazyColumn para evitar altura infinita
+    LazyColumn(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .heightIn(max = 500.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            text = "Selecione o dia e o mês",
-            style = Typography.titleMedium
-        )
+        item {
+            Text(
+                text = "Selecione o dia e o mês",
+                style = Typography.titleMedium
+            )
+        }
 
-        CalendarExample(
-            onDateSelected = { date ->
-                selectedDate = date
-                if (selectedTime != null) {
-                    onDateTimeSelected(selectedDate!!, selectedTime!!)
-                }
-            }
-        )
-
-        Text(
-            text = "Selecione o horário",
-            style = Typography.titleMedium
-        )
-
-        val horarios = listOf("08:00", "09:00", "10:00", "11:00", "12:00", "13:00")
-        Column {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                horarios.take(3).forEach { horario ->
-                    ButtomSelecaoHorario(
-                        horario = horario,
-                        isSelected = horario == selectedTime,
-                        onClick = {
-                            selectedTime = horario
-                            if (selectedDate != null) {
-                                onDateTimeSelected(selectedDate!!, selectedTime!!)
-                            }
-                        }
+        item {
+            CalendarExample(
+                onDateSelected = { date ->
+                    selectedDate = date
+                    selectedTime = null  // Limpa o horário selecionado anterior
+                    agendamentoViewModel.listarHorariosDisponiveis(
+                        barbeiro = selectedBarbeiro,
+                        servico = selectedServico,
+                        barbearia = selectedBarbearia,
+                        date = date
                     )
                 }
-            }
-            Spacer(modifier = Modifier.height(7.dp))
+            )
+        }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                horarios.drop(3).forEach { horario ->
-                    ButtomSelecaoHorario(
-                        horario = horario,
-                        isSelected = horario == selectedTime,
-                        onClick = {
-                            selectedTime = horario
-                            if (selectedDate != null) {
-                                onDateTimeSelected(selectedDate!!, selectedTime!!)
-                            }
+        if (horarios.isNotEmpty() && selectedDate != null) {
+            item {
+                Text(
+                    text = "Selecione o horário",
+                    style = Typography.titleMedium
+                )
+            }
+
+            horarios.chunked(3).forEach { rowHorarios ->
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        rowHorarios.forEach { horario ->
+                            ButtomSelecaoHorario(
+                                horario = horario.hora,
+                                isSelected = horario.hora == selectedTime,
+                                onClick = {
+                                    selectedTime = horario.hora
+                                    onDateTimeSelected(selectedDate!!, selectedTime!!)
+                                }
+                            )
                         }
-                    )
+                    }
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun ButtomSelecaoHorario(
@@ -445,5 +492,9 @@ fun CalendarExample(
 @Composable
 fun AgendamentoPreview() {
     val usuarios = usuarios()
-    Agendamento(navController = rememberNavController(), usuario = usuarios[1])
+    Agendamento(navController = rememberNavController())
+}
+
+fun Agendamento(navController: NavHostController) {
+    TODO("Not yet implemented")
 }

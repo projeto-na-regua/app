@@ -6,4 +6,6 @@ import retrofit2.Response
 
 interface ServicoRepository {
     suspend fun obterServicosPorStatus() : Response<List<Servico>>
+
+    suspend fun obterServicosCliente(idBarbearia: Int) : Response<List<Servico>>
 }

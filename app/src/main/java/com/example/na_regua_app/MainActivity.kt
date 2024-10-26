@@ -60,8 +60,13 @@ class MainActivity : ComponentActivity() {
                     composable("home") {
                         Home(navController, usuarios().first())
                     }
-                    composable("agendamento") {
-                        Agendamento(navController, usuarios()[1])
+                    composable("agendamento/{idBarbearia}/{isBarbeiro}") {  backStackEntry ->
+                        val idBarbearia = backStackEntry.arguments?.getString("idBarbearia")?.toIntOrNull() ?: -1
+                        val isBarbeiro = backStackEntry.arguments?.getString("isBarbeiro")?.toBoolean() ?: true
+
+                        if (idBarbearia != -1) {
+                            Agendamento(navController, idBarbearia, isBarbeiro)
+                        }
                     }
                     composable("buscarBarbearias") {
                         BuscaBarbearias(navController)
@@ -136,9 +141,16 @@ class MainActivity : ComponentActivity() {
                     composable("perfilUsuario") {
                         PerfilUsuario(navController)
                     }
-                    composable("perfilBarbearia") {
-                        PerfilBarbearia(navController)
+                    composable("perfilBarbearia/{isBarbeiro}/{idBarbearia}") { backStackEntry ->
+                        val isBarbeiro = backStackEntry.arguments?.getString("isBarbeiro")?.toBoolean() ?: true
+                        val idBarbearia = backStackEntry.arguments?.getString("idBarbearia")?.toIntOrNull() ?: -1
+
+                        if (idBarbearia != -1) {
+                            PerfilBarbearia(navController, isBarbeiro, idBarbearia)
+                        }
                     }
+
+
                     composable("login") {
                         Login(navController)
                     }

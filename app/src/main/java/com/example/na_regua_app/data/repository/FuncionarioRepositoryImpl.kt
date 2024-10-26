@@ -11,4 +11,8 @@ class FuncionarioRepositoryImpl(
     override suspend fun obterFuncionarios(): Response<List<Funcionario>> {
         return service.obterFuncionarios()
     }
+
+    override suspend fun obterFuncionariosCliente(idBarbearia: Int): Response<List<Funcionario>> {
+        return service.obterFuncionariosCliente(idBarbearia)
+    }
 }

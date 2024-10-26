@@ -1,4 +1,5 @@
 package com.example.na_regua_app.viewmodel
+
 import android.content.Context
 import android.net.Uri
 import android.util.Log
@@ -40,7 +41,7 @@ class PesquisaViewModel(
         raio.value = novoRaio
     }
 
-    fun atualizarToken(novoToken: String){
+    fun atualizarToken(novoToken: String) {
         token.value = novoToken
     }
 
@@ -55,7 +56,7 @@ class PesquisaViewModel(
                     val barbearias = responseListaBarbearias.body()
 
                     withContext(Dispatchers.Main) {
-                        if (barbearias != null && barbearias.isNotEmpty()) {
+                        if (!barbearias.isNullOrEmpty()) {
                             onResult(true, barbearias)
                             Toast.makeText(context, "Listagem de barbearias realizada com sucesso!", Toast.LENGTH_SHORT).show()
                         } else {
@@ -79,8 +80,7 @@ class PesquisaViewModel(
         }
     }
 
-
-    fun listarBarbeariasPorNome(nomeBarbearia: String, onResult: (Boolean, List<BarbeariaPesquisa>?) -> Unit){
+    fun listarBarbeariasPorNome(nomeBarbearia: String, onResult: (Boolean, List<BarbeariaPesquisa>?) -> Unit) {
         viewModelScope.launch {
             try {
                 val endpoint = "pesquisa/client-side/filtro?nomeBarbearia=$nomeBarbearia"
@@ -99,32 +99,17 @@ class PesquisaViewModel(
                         println("Média de Avaliação: ${barbearia.mediaAvaliacao}")
                         println("-------------")
                     }
+
+                    // Use o onResult aqui em vez do onResultBarbearias
                     onResult(true, barbearias)
                 } else {
                     Log.e("BarbeariaViewModel", "Falha ao listar barbearias com código: ${responseListaBarbearias.code()}")
-                    onResult(false) // Retornar falha
+                    onResult(false, null) // Retornar falha
                 }
             } catch (e: Exception) {
-                onResult(false) // Retornar falha
+                onResult(false, null) // Retornar falha
                 Log.e("BarbeariaViewModel", "Erro ao listar barbearias: ${e.message}")
             }
         }
     }
-
 }
-
-private val _barbearias = MutableLiveData<List<BarbeariaPesquisa>?>()
-fun onResult(success: Boolean, barbearias: List<BarbeariaPesquisa>? = null) {
-    if (success) {
-        if (!barbearias.isNullOrEmpty()) {
-            _barbearias.postValue(barbearias) // Atualiza o LiveData
-            onResult(true, barbearias)
-        }
-
-    }
-}
-
-
-
-
-

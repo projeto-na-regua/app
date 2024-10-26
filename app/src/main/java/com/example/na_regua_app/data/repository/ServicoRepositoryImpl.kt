@@ -11,4 +11,8 @@ class ServicoRepositoryImpl(
     override suspend fun obterServicosPorStatus(): Response<List<Servico>> {
         return service.obterServicosPorStatus(status = "active")
     }
+
+    override suspend fun obterServicosCliente(idBarbearia: Int): Response<List<Servico>> {
+        return service.obterServicosCliente(idBarbearia)
+    }
 }

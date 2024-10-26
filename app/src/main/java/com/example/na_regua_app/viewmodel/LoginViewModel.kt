@@ -1,5 +1,6 @@
 package com.example.na_regua_app.viewmodel
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +33,7 @@ class LoginViewModel(
         senha.value = novaSenha
     }
 
+    @SuppressLint("SuspiciousIndentation")
     fun logar(context: Context, onResult: (Boolean) -> Unit) {
 
         val dadosLogin = DadosLogin(

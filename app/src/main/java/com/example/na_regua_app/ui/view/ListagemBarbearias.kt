@@ -112,7 +112,6 @@ fun ListagemBarbearias(
 
                     pesquisaViewmodel.listarBarbeariasWToken(context) { success, barbeariasList: List<BarbeariaPesquisa>? ->
                         if (success) {
-                            Log.d("Listar barbearias", "Listagem de barbearias realizada com sucesso!")
                             barbearias.clear()
                             barbearias.addAll(barbeariasList ?: emptyList())
                             Toast.makeText(context, "Listagem de barbearias realizada com sucesso!", Toast.LENGTH_SHORT).show()
@@ -135,7 +134,7 @@ fun ListagemBarbearias(
                     .padding(vertical = 20.dp)
             ) {
                 item {
-                    BarraPesquisar({ pesquisa -> navController.navigate("listagemBarbearias") }, navController, nomeBarbearia!!)
+                    BarraPesquisar({ navController.navigate("listagemBarbearias") }, navController, nomeBarbearia!!)
                 }
                 item {
                     Spacer(modifier = Modifier.height(20.dp))
@@ -166,7 +165,7 @@ fun CardSelecionarBarbearia(
             .padding(20.dp)
             .clip(RoundedCornerShape(15.dp))
             .border(2.dp, color = Color.Gray, shape = RoundedCornerShape(15.dp))
-            .clickable { navController.navigate("perfilBarbearia") } // Navega para a tela de perfil
+            .clickable { navController.navigate("perfilBarbearia/${false}/${barbearia.id}") }
     ) {
         Row(
             modifier = Modifier
@@ -190,7 +189,7 @@ fun CardSelecionarBarbearia(
                         .border(2.dp, Color.Gray, CircleShape)
                 ) {
                     // Verifica se imgPerfil é uma URL ou um ID de recurso
-                    if (!barbearia.imgPerfil.isNullOrEmpty()) {
+                    if (barbearia.imgPerfil.isNotEmpty()) {
                         Image(
                             painter = rememberAsyncImagePainter(model = barbearia.imgPerfil),
                             contentDescription = null,

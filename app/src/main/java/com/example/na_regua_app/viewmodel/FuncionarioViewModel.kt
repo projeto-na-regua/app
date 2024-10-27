@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.na_regua_app.data.api.FuncionarioService
 import com.example.na_regua_app.data.model.Barbearia
+import com.example.na_regua_app.data.model.BarbeiroConsulta
 import com.example.na_regua_app.data.model.Funcionario
+import com.example.na_regua_app.data.model.NovoBarbeiro
 import com.example.na_regua_app.data.repository.FuncionarioRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -43,5 +45,26 @@ class FuncionarioViewModel(
             }
         }
     }
+
+    fun cadastrarFuncionario(novoBarbeiro: NovoBarbeiro, onResult: (Boolean) -> Unit){
+        viewModelScope.launch {
+            try {
+                val funcionarioData = funcionarioRepository.cadastrarFuncionario(novoBarbeiro)
+
+                if(funcionarioData.isSuccessful){
+                    Log.d("FuncionarioViewModel", "Dados do funcionario: ${funcionarioData.body()}")
+                    onResult(true)
+                } else {
+                    Log.e("FuncionarioViewModel", "Erro na resposta: ${funcionarioData.code()}")
+                    Log.e("FuncionarioViewModel", "Erro ao cadastrar o funcionario: ${funcionarioData.errorBody()?.string()}")
+                    onResult(false)
+                }
+            } catch (e: Exception){
+                Log.e("FuncionarioViewModel", "Erro ao cadastrar o funcionário: ${e.message}")
+                onResult(false)
+            }
+        }
+    }
+
 
 }

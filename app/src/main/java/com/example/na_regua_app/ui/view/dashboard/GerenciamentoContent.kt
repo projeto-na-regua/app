@@ -2,6 +2,7 @@ package com.example.na_regua_app.ui.view.dashboard
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -197,13 +198,16 @@ fun LinhaHorario(title: String, horario: String){
 
 
 @Composable
-fun TituloIcon(title: String, icon: Int){
-
-    Row (
+fun TituloIcon(
+    title: String,
+    icon: Int,
+    onIconClick: () -> Unit
+) {
+    Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth()
-    ){
+    ) {
         Text(
             text = title,
             color = BLUE_PRIMARY,
@@ -211,8 +215,10 @@ fun TituloIcon(title: String, icon: Int){
         )
 
         Box(
-            modifier = Modifier.background(BLUE_PRIMARY, shape = RoundedCornerShape(10.dp))
-        ){
+            modifier = Modifier
+                .background(BLUE_PRIMARY, shape = RoundedCornerShape(10.dp))
+                .clickable(onClick = onIconClick)
+        ) {
             Icon(
                 painter = painterResource(id = icon),
                 contentDescription = title,
@@ -224,6 +230,7 @@ fun TituloIcon(title: String, icon: Int){
         }
     }
 }
+
 
 fun getHoursList(): List<ItemMenuDropDown> {
     return (0..23).map { hour ->

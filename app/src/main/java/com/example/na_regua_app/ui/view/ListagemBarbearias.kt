@@ -149,7 +149,7 @@ fun ListagemBarbearias(
             }
         },
         bottomBar = {
-            BottomBarCustom(navController, usuario)
+            BottomBarCustom(navController, LocalContext.current)
         }
     )
 }

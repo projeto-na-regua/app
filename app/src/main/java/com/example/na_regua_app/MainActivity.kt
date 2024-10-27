@@ -42,6 +42,7 @@ import com.example.na_regua_app.ui.view.SplashScreen
 import com.example.na_regua_app.ui.view.TelaInicial
 import com.example.na_regua_app.ui.view.dashboard.Dashboard
 import com.example.na_regua_app.view.Galeria
+import com.example.na_regua_app.viewmodel.CadastroViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -59,8 +60,13 @@ class MainActivity : ComponentActivity() {
                     composable("home") {
                         Home(navController, usuarios().first())
                     }
-                    composable("agendamento") {
-                        Agendamento(navController, usuarios()[1])
+                    composable("agendamento/{idBarbearia}/{isBarbeiro}") {  backStackEntry ->
+                        val idBarbearia = backStackEntry.arguments?.getString("idBarbearia")?.toIntOrNull() ?: -1
+                        val isBarbeiro = backStackEntry.arguments?.getString("isBarbeiro")?.toBoolean() ?: true
+
+                        if (idBarbearia != -1) {
+                            Agendamento(navController, idBarbearia, isBarbeiro)
+                        }
                     }
                     composable("buscarBarbearias") {
                         BuscaBarbearias(navController)
@@ -135,14 +141,25 @@ class MainActivity : ComponentActivity() {
                     composable("perfilUsuario") {
                         PerfilUsuario(navController)
                     }
-                    composable("perfilBarbearia") {
-                        PerfilBarbearia(navController)
+                    composable("perfilBarbearia/{isBarbeiro}/{idBarbearia}") { backStackEntry ->
+                        val isBarbeiro = backStackEntry.arguments?.getString("isBarbeiro")?.toBoolean() ?: true
+                        val idBarbearia = backStackEntry.arguments?.getString("idBarbearia")?.toIntOrNull() ?: -1
+
+                        if (idBarbearia != -1) {
+                            PerfilBarbearia(navController, isBarbeiro, idBarbearia)
+                        }
                     }
+
+
                     composable("login") {
                         Login(navController)
                     }
-                    composable("cadastro") {
-                        Cadastro(navController)
+                    composable("cadastro/{imagemUri}") {
+                            backStackEntry ->
+                        val imagemUri =
+                            backStackEntry.arguments?.getString("imagemUri") ?: "Sem imagem"
+
+                        Cadastro(navController, imagemUri)
                     }
                     composable("cadastroBarbearia") {
                         CadastroBarbeariaInicio(navController)
@@ -168,17 +185,22 @@ class MainActivity : ComponentActivity() {
                     composable("cadastroBarbeariaFotoUsername"){
                         CadastroBarbeariaFotoNome(navController)
                     }
-                    composable("cadastroBarbeariaEndereco/{cpf}/{nomeDoNegocio}"){backStackEntry ->
+                    composable("cadastroBarbeariaEndereco/{cpf}/{nomeDoNegocio}/{imagemSelecionadaBanner}/{imagemSelecionadaPerfil}"){backStackEntry ->
                         val cpf =
                             backStackEntry.arguments?.getString("cpf") ?: "CPF Vazio"
                         val nomeDoNegocio =
                             backStackEntry.arguments?.getString("nomeDoNegocio") ?: "Sem nome do negócio"
-
+                        val imagemSelecionadaBanner =
+                            backStackEntry.arguments?.getString("imagemSelecionadaBanner") ?: "Sem foto de banner"
+                        val imagemSelecionadaPerfil =
+                            backStackEntry.arguments?.getString("imagemSelecionadaPerfil") ?: "Sem foto de perfil"
 
                         CadastroBarbeariaEndereco(
                             navController = navController,
                             cpf = cpf,
-                            nomeDoNegocio = nomeDoNegocio
+                            nomeDoNegocio = nomeDoNegocio,
+                            imagemPerfil = imagemSelecionadaPerfil,
+                            imagemBanner = imagemSelecionadaBanner
                         )
                     }
                     composable("cadastroBarbeariaFim"){
@@ -200,7 +222,7 @@ class MainActivity : ComponentActivity() {
                         Galeria(navController, usuarios()[1])
                     }
                     composable("agendaUsuarios"){
-                        AgendaUsuario(navController, usuarios()[1])
+                        AgendaUsuario(navController)
                     }
                 }
             }

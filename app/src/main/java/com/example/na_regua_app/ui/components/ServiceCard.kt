@@ -116,7 +116,7 @@ fun ServiceList(
             ServiceCard(
                 servico = service,
                 isSelectable = isSelectable,
-                isSelected = isSelected,  // Agora utiliza o 'isSelected' com base no 'id'
+                isSelected = isSelected,
                 onClick = {
                     if (isSelectable && onServiceClick != null) {
                         onServiceClick(service)

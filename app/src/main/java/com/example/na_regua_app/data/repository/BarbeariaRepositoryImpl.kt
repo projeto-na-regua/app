@@ -8,8 +8,12 @@ class BarbeariaRepositoryImpl(
     private val service : BarbeariaService
 ) : BarbeariaRepository {
 
-    override suspend fun obterBarbearia() : Response<Barbearia> {
-        return service.obterBarbearia()
+    override suspend fun obterBarbearia(idBarbearia: Int) : Response<Barbearia> {
+        return service.obterBarbearia(idBarbearia)
+    }
+
+    override suspend fun obterBarbeariaCliente(idBarbearia: Int): Response<Barbearia> {
+        return service.obterBarbeariaCliente(idBarbearia)
     }
 
 }

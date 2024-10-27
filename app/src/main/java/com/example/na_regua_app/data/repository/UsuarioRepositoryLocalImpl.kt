@@ -6,7 +6,6 @@ import com.example.na_regua_app.data.model.DadosCadastroBarbearia
 import com.example.na_regua_app.data.model.DadosLogin
 import com.example.na_regua_app.data.model.UserDType
 import com.example.na_regua_app.data.model.Usuario
-import com.example.na_regua_app.data.model.UsuarioDTOUpdate
 import retrofit2.Response
 
 class UsuarioRepositoryLocalImpl() : UsuarioRepository {
@@ -30,13 +29,21 @@ class UsuarioRepositoryLocalImpl() : UsuarioRepository {
         )
     }
 
-    override suspend fun cadastrarUsuario(dadosCadastro: DadosCadastro): Response<String> {
+    override suspend fun cadastrarUsuario(
+        userJson: RequestBody,
+        imagem: MultipartBody.Part?,
+    ): Response<String> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun cadastrarBarbearia(dadosCadastradosBarbearia: DadosCadastroBarbearia): Response<Void> {
+    override suspend fun cadastrarBarbearia(
+        barbearia: RequestBody,
+        perfil: MultipartBody.Part?,
+        banner: MultipartBody.Part?,
+    ): Response<Void> {
         TODO("Not yet implemented")
     }
+
 
     override suspend fun logar(dadosLogin: DadosLogin): Response<String> {
         TODO("Not yet implemented")

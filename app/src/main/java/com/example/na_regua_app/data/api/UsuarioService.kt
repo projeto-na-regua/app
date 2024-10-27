@@ -8,11 +8,16 @@ import com.example.na_regua_app.data.model.UserDType
 import com.example.na_regua_app.data.model.Usuario
 import com.example.na_regua_app.data.model.UsuarioDTOUpdate
 import com.github.tehras.charts.bar.BarChartData
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
+import retrofit2.http.Query
 import retrofit2.http.PUT
 
 
@@ -22,14 +27,21 @@ interface UsuarioService {
     suspend fun obterUsuario(
     ) : Response<Usuario>
 
+    @Multipart
     @POST("usuarios/cadastro")
-    suspend fun cadastrarUsuario(@Body dados: DadosCadastro) : Response<String>
+    suspend fun cadastrarUsuario(
+        @Part("user") userJson: RequestBody,
+        @Part imagem: MultipartBody.Part?
+    ): Response<String>
 
+    @Multipart
     @POST("usuarios/cadastro-barbearia")
     suspend fun cadastrarBarbearia(
         @Header("Authorization") token: String,
-        @Body dados: DadosCadastroBarbearia
-    ) : Response<Void>
+        @Part("barbearia") barbearia: RequestBody,
+        @Part perfil: MultipartBody.Part?,
+        @Part banner: MultipartBody.Part?
+    ): Response<Void>
 
     @POST("usuarios")
     suspend fun logar(

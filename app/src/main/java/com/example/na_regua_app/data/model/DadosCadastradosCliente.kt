@@ -11,5 +11,7 @@ data class DadosCadastro(
     val numero: String,
 //    val complemento: String,
     val cidade: String,
-    val estado: String
+    val estado: String,
+    val username: String,
+    val imagemPerfil: String
 )

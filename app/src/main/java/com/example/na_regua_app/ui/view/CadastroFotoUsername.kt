@@ -167,8 +167,9 @@ fun CadastroFotoUsername(
                     onClick = {
 //                        cadastroViewModel.atualizarImgPerfil(selectedImageUri.toString())
 //                        cadastroViewModel.atualizarApelido(apelido)
-                        navController.navigate("cadastro")
-                              },
+                        navController.navigate("cadastro/${Uri.encode(selectedImageUri.toString())}")
+
+                    },
                     textButton = "Próximo"
                 )
             }

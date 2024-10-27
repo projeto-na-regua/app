@@ -300,10 +300,8 @@ fun CadastroBarbeariaFotoNome(
                     }
                     Botao(
                         onClick = {
-//                            cadastroBarbeariaViewModel.atualizarImgBanner(imagemSelecionadaBanner)
-//                            cadastroBarbeariaViewModel.atualizarImgPerfil(imagemSelecionadaPerfil)
 //                            cadastroBarbeariaViewModel.atualizarDescricao(descricaoBarbearia)
-                            navController.navigate("cadastroBarbeariaEndereco/$cpf/$nomeBarbearia")
+                            navController.navigate("cadastroBarbeariaEndereco/$cpf/$nomeBarbearia/${Uri.encode(imagemSelecionadaBanner.toString())}/${Uri.encode(imagemSelecionadaPerfil.toString())}")
                                   },
                         textButton = "Próximo"
                     )

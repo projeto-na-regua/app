@@ -13,10 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -164,16 +166,18 @@ fun BotaoAjustavel(
     onClick: () -> Unit,
     textButton: String,
     modifier: Modifier = Modifier,  // Permite modificar o tamanho e outras propriedades externamente
-    imagePainter: Painter? = null   // O ícone é opcional
+    imagePainter: Painter? = null,
+    shape: Shape,
+    fontSize: Int
 ) {
     Button(
         onClick = { onClick() },
         colors = ButtonDefaults.buttonColors(
             containerColor = BLUE_PRIMARY
         ),
-        modifier = modifier  // Usa o modificador passado, permitindo ajuste de largura
+        modifier = modifier
             .height(50.dp),
-        shape = RoundedCornerShape(12.dp),
+        shape = shape,
     ) {
         imagePainter?.let {
             Image(
@@ -187,7 +191,7 @@ fun BotaoAjustavel(
 
         Text(
             text = textButton,
-            style = labelLargeOrange.copy(fontSize = 10.sp),
+            style = labelLargeOrange.copy(fontSize = fontSize.sp),
             letterSpacing = 1.sp
         )
     }

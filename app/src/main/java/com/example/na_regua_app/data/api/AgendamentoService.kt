@@ -9,6 +9,8 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface AgendamentoService {
@@ -25,5 +27,20 @@ interface AgendamentoService {
     suspend fun adicionarAgendamento(
         @Body nvAgendamento: AgendamentoCriacao
     ): Response<AgendamentoConsulta>
+
+    @GET("agendamentos/list-all-by-status/Pendente")
+    suspend fun getAgendamentosPendentes() : Response<List<AgendamentoConsulta>>
+
+    @GET("agendamentos/list-all-by-status/Agendado")
+    suspend fun getAgendamentosConfirmados() : Response<List<AgendamentoConsulta>>
+
+    @GET("agendamentos/historico")
+    suspend fun getHistoricoCliente() : Response<List<AgendamentoConsulta>>
+
+    @PUT("agendamentos/{id}/{status}")
+    suspend fun updateStatusAgendamento(
+        @Path("id") id: Int,
+        @Path("status") status: String
+    ) : Response<AgendamentoConsulta>
 
 }

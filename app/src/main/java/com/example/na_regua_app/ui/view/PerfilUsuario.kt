@@ -214,7 +214,9 @@ fun PerfilUsuarioContent(paddingValues: PaddingValues, navController: NavControl
                     .wrapContentWidth(Alignment.CenterHorizontally),
                     onClick = { /*TODO*/ },
                     textButton = "Editar perfil",
-                    imagePainter = painterResource(R.drawable.edit_icon)
+                    imagePainter = painterResource(R.drawable.edit_icon),
+                    shape = RoundedCornerShape(12.dp),
+                    fontSize = 10
                 )
             }
 
@@ -284,13 +286,17 @@ fun PerfilUsuarioContent(paddingValues: PaddingValues, navController: NavControl
                         modifier = Modifier.weight(1.5f),
                         onClick = { navController.navigate("chat/$userName/$profilePic/$origin") },
                         textButton = "Enviar mensagem",
-                        imagePainter = painterResource(R.drawable.send_icon)
+                        imagePainter = painterResource(R.drawable.send_icon),
+                        shape = RoundedCornerShape(12.dp),
+                        fontSize = 10
                     )
                     Spacer(modifier = Modifier.width(2.dp))
                     BotaoAjustavel(
                         modifier = Modifier.weight(1.5f),
                         onClick = { navController.navigate("perfilBarbearia") },
-                        textButton = "Visitar barbearia"
+                        textButton = "Visitar barbearia",
+                        shape = RoundedCornerShape(12.dp),
+                        fontSize = 10
                     )
                 }
             }

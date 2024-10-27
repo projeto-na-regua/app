@@ -158,7 +158,9 @@ fun HeaderSection(navController: NavController, nomeBarbearia: String, localizac
                         .padding(end = 12.dp),
                     onClick = { navController.navigate("settingsbusiness") },
                     textButton = "Editar perfil",
-                    imagePainter = painterResource(R.drawable.edit_icon)
+                    imagePainter = painterResource(R.drawable.edit_icon),
+                    shape = RoundedCornerShape(12.dp),
+                    fontSize = 10
                 )
             }
 
@@ -214,13 +216,17 @@ fun FooterButtons(navController: NavController, idBarbearia: Int) {
             modifier = Modifier.weight(1.5f),
             onClick = { navController.navigate("chat/$userName/$profilePicString/perfilBarbearia") },
             textButton = "Enviar mensagem",
-            imagePainter = painterResource(R.drawable.send_icon)
+            imagePainter = painterResource(R.drawable.send_icon),
+            shape = RoundedCornerShape(12.dp),
+            fontSize = 10
         )
 
         BotaoAjustavel(
             modifier = Modifier.weight(1.5f),
             onClick = { navController.navigate("agendamento/$idBarbearia/${false}") },
-            textButton = "Marcar horário"
+            textButton = "Marcar horário",
+            shape = RoundedCornerShape(12.dp),
+            fontSize = 10
         )
     }
 }

@@ -222,7 +222,7 @@ class MainActivity : ComponentActivity() {
                         Galeria(navController, usuarios()[1])
                     }
                     composable("agendaUsuarios"){
-                        AgendaUsuario(navController, usuarios()[1])
+                        AgendaUsuario(navController)
                     }
                 }
             }

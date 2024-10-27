@@ -491,7 +491,6 @@ fun CalendarExample(
 @Preview
 @Composable
 fun AgendamentoPreview() {
-    val usuarios = usuarios()
     Agendamento(navController = rememberNavController())
 }
 

@@ -11,4 +11,12 @@ interface AgendamentoRepository {
 
     suspend fun adicionarAgendamento(nvAgendamentoCriacao: AgendamentoCriacao) : Response<AgendamentoConsulta>
 
+    suspend fun getAgendamentosPendentes() : Response<List<AgendamentoConsulta>>
+
+    suspend fun getAgendamentosAgendados() : Response<List<AgendamentoConsulta>>
+
+    suspend fun getHistoricoCliente() : Response<List<AgendamentoConsulta>>
+
+    suspend fun updateStatusAgendamento(id: Int, status: String) : Response<AgendamentoConsulta>
+
 }

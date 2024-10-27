@@ -79,7 +79,7 @@ fun Agendamento(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        servicoViewModel.obterServicosPorStatus(idBarbearia = idBarbearia, isBarbeiro = isBarbeiro)
+        servicoViewModel.obterServicosPorStatus(status = "active", idBarbearia = idBarbearia, isBarbeiro = isBarbeiro)
         funcionarioViewModel.obterFuncionarios(idBarbearia = idBarbearia, isBarbeiro = isBarbeiro)
     }
 
@@ -154,7 +154,7 @@ fun Agendamento(
             }
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, LocalContext.current)
         }
     )
 

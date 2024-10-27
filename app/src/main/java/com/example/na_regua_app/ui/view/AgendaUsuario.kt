@@ -103,7 +103,7 @@ fun AgendaUsuario(
             )
         },
         bottomBar = {
-            BottomBarCustom(navController)
+            BottomBarCustom(navController, context)
         }
     )
 }

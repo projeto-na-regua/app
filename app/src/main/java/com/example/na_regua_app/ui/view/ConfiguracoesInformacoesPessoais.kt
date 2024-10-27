@@ -225,7 +225,7 @@ fun ConfiguracoesInformacoesPessoais(
             }
         },
         bottomBar = {
-            BottomBarCustom(navController, usuario)
+            BottomBarCustom(navController, LocalContext.current)
         }
     )
 

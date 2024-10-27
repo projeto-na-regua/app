@@ -72,6 +72,7 @@ fun Input(
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InputCadastro(
     value: String,
@@ -85,5 +86,48 @@ fun InputCadastro(
         modifier = Modifier
             .fillMaxWidth()
             .height(70.dp),
-        shape = RoundedCornerShape(12.dp))
+        shape = RoundedCornerShape(12.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = BLUE_PRIMARY,
+            focusedLabelColor = BLUE_PRIMARY,
+            focusedPrefixColor = BLUE_PRIMARY,
+            focusedTrailingIconColor = BLUE_PRIMARY,
+            focusedPlaceholderColor = BLUE_PRIMARY,
+            focusedTextColor = BLUE_PRIMARY,
+            focusedSuffixColor = BLUE_PRIMARY,
+            focusedLeadingIconColor = BLUE_PRIMARY,
+            focusedSupportingTextColor = BLUE_PRIMARY
+    )
+    )
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun InputCadastroDropdown(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: @Composable (() -> Unit)? = null,
+    modifier: Modifier
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = label,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(70.dp),
+        shape = RoundedCornerShape(12.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = BLUE_PRIMARY,
+            focusedLabelColor = BLUE_PRIMARY,
+            focusedPrefixColor = BLUE_PRIMARY,
+            focusedTrailingIconColor = BLUE_PRIMARY,
+            focusedPlaceholderColor = BLUE_PRIMARY,
+            focusedTextColor = BLUE_PRIMARY,
+            focusedSuffixColor = BLUE_PRIMARY,
+            focusedLeadingIconColor = BLUE_PRIMARY,
+            focusedSupportingTextColor = BLUE_PRIMARY
+        )
+    )
+}
+

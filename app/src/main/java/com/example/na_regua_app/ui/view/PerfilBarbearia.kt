@@ -18,6 +18,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -57,7 +58,7 @@ fun PerfilBarbearia(
 
     LaunchedEffect(Unit) {
         perfilBarbeariaViewModel.obterBarbearia(isBarbeiro, idBarbearia)
-        servicoViewModel.obterServicosPorStatus(idBarbearia = idBarbearia, isBarbeiro = isBarbeiro)
+        servicoViewModel.obterServicosPorStatus(status = "active", idBarbearia = idBarbearia, isBarbeiro = isBarbeiro)
         funcionarioViewModel.obterFuncionarios(idBarbearia = idBarbearia, isBarbeiro = isBarbeiro)
     }
 
@@ -112,7 +113,7 @@ fun PerfilBarbearia(
                 }
             }
         },
-        bottomBar = { BottomBarCustom(navController) }
+        bottomBar = { BottomBarCustom(navController, LocalContext.current) }
     )
 }
 

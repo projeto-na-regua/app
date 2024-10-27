@@ -6,6 +6,7 @@ import com.example.na_regua_app.data.model.DadosCadastroBarbearia
 import com.example.na_regua_app.data.model.DadosLogin
 import com.example.na_regua_app.data.model.UserDType
 import com.example.na_regua_app.data.model.Usuario
+import com.example.na_regua_app.data.model.UsuarioDTOUpdate
 import retrofit2.Response
 
 interface UsuarioRepository {
@@ -19,7 +20,7 @@ interface UsuarioRepository {
 
     suspend fun admIsTrue(token: String): Response<UserDType>
 
-    suspend fun editarPerfil(usuario: Usuario): Response<Void>
+    suspend fun editarPerfil(usuario: UsuarioDTOUpdate): Response<Void>
 
 //    suspend fun editarImagemPerfil(file: String): Boolean
 }

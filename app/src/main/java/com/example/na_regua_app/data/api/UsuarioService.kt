@@ -6,6 +6,7 @@ import com.example.na_regua_app.data.model.DadosCadastroBarbearia
 import com.example.na_regua_app.data.model.DadosLogin
 import com.example.na_regua_app.data.model.UserDType
 import com.example.na_regua_app.data.model.Usuario
+import com.example.na_regua_app.data.model.UsuarioDTOUpdate
 import com.github.tehras.charts.bar.BarChartData
 import retrofit2.Response
 import retrofit2.http.Body
@@ -42,7 +43,7 @@ interface UsuarioService {
 
     // Novo método para editar o perfil do usuário
     @PUT("usuarios/editar-perfil")
-    suspend fun editarPerfil(@Body usuario: Usuario): Response<Void>
+    suspend fun editarPerfil(@Body usuario: UsuarioDTOUpdate): Response<Void>
 
 //    // Novo método para editar a imagem de perfil do usuário
 //    @Multipart

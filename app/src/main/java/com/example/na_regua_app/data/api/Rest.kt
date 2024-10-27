@@ -28,7 +28,7 @@ object Rest {
             val newRequest = Request.Builder()
                 .url(oldRequest.url)
                 .method(oldRequest.method, oldRequest.body)
-                .header("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE5Iiwibm9tZSI6ImRvdWdsYXMiLCJzZW5oYSI6InNlbmhhMTExIiwiZW1haWwiOiJkb3VnbGFzQGdtYWlsLmNvbSIsImV4cCI6MTcyOTg5MzYzMTM2MX0.9hkiA7XD48nHr14gu7MkIyVN8UI_6uyrl0uBT2PGSro")
+                .header("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyIiwibm9tZSI6InRlc3RlY2xpZW50ZSIsInNlbmhhIjoidGVzdGUxMjMiLCJlbWFpbCI6InRlc3RlQGNsaWVudGUuY29tIiwiZXhwIjoxNzI5OTEwMzk5MzI3fQ.JLSVAqkvGTbUoAtA5hETTyWmx6zOGXWw2mqZP-H9nmE")
                 .build()
             return chain.proceed(newRequest)
         }

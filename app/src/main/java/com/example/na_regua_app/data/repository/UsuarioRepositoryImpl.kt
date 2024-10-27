@@ -7,6 +7,7 @@ import com.example.na_regua_app.data.model.DadosCadastroBarbearia
 import com.example.na_regua_app.data.model.DadosLogin
 import com.example.na_regua_app.data.model.UserDType
 import com.example.na_regua_app.data.model.Usuario
+import com.example.na_regua_app.data.model.UsuarioDTOUpdate
 import retrofit2.Response
 
 class UsuarioRepositoryImpl(
@@ -33,7 +34,7 @@ class UsuarioRepositoryImpl(
         return service.admIsTrue(token)
     }
 
-    override suspend fun editarPerfil(usuario: Usuario): Response<Void> {
+    override suspend fun editarPerfil(usuario: UsuarioDTOUpdate): Response<Void> {
        return service.editarPerfil(usuario)
     }
 

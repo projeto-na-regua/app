@@ -9,7 +9,6 @@ import com.example.na_regua_app.data.model.UserDType
 import com.example.na_regua_app.data.model.Usuario
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Response
 
 class UsuarioRepositoryImpl(
     private val service : UsuarioService
@@ -36,7 +35,7 @@ class UsuarioRepositoryImpl(
         return service.admIsTrue(token)
     }
 
-    override suspend fun editarPerfil(usuario: Usuario): Response<Void> {
+    override suspend fun editarPerfil(usuario: UsuarioDTOUpdate): Response<Void> {
        return service.editarPerfil(usuario)
     }
 

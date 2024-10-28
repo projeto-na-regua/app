@@ -120,7 +120,6 @@ class PerfilUsuarioViewModel(private val usuarioRepository: UsuarioRepository) :
         }
     }
 
-
     suspend fun editarPerfil(usuario: UsuarioDTOUpdate): Response<Void> {
         return usuarioRepository.editarPerfil(usuario)
     }

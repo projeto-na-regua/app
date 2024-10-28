@@ -1,5 +1,7 @@
 package com.example.na_regua_app.ui.view
 
+import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -23,8 +25,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -39,7 +43,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -48,6 +51,7 @@ import coil.compose.AsyncImage
 import com.example.na_regua_app.R
 import com.example.na_regua_app.data.model.Postagem
 import com.example.na_regua_app.data.model.Usuario
+import com.example.na_regua_app.data.model.Barbearia
 import com.example.na_regua_app.ui.components.BotaoAjustavel
 import com.example.na_regua_app.ui.components.BottomBarCustom
 import com.example.na_regua_app.ui.components.PostCard
@@ -55,15 +59,24 @@ import com.example.na_regua_app.ui.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.example.na_regua_app.viewmodel.PerfilUsuarioViewModel
+import com.example.na_regua_app.viewmodel.PerfilBarbeariaViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PerfilUsuario(
     navController: NavController,
-    perfilUsuarioViewModel: PerfilUsuarioViewModel = koinViewModel()
+    perfilUsuarioViewModel: PerfilUsuarioViewModel = koinViewModel(),
+    perfilBarbeariaViewModel: PerfilBarbeariaViewModel = koinViewModel()
 ) {
     val usuario by perfilUsuarioViewModel.usuario.collectAsState()
+    val barbearia by perfilBarbeariaViewModel.barbearia.collectAsState()
+
+    LaunchedEffect(Unit) {
+        Log.d("PerfilUsuario", "Iniciando busca de barbearia com ID: ${barbearia?.id}")
+        barbearia?.let { perfilBarbeariaViewModel.obterBarbearia(true, it.id) }
+    }
+
 
     Scaffold(
         topBar = {
@@ -73,7 +86,8 @@ fun PerfilUsuario(
             PerfilUsuarioContent(
                 paddingValues = paddingValues,
                 navController = navController,
-                usuario = usuario
+                usuario = usuario,
+                barbearia = barbearia
             )
         },
         bottomBar = {
@@ -83,7 +97,7 @@ fun PerfilUsuario(
 }
 
 @Composable
-fun PerfilUsuarioContent(paddingValues: PaddingValues, navController: NavController, usuario: Usuario?) {
+fun PerfilUsuarioContent(paddingValues: PaddingValues, navController: NavController, usuario: Usuario?, barbearia: Barbearia?) {
 
     if (usuario != null) {
         var nomeUsuario by remember { mutableStateOf(usuario.nome) }
@@ -223,18 +237,19 @@ fun PerfilUsuarioContent(paddingValues: PaddingValues, navController: NavControl
             //Uma listagem de exemplo que será subtituida pela resposta da API no backend.
             val exemploPosts = listOf(
                 Postagem(
-                    fotoDePerfil = usuario.imgPerfil,
+                    fotoDePerfil = usuario.imgPerfil ?: "",
                     nomeDeUsuario = usuario.nome,
                     descricao = "Poxa pessoal, o aplicativo tá incrível!",
                     imagem = null
                 ),
                 Postagem(
-                    fotoDePerfil = usuario.imgPerfil,
+                    fotoDePerfil =  usuario.imgPerfil ?: "",
                     nomeDeUsuario = usuario.nome,
                     descricao = "Primeira postagem na comunidade do Na Régua, sigam meu " +
                             "perfil e deem uma olhada nos serviços da minha barbearia.",
                     imagem = R.drawable.imagem_post
                 )
+
             )
 
             Box(
@@ -277,19 +292,30 @@ fun PerfilUsuarioContent(paddingValues: PaddingValues, navController: NavControl
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     val userName by remember { mutableStateOf(usuario.nome) }
-                    val profilePic by remember { mutableStateOf(usuario.imgPerfil) }
-                    val origin by remember { mutableStateOf("perfilUsuario") }
+                    val profilePic = Uri.encode(usuario.imgPerfil)
+                    val origin by remember { mutableStateOf("PerfilUsuario") }
+                    val id by remember { mutableIntStateOf(27) }
 
                     BotaoAjustavel(
                         modifier = Modifier.weight(1.5f),
-                        onClick = { navController.navigate("chat/$userName/$profilePic/$origin") },
+                        onClick = { navController.navigate("chat/$userName/$profilePic/$origin/$id") },
                         textButton = "Enviar mensagem",
                         imagePainter = painterResource(R.drawable.send_icon)
                     )
+
                     Spacer(modifier = Modifier.width(2.dp))
+
+                    val barbeariaId = barbearia?.id ?: -1
+
                     BotaoAjustavel(
                         modifier = Modifier.weight(1.5f),
-                        onClick = { navController.navigate("perfilBarbearia") },
+                        onClick = { if (barbeariaId != -1) {
+                                navController.navigate("perfilBarbearia/${false}/$barbeariaId")
+                            } else {
+                                // Adicione uma mensagem de log ou feedback para depuração, se necessário
+                                Log.e("NavigationError", "Barbearia ID está null ou inválido")
+                            }
+                        },
                         textButton = "Visitar barbearia"
                     )
                 }
@@ -311,10 +337,12 @@ fun PerfilUsuarioPreview() {
 }
 
 @Composable
-fun PostList(posts: List<Postagem>) {
+fun PostList(posts: List<Postagem?>) {
     Column {
         posts.forEach { post ->
-            PostCard(post = post)
+            if (post != null) {
+                PostCard(post = post)
+            }
         }
     }
 }

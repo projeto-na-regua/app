@@ -42,7 +42,6 @@ import com.example.na_regua_app.ui.view.SplashScreen
 import com.example.na_regua_app.ui.view.TelaInicial
 import com.example.na_regua_app.ui.view.dashboard.Dashboard
 import com.example.na_regua_app.view.Galeria
-import com.example.na_regua_app.viewmodel.CadastroViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -119,20 +118,22 @@ class MainActivity : ComponentActivity() {
                     composable("comunidade") {
                         Comunidade(navController, usuarios().first())
                     }
-                    composable("chat/{userName}/{profilePic}/{origin}") { backStackEntry ->
+                    composable("chat/{userName}/{profilePicString}/{origin}/{id}") { backStackEntry ->
                         val userName =
                             backStackEntry.arguments?.getString("userName") ?: "Nome Desconhecido"
                         val profilePic =
-                            backStackEntry.arguments?.getString("profilePic")?.toIntOrNull()
+                            backStackEntry.arguments?.getString("profilePic")
                                 ?: R.drawable.avatar_funcionario_default
                         val origin =
                             backStackEntry.arguments?.getString("origin") ?: "Origem Desconhecida"
-
+                        val id =
+                            backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 0
                         Chat(
                             navController = navController,
                             userName = userName,
-                            profilePic = profilePic,
-                            origin = origin
+                            profilePic = profilePic.toString(),
+                            origin = origin,
+                            id = id
                         )
                     }
                     composable("adicionar") {

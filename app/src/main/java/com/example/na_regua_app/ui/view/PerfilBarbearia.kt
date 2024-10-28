@@ -102,7 +102,7 @@ fun PerfilBarbearia(
 
                     // Botões
                     item {
-                        FooterButtons(navController, idBarbearia)
+                        FooterButtons(navController, idBarbearia, barbearia = barbearia!!)
                     }
                 }
 
@@ -198,7 +198,7 @@ fun HeaderSection(navController: NavController, nomeBarbearia: String, localizac
 }
 
 @Composable
-fun FooterButtons(navController: NavController, idBarbearia: Int) {
+fun FooterButtons(navController: NavController, idBarbearia: Int, barbearia: Barbearia) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -206,13 +206,15 @@ fun FooterButtons(navController: NavController, idBarbearia: Int) {
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val userName by remember { mutableStateOf("Dom Bigode") }
-        val profilePic by remember { mutableStateOf(R.drawable.barbeiro1) }
+        val userName by remember { mutableStateOf(barbearia.nomeNegocio) }
+        val profilePic by remember { mutableStateOf(barbearia.imgPerfil) }
         val profilePicString = profilePic.toString()
+        val origin by remember { mutableStateOf("PerfilBarbearia") }
+        val id by remember { mutableIntStateOf(idBarbearia) }
 
         BotaoAjustavel(
             modifier = Modifier.weight(1.5f),
-            onClick = { navController.navigate("chat/$userName/$profilePicString/perfilBarbearia") },
+            onClick = { navController.navigate("chat/$userName/$profilePicString/$origin/$id") },
             textButton = "Enviar mensagem",
             imagePainter = painterResource(R.drawable.send_icon)
         )

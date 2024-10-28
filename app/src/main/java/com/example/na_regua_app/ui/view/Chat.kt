@@ -2,7 +2,6 @@
 
 package com.example.na_regua_app.ui.view
 
-import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,8 +23,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,6 +33,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,23 +50,34 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.na_regua_app.R
-import com.example.na_regua_app.ui.components.BottomBarCustom
 import com.example.na_regua_app.ui.components.MessageBubble
 import com.example.na_regua_app.ui.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.example.na_regua_app.ui.viewmodel.ChatViewModel
 import org.koin.compose.viewmodel.koinViewModel
+import androidx.compose.runtime.livedata.observeAsState
+import com.example.na_regua_app.data.model.ChatPost
+
 
 @Composable
 fun Chat(
     navController: NavController,
     chatViewModel: ChatViewModel = koinViewModel(),
     userName: String,
-    profilePic: Int,
-    origin: String
+    profilePic: String,
+    origin: String,
+    id: Int
 ) {
-    var messages by remember { mutableStateOf(listOf<String>()) }
+    // Obter a lista de mensagens do ViewModel
+    val messages by chatViewModel.chatMessages.observeAsState(emptyList())
+
+    // Obter a resposta do chat aberto
+    val chatResponse by chatViewModel.chatOpenResponse.observeAsState()
+
+    LaunchedEffect(Unit) {
+        chatViewModel.abrirChat(id, origin)
+    }
 
     Scaffold(
         topBar = {
@@ -86,14 +95,18 @@ fun Chat(
         },
         bottomBar = {
             BottomBarChat(chatViewModel) {  message, uri ->
-                chatViewModel.postarChat(id = 1, message, origin, uri.toString())
+                chatViewModel.postarChat(id, message, origin, uri.toString())
             }
         }
     )
+
+
 }
 
 @Composable
-fun ChatContent(paddingValues: PaddingValues, navController: NavController,userName: String, profilePic: Int, messages: List<String>, origin: String) {
+fun ChatContent(
+    paddingValues: PaddingValues, navController: NavController,
+    userName: String, profilePic: String, messages: List<ChatPost>, origin: String) {
     var descricao by remember { mutableStateOf("Envie uma mensagem para tirar suas dúvidas!") }
 
     Column(modifier = Modifier
@@ -134,8 +147,14 @@ fun ChatContent(paddingValues: PaddingValues, navController: NavController,userN
         ) {
 
             items(messages.size) { index ->
+                val message = messages[index]
+                MessageBubble(
+                    conteudo = message.conteudo,
+                    tipoUsuario = message.tipo,
+                    imgPerfil = message.imgPerfil
+                )
 
-
+                Spacer(modifier = Modifier.height(8.dp)) // Espaço entre as mensagens
             }
         }
     }

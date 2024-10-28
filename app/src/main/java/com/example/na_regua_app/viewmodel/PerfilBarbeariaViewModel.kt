@@ -7,12 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.util.copy
 import com.example.na_regua_app.data.model.Barbearia
+import com.example.na_regua_app.data.model.BarbeariaDTO
 import com.example.na_regua_app.data.model.DiaSemana
+import com.example.na_regua_app.data.model.UsuarioDTOUpdate
+
 import com.example.na_regua_app.data.repository.BarbeariaRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import okhttp3.Response
+import retrofit2.Response
 
 class PerfilBarbeariaViewModel(
     private val barbeariaRepository: BarbeariaRepository,
@@ -44,6 +47,10 @@ class PerfilBarbeariaViewModel(
         }
     }
 
+    suspend fun editarPerfil(barbearia: BarbeariaDTO): Response<Void> {
+        return barbeariaRepository.editarPerfil(barbearia)
+    }
+}
     fun atualizarHorario(
         barbearia: Barbearia,
         novaListaDeHorarios: List<DiaSemana>,

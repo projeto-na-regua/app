@@ -7,6 +7,7 @@ import com.example.na_regua_app.data.model.DadosLogin
 import com.example.na_regua_app.data.model.UserDType
 import com.example.na_regua_app.data.model.Usuario
 import com.example.na_regua_app.data.model.UsuarioDTOUpdate
+import com.example.na_regua_app.data.model.UsuarioImagem
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response

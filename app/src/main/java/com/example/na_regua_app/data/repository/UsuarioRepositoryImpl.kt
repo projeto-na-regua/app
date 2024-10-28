@@ -7,8 +7,10 @@ import com.example.na_regua_app.data.model.DadosCadastroBarbearia
 import com.example.na_regua_app.data.model.DadosLogin
 import com.example.na_regua_app.data.model.UserDType
 import com.example.na_regua_app.data.model.Usuario
+import com.example.na_regua_app.data.model.UsuarioDTOUpdate
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Response
 
 class UsuarioRepositoryImpl(
     private val service : UsuarioService
@@ -38,6 +40,8 @@ class UsuarioRepositoryImpl(
     override suspend fun editarPerfil(usuario: UsuarioDTOUpdate): Response<Void> {
        return service.editarPerfil(usuario)
     }
+
+
 
 //    override suspend fun editarImagemPerfil(file: String): Boolean {
 //        TODO("Not yet implemented")

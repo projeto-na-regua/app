@@ -53,6 +53,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.ui.platform.LocalContext
+import com.example.na_regua_app.data.model.UsuarioDTOUpdate
 import com.example.na_regua_app.ui.components.Input
 import com.example.na_regua_app.ui.components.Botao
 import kotlinx.coroutines.CoroutineScope
@@ -68,164 +69,186 @@ fun ConfiguracoesInformacoesPessoais(
 ) {
     var showEditDialog by remember { mutableStateOf(false) }
 
+    val usuarioBody by usuarioViewModel.usuario.collectAsState()
+
+
+
     Scaffold(
         topBar = {
             TopBarCustom(navController, "Configurações", false, false, true)
         },
         content = { paddingValues ->
-            Column(
-                Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            if (usuarioBody != null) {
+
+                var nome by remember { mutableStateOf(usuarioBody!!.nome) }
+                var email by remember { mutableStateOf(usuarioBody!!.email) }
+                val senha by remember { mutableStateOf(usuarioBody!!.senha) }
+                val celular by remember { mutableStateOf(usuarioBody!!.celular) }
+                val cep by remember { mutableStateOf(usuarioBody!!.cep) }
+                val logradouro by remember { mutableStateOf(usuarioBody!!.logradouro) }
+                val numero by remember { mutableStateOf(usuarioBody!!.numero) }
+                val complemento by remember { mutableStateOf(usuarioBody!!.complemento) }
+                val cidade by remember { mutableStateOf(usuarioBody!!.cidade) }
+                val estado by remember { mutableStateOf(usuarioBody!!.estado) }
+                var username by remember { mutableStateOf(usuarioBody!!.username) }
+
                 Column(
                     Modifier
-                        .weight(1f)
-                        .verticalScroll(rememberScrollState())
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Column(
-                        modifier = Modifier.padding(16.dp)
+                        Modifier
+                            .weight(1f)
+                            .verticalScroll(rememberScrollState())
                     ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            ImageWithEditIcon(
-                                painter = painterResource(id = R.drawable.foto_exemplo),
-                                onClick = {},
-                                shape = CircleShape
-                            )
-
-                            Column {
-                                Text(text = "Formatos permitidos", style = titleSection)
-
-                                Spacer(modifier = Modifier.height(4.dp))
-
-                                Text(text = "JPG, PNG e JPEG", style = textSection)
-                            }
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    Column(
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    ) {
-                        Text(text = "Informações Pessoais", style = titleSectionBold)
-
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        Text(text = "Apelido", style = titleSection)
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "@${usuarioViewModel.obterUsuarioBody {  }}", style = textSection)
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Text(text = "Nome", style = titleSection)
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = usuario.nome, style = textSection)
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Text(text = "E-mail", style = titleSection)
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = usuario.email, style = textSection)
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Text(text = "Senha", style = titleSection)
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "************", style = textSection)
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Text(text = "Telefone", style = titleSection)
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = usuario.celular, style = textSection)
-
-                        Spacer(modifier = Modifier.height(32.dp))
-
-                        Text(text = "Informações de Endereço", style = titleSectionBold)
-
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        Text(text = "Endereço", style = titleSection)
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "${usuario.logradouro}, ${usuario.numero} - ${usuario.complemento}",
-                            style = textSection
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Text(text = "Cidade/Estado", style = titleSection)
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "${usuario.cidade} - ${usuario.estado}", style = textSection)
-
-                        Spacer(modifier = Modifier.height(32.dp))
-
-                        Button(
-                            onClick = {
-                                navController.navigate("deleteaccount")
-                            },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.Transparent,
-                                contentColor = Color(0xFFCC2828)
-                            ),
-                            border = BorderStroke(1.dp, Color(0xFFCC2828)),
-                            shape = RoundedCornerShape(12.dp),
-                            contentPadding = PaddingValues(16.dp),
-                            modifier = Modifier.fillMaxWidth()
+                        Column(
+                            modifier = Modifier.padding(16.dp)
                         ) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
+                                horizontalArrangement = Arrangement.Center,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "Excluir conta",
-                                    style = androidx.compose.ui.text.TextStyle(
-                                        color = Color(0xFFCC2828),
-                                        fontSize = 16.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
+                                ImageWithEditIcon(
+                                    painter = painterResource(id = R.drawable.foto_exemplo),
+                                    onClick = {},
+                                    shape = CircleShape
                                 )
 
-                                Icon(
-                                    imageVector = Icons.Default.KeyboardArrowRight,
-                                    contentDescription = null
-                                )
+                                Column {
+                                    Text(text = "Formatos permitidos", style = titleSection)
+
+                                    Spacer(modifier = Modifier.height(4.dp))
+
+                                    Text(text = "JPG, PNG e JPEG", style = textSection)
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Column(
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        ) {
+                            Text(text = "Informações Pessoais", style = titleSectionBold)
+
+                            Spacer(modifier = Modifier.height(24.dp))
+
+                            Text(text = "Apelido", style = titleSection)
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(text = username, style = textSection)
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Text(text = "Nome", style = titleSection)
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(text = nome, style = textSection)
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Text(text = "E-mail", style = titleSection)
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(text = email, style = textSection)
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Text(text = "Senha", style = titleSection)
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(text = senha, style = textSection)
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Text(text = "Telefone", style = titleSection)
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(text = celular, style = textSection)
+
+                            Spacer(modifier = Modifier.height(32.dp))
+
+                            Text(text = "Informações de Endereço", style = titleSectionBold)
+
+                            Spacer(modifier = Modifier.height(24.dp))
+
+                            Text(text = "Endereço", style = titleSection)
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "$logradouro, $numero - $complemento - $cep",
+                                style = textSection
+                            )
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Text(text = "Cidade/Estado", style = titleSection)
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "$cidade - $estado",
+                                style = textSection
+                            )
+
+                            Spacer(modifier = Modifier.height(32.dp))
+
+                            Button(
+                                onClick = {
+                                    navController.navigate("deleteaccount")
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color.Transparent,
+                                    contentColor = Color(0xFFCC2828)
+                                ),
+                                border = BorderStroke(1.dp, Color(0xFFCC2828)),
+                                shape = RoundedCornerShape(12.dp),
+                                contentPadding = PaddingValues(16.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = "Excluir conta",
+                                        style = androidx.compose.ui.text.TextStyle(
+                                            color = Color(0xFFCC2828),
+                                            fontSize = 16.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    )
+
+                                    Icon(
+                                        imageVector = Icons.Default.KeyboardArrowRight,
+                                        contentDescription = null
+                                    )
+                                }
                             }
                         }
                     }
-                }
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp)
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp)
                     ) {
-                        BotaoComIcone(
-                            onClick = { showEditDialog = true }, // Mostra o modal ao clicar
-                            textButton = "Editar Informações",
-                            imagePainter = painterResource(id = R.drawable.icon_edit),
-                        )
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            BotaoComIcone(
+                                onClick = { showEditDialog = true }, // Mostra o modal ao clicar
+                                textButton = "Editar Informações",
+                                imagePainter = painterResource(id = R.drawable.icon_edit),
+                            )
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(modifier = Modifier.height(8.dp))
 
-                        Text(text = "Desenvolvido por NaRégua", style = textSection)
+                            Text(text = "Desenvolvido por NaRégua", style = textSection)
+                        }
                     }
                 }
             }
         },
         bottomBar = {
-            BottomBarCustom(navController, usuario)
+            BottomBarCustom(navController, LocalContext.current)
         }
     )
 
@@ -244,14 +267,21 @@ fun EditarInformacoesDialog(
     onDismiss: () -> Unit,
     usuarioViewModel: PerfilUsuarioViewModel = koinViewModel() // ViewModel
 ) {
-    var nome by remember { mutableStateOf(usuario.nome) }
-    var email by remember { mutableStateOf(usuario.email) }
-    var celular by remember { mutableStateOf(usuario.celular) }
-    var logradouro by remember { mutableStateOf(usuario.logradouro) }
-    var numero by remember { mutableStateOf(usuario.numero.toString()) }
-    var complemento by remember { mutableStateOf(usuario.complemento) }
-    var cidade by remember { mutableStateOf(usuario.cidade) }
-    var estado by remember { mutableStateOf(usuario.estado) }
+
+    val usuarioBody by usuarioViewModel.usuario.collectAsState()
+
+    var nome by remember { mutableStateOf(usuarioBody!!.nome) }
+    var email by remember { mutableStateOf(usuarioBody!!.email) }
+    var celular by remember { mutableStateOf(usuarioBody!!.celular) }
+    var cep by remember { mutableStateOf(usuarioBody!!.cep) }
+    var logradouro by remember { mutableStateOf(usuarioBody!!.logradouro) }
+    var numero by remember { mutableStateOf(usuarioBody!!.numero.toString()) }
+    var complemento by remember { mutableStateOf(usuarioBody!!.complemento) }
+    var cidade by remember { mutableStateOf(usuarioBody!!.cidade) }
+    var estado by remember { mutableStateOf(usuarioBody!!.estado) }
+    var username by remember { mutableStateOf(usuarioBody!!.username) }
+
+    val context = LocalContext.current
 
     // Estado para mostrar mensagens de erro ou sucesso
     val errorMessage = remember { mutableStateOf("") }
@@ -283,16 +313,27 @@ fun EditarInformacoesDialog(
             ) {
                 Botao(
                     onClick = {
-                        val usuarioAtualizado = Usuario(
-                            nome, email, usuario.senha, celular,
-                            usuario.imgPerfil, usuario.cep, logradouro,
-                            numero.toInt(), complemento, cidade, estado, usuario.dtype, usuario.username
+                        val usuarioAtualizado = UsuarioDTOUpdate(
+
+                            nome,
+                            email,
+                            celular,
+                            cep,
+                            logradouro,
+                            numero.toInt(),
+                            complemento,
+                            cidade,
+                            estado,
+                            username,
                         )
                         // Chama a função de edição de perfil
                         CoroutineScope(Dispatchers.IO).launch {
                             val result = usuarioViewModel.editarPerfil(usuarioAtualizado)
                             if (result.isSuccessful) {
+//                                Toast.makeText(context, "Perfil atualizado com sucesso!", Toast.LENGTH_SHORT).show()
                                 onDismiss() // Fecha o modal se a atualização for bem-sucedida
+                            }else{
+//                                Toast.makeText(context, "Falha ao realizar a alteração de perfil!", Toast.LENGTH_SHORT).show()
                             }
                         }
                     },

@@ -4,10 +4,12 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.na_regua_app.data.model.Usuario
+import com.example.na_regua_app.data.model.UsuarioDTOUpdate
 import com.example.na_regua_app.data.repository.UsuarioRepository
 import com.example.na_regua_app.data.repository.UsuarioRepositoryLocalImpl
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +22,62 @@ class PerfilUsuarioViewModel(private val usuarioRepository: UsuarioRepository) :
     private val _usuario = MutableStateFlow<Usuario?>(null)
     val usuario: StateFlow<Usuario?> = _usuario
 
+    var nome = mutableStateOf("")
+    var email = mutableStateOf("")
+    var senha = mutableStateOf("")
+    var celular = mutableStateOf("")
+    var cep = mutableStateOf("")
+    var logradouro = mutableStateOf("")
+    var numero = mutableStateOf("")
+    var complemento = mutableStateOf("")
+    var cidade = mutableStateOf("")
+    var estado = mutableStateOf("")
+    var username = mutableStateOf("")
+
+    fun atualizarNome(novoNome: String) {
+        nome.value = novoNome
+    }
+
+    fun atualizarEmail(novoEmail: String) {
+        email.value = novoEmail
+    }
+
+    fun atualizarSenha(novaSenha: String) {
+        senha.value = novaSenha
+    }
+
+    fun atualizarCelular(novoCelular: String) {
+        celular.value = novoCelular
+    }
+
+    fun atualizarCep(novoCep: String) {
+        cep.value = novoCep
+    }
+
+    fun atualizarLogradouro(novoLogradouro: String) {
+        logradouro.value = novoLogradouro
+    }
+
+    fun atualizarNumero(novoNumero: String) {
+        numero.value = novoNumero
+    }
+
+    fun atualizarComplemento(novoComplemento: String) {
+        complemento.value = novoComplemento
+    }
+
+    fun atualizarCidade(novaCidade: String) {
+        cidade.value = novaCidade
+    }
+
+    fun atualizarEstado(novoEstado: String) {
+        estado.value = novoEstado
+    }
+
+    fun atualizarUsername(novoUsername: String) {
+        username.value = novoUsername
+    }
+
     init {
         obterUsuario()
     }
@@ -27,8 +85,11 @@ class PerfilUsuarioViewModel(private val usuarioRepository: UsuarioRepository) :
      private  fun obterUsuario() {
         viewModelScope.launch {
             val response = usuarioRepository.obterUsuario()
+            println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+            println(response.body())
             if (response.isSuccessful) {
                 _usuario.value = response.body()
+
             } else {
 
             }
@@ -60,7 +121,7 @@ class PerfilUsuarioViewModel(private val usuarioRepository: UsuarioRepository) :
     }
 
 
-    suspend fun editarPerfil(usuario: Usuario): Response<Void> {
+    suspend fun editarPerfil(usuario: UsuarioDTOUpdate): Response<Void> {
         return usuarioRepository.editarPerfil(usuario)
     }
 }

@@ -5,7 +5,7 @@ data class Barbearia(
     val imgPerfil: String?,
     val imgBanner: String?,
     val nomeNegocio: String,
-    val emailNegocio: String,
+    val emailNegocio: String? = null,
     val celularNegocio: String,
     val descricao: String?,
     val cep: String,

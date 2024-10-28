@@ -1,8 +1,11 @@
 package com.example.na_regua_app.data.di
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.na_regua_app.data.api.AgendamentoService
 import com.example.na_regua_app.data.api.BarbeariaService
 import com.example.na_regua_app.data.api.ChatService
+import com.example.na_regua_app.data.api.FinancasService
 import com.example.na_regua_app.data.api.FuncionarioService
 import com.example.na_regua_app.data.api.PesquisaService
 import com.example.na_regua_app.data.api.Rest
@@ -14,6 +17,8 @@ import com.example.na_regua_app.data.repository.BarbeariaRepository
 import com.example.na_regua_app.data.repository.BarbeariaRepositoryImpl
 import com.example.na_regua_app.data.repository.ChatRepository
 import com.example.na_regua_app.data.repository.ChatRepositoryImpl
+import com.example.na_regua_app.data.repository.FinancaRepository
+import com.example.na_regua_app.data.repository.FinancaRepositoryImpl
 import com.example.na_regua_app.data.repository.FuncionarioRepository
 import com.example.na_regua_app.data.repository.FuncionarioRepositoryImpl
 import com.example.na_regua_app.data.repository.PesquisaRepository
@@ -28,6 +33,7 @@ import com.example.na_regua_app.ui.viewmodel.ChatViewModel
 import com.example.na_regua_app.viewmodel.AgendamentoViewModel
 import com.example.na_regua_app.viewmodel.CadastroBarbeariaViewModel
 import com.example.na_regua_app.viewmodel.CadastroViewModel
+import com.example.na_regua_app.viewmodel.FinancaViewModel
 import com.example.na_regua_app.viewmodel.LoginViewModel
 import com.example.na_regua_app.viewmodel.FuncionarioViewModel
 import com.example.na_regua_app.viewmodel.PerfilBarbeariaViewModel
@@ -38,6 +44,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
+@RequiresApi(Build.VERSION_CODES.O)
 val appModule= module {
 
     // Services
@@ -48,6 +55,7 @@ val appModule= module {
     single<ChatService> { Rest.chatService }
     single<PesquisaService> { Rest.pesquisaService }
     single<AgendamentoService> { Rest.agendamentoService }
+    single<FinancasService> { Rest.financaService }
 
     // Repositories
     single<UsuarioRepository> {
@@ -63,6 +71,7 @@ val appModule= module {
     single<ChatRepository> { ChatRepositoryImpl(get()) }
     single<PesquisaRepository> { PesquisaRepositoryImpl(get()) }
     single<AgendamentoRepository> { AgendamentoRepositoryImpl(get()) }
+    single<FinancaRepository> { FinancaRepositoryImpl(get()) }
 
     // ViewModels
     viewModel<AgendamentoViewModel> { AgendamentoViewModel(get()) }
@@ -75,4 +84,5 @@ val appModule= module {
     viewModel<ServicoViewModel> { ServicoViewModel(get()) }
     viewModel<FuncionarioViewModel> { FuncionarioViewModel(get()) }
     viewModel<ChatViewModel> { ChatViewModel(get()) }
+    viewModel<FinancaViewModel> { FinancaViewModel(get()) }
 }

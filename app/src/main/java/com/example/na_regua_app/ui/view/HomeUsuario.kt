@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -73,7 +74,7 @@ fun HomeUsuario(
             )
         },
         bottomBar = {
-            BottomBarCustom(navController, usuario)
+            BottomBarCustom(navController, LocalContext.current)
         }
     )
 }

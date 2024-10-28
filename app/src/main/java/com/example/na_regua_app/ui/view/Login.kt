@@ -104,6 +104,8 @@ fun Login(
                 BotaoSpan(
                     onClick = {
 
+            loginViewModel.atualizarSenha(senha)
+
                         loginViewModel.atualizarEmail("teste@cliente.com")
                         loginViewModel.atualizarSenha("teste123")
 
@@ -112,8 +114,8 @@ fun Login(
                                 Log.d("Login", "Login realizado com sucesso!")
                                 Toast.makeText(context, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show()
                                 // Tente a navegação aqui
-                                navController.navigate("homeUsuario") {
-                                    popUpTo("homeUsuario") { inclusive = true }
+                                navController.navigate("agendaUsuarios") {
+                                    popUpTo("agendaUsuarios") { inclusive = true }
                                 }
                             } else {
                                 Log.d("Login", "Erro ao realizar o login.")
@@ -125,7 +127,7 @@ fun Login(
                     textEsquerda = "Não possui conta?",
                     textDireita = "Cadastre-se",
                     onTextoDireitaClick = {
-                        navController.navigate("cadastroInicio")
+                        navController.navigate("home")
                     }
                 )
             }

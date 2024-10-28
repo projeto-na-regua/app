@@ -22,7 +22,7 @@ interface UsuarioRepository {
 
     suspend fun admIsTrue(token: String): Response<UserDType>
 
-    suspend fun editarPerfil(usuario: Usuario): Response<Void>
+    suspend fun editarPerfil(usuario: UsuarioDTOUpdate): Response<Void>
 
 //    suspend fun editarImagemPerfil(file: String): Boolean
 }

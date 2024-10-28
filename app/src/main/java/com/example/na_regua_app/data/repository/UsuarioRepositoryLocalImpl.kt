@@ -6,14 +6,13 @@ import com.example.na_regua_app.data.model.DadosCadastroBarbearia
 import com.example.na_regua_app.data.model.DadosLogin
 import com.example.na_regua_app.data.model.UserDType
 import com.example.na_regua_app.data.model.Usuario
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Response
 
 class UsuarioRepositoryLocalImpl() : UsuarioRepository {
     override suspend fun obterUsuario(): Response<Usuario> {
         return Response.success(
                 Usuario(
+                    username = "@Vitor",
                     nome = "@JoaoSilva186",
                     email = "joao.silva@gmail.com",
                     senha = "senhaSecreta123",
@@ -55,7 +54,7 @@ class UsuarioRepositoryLocalImpl() : UsuarioRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun editarPerfil(usuario: Usuario): Response<Void> {
+    override suspend fun editarPerfil(usuario: UsuarioDTOUpdate): Response<Void> {
         TODO("Not yet implemented")
     }
 

@@ -22,5 +22,24 @@ class AgendamentoRepositoryImpl(
         return agendamentoService.adicionarAgendamento(nvAgendamentoCriacao)
     }
 
+    override suspend fun getAgendamentosPendentes(): Response<List<AgendamentoConsulta>> {
+        return agendamentoService.getAgendamentosPendentes()
+    }
+
+    override suspend fun getAgendamentosAgendados(): Response<List<AgendamentoConsulta>> {
+        return agendamentoService.getAgendamentosConfirmados()
+    }
+
+    override suspend fun getHistoricoCliente(): Response<List<AgendamentoConsulta>> {
+        return agendamentoService.getHistoricoCliente()
+    }
+
+    override suspend fun updateStatusAgendamento(
+        id: Int,
+        status: String,
+    ): Response<AgendamentoConsulta> {
+        return agendamentoService.updateStatusAgendamento(id, status)
+    }
+
 
 }

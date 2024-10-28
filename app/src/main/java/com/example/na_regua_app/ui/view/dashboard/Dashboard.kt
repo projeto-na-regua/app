@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,6 +40,7 @@ import com.example.na_regua_app.data.model.usuarios
 import com.example.na_regua_app.ui.components.BottomBarCustom
 import com.example.na_regua_app.ui.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
+import com.example.na_regua_app.ui.view.AgendaUsuario
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -56,7 +58,7 @@ fun Dashboard(
             DashboardContent(paddingValues)
         },
         bottomBar = {
-            BottomBarCustom(navController, usuario)
+            BottomBarCustom(navController, LocalContext.current)
         }
     )
 }
@@ -74,7 +76,8 @@ fun DashboardContent(paddingValues: PaddingValues) {
     Column(
         modifier = Modifier
             .background(Color.White)
-            .padding(paddingValues).fillMaxSize()
+            .padding(paddingValues)
+            .fillMaxSize()
     ) {
         TabLayout(
             tabs = tabs,
@@ -135,7 +138,7 @@ fun TabLayout(
 @Composable
 fun TabContent(selectedTabIndex: Int) {
     when (selectedTabIndex) {
-        0 -> AgendamentosContent()
+        0 -> AgendaUsuario(rememberNavController(), isFromDashboard = true)
         1 -> FinanceiroContent()
         2 -> GerenciamentoContent()
     }

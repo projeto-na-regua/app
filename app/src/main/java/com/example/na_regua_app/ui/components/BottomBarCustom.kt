@@ -1,5 +1,6 @@
 package com.example.na_regua_app.ui.components
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,6 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
@@ -25,11 +28,13 @@ import com.example.na_regua_app.data.model.Usuario
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.example.na_regua_app.ui.theme.WHITE_BACKGROUND
+import com.example.na_regua_app.utils.obterUsuarioDtype
 
 
 @Composable
-fun BottomBarCustom(navController: NavController, usuario: Usuario? = null){
+fun BottomBarCustom(navController: NavController, context: Context){
 
+    val userDtype by obterUsuarioDtype(context).collectAsState(initial = null)
 
     BottomAppBar(
         containerColor = Color.White,
@@ -54,7 +59,7 @@ fun BottomBarCustom(navController: NavController, usuario: Usuario? = null){
             .padding(top = 2.dp),
         actions = {
 
-            if(usuario?.dtype == "Barbeiro"){
+            if(userDtype?.dtype == "Barbeiro"){
 
                 Spacer(modifier = Modifier.weight(1f))
 

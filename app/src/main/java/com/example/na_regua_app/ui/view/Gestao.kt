@@ -23,11 +23,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,14 +45,19 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.na_regua_app.R
 import com.example.na_regua_app.data.model.Funcionario
+import com.example.na_regua_app.data.model.ServicoCardDTO
 import com.example.na_regua_app.data.model.Usuario
 import com.example.na_regua_app.data.model.usuarios
 import com.example.na_regua_app.ui.components.BottomBarCustom
+import com.example.na_regua_app.ui.components.ModalCadastroFuncionarios
+import com.example.na_regua_app.ui.components.ModalCadastroServicos
 import com.example.na_regua_app.ui.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.RED_DELETE
-import com.example.na_regua_app.ui.theme.Typography
 import com.example.na_regua_app.ui.view.dashboard.TituloIcon
+import com.example.na_regua_app.viewmodel.FuncionarioViewModel
+import com.example.na_regua_app.viewmodel.ServicoViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -53,76 +65,95 @@ import com.example.na_regua_app.ui.view.dashboard.TituloIcon
 @Composable
 fun Gestao(
     navController: NavController,
-    usuario: Usuario
+    usuario: Usuario,
+    funcionarioViewModel: FuncionarioViewModel = koinViewModel(),
+    servicoViewModel: ServicoViewModel = koinViewModel()
 ) {
     Scaffold(
         topBar = {
             TopBarCustom(navController, "Gestão", true)
         },
         content = { paddingValues ->
-            GestaoContent(paddingValues)
+            GestaoContent(paddingValues, funcionarioViewModel, servicoViewModel)
         },
         bottomBar = {
-            BottomBarCustom(navController, usuario)
+            BottomBarCustom(navController, LocalContext.current)
         }
     )
 }
 @Composable
-fun GestaoContent(paddingValues: PaddingValues) {
-    // Usamos `remember` para manter o estado da lista durante a recomposição
-    var funcionarios = listOf<Funcionario>(
-        Funcionario(
-            id = 0,
-            nome = "Marcos V.",
-            email = "marcos@email.com",
-            imgPerfil = "R.drawable.foto_perfil",
-            especialidade = "Barbeiro"
-        )
-    )
+fun GestaoContent(paddingValues: PaddingValues, funcionarioViewModel: FuncionarioViewModel, servicoViewModel: ServicoViewModel) {
 
-    LazyColumn(
+
+    LaunchedEffect(Unit) {
+        funcionarioViewModel.obterFuncionarios(0, true)
+        servicoViewModel.obterServicosPorStatus("active", 0, true)
+    }
+
+    val funcionarios by funcionarioViewModel.funcionarios.collectAsState()
+    val servicos by servicoViewModel.servicos.collectAsState()
+
+    var showModalCadastroFuncionario by remember { mutableStateOf(false) }
+    var showModalCadastroServico by remember { mutableStateOf(false) }
+
+
+
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues) // Aqui aplicamos o padding gerado pelo Scaffold
-            .padding(20.dp)         // Padding adicional que você quiser
     ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp) // Padding adicional que você quiser
+        ) {
+            item {
+                ServicoSection(servicos, onShowModal = { showModalCadastroServico = true }) // Passa o callback
+            }
 
-        item {
-            ServicoSection()
+            item {
+                funcionarios?.let { FuncionarioSection(it, onShowModal = { showModalCadastroFuncionario = true }) } // Passa o callback
+            }
         }
 
-        item {
-            FuncionarioSection(funcionarios)
+        if (showModalCadastroFuncionario) {
+            ModalCadastroFuncionarios(onDismiss = { showModalCadastroFuncionario = false })
+        }
+
+        if(showModalCadastroServico){
+            ModalCadastroServicos(onDismiss = { showModalCadastroServico = false})
         }
     }
 }
 
 @Composable
-fun ServicoSection(){
-
-    TituloIcon("0s serviços cadastrados", R.drawable.novo_servico)
-
-    Espacamento(18.dp)
-    CardServico(
-        title = "Corte + Escova",
-        descricao = "Corte de cabelo e finalização com escova"
-    )
+fun ServicoSection(servicos: List<ServicoCardDTO>, onShowModal: () -> Unit) { // Recebe callback
+    TituloIcon("0s serviços cadastrados", R.drawable.novo_servico, onIconClick = { onShowModal() })
 
     Espacamento(18.dp)
+
+    servicos.forEach {
+        CardServico(
+            title = it.tituloServico,
+            descricao = it.descricao
+        )
+        Espacamento(18.dp)
+    }
+
 }
 
 @Composable
-fun FuncionarioSection(funcionarios: List<Funcionario>){
-
-    TituloIcon("0s funcionários cadastrados", R.drawable.add_user)
+fun FuncionarioSection(funcionarios: List<Funcionario>, onShowModal: () -> Unit) { // Recebe callback
+    TituloIcon("0s funcionários cadastrados", R.drawable.add_user, onIconClick = { onShowModal() })
 
     Espacamento(18.dp)
 
-    funcionarios.forEach{
+    funcionarios.forEach {
         CardFuncionario(it)
+        Espacamento(18.dp)
     }
 
-    Espacamento(18.dp)
 }
 
 @Composable
@@ -180,29 +211,24 @@ fun CardFuncionario(funcionario: Funcionario){
     Row (
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.border(2.dp, color = Color.Gray, shape = RoundedCornerShape(15.dp)).fillMaxWidth()){
+        modifier = Modifier
+            .border(2.dp, color = Color.Gray, shape = RoundedCornerShape(15.dp))
+            .fillMaxWidth()
+    ){
 
         Row (
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(10.dp)
         ){
             Box {
-                if (funcionario.imgPerfil != null) {
-                    Image(
-                        painter = rememberAsyncImagePainter(model = funcionario.imgPerfil),
-                        contentDescription = "Imagem do Funcionário",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(60.dp)
-                            .clip(CircleShape)
-                    )
-                } else {
-                    Text(
-                        text = "Foto Barbeiro",
-                        style = Typography.labelMedium,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
+                Image(
+                    painter = rememberAsyncImagePainter(model = funcionario.imgPerfil),
+                    contentDescription = "Imagem do Funcionário",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(60.dp)
+                        .clip(CircleShape)
+                )
             }
 
             Column (

@@ -18,6 +18,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -57,7 +58,7 @@ fun PerfilBarbearia(
 
     LaunchedEffect(Unit) {
         perfilBarbeariaViewModel.obterBarbearia(isBarbeiro, idBarbearia)
-        servicoViewModel.obterServicosPorStatus(idBarbearia = idBarbearia, isBarbeiro = isBarbeiro)
+        servicoViewModel.obterServicosPorStatus(status = "active", idBarbearia = idBarbearia, isBarbeiro = isBarbeiro)
         funcionarioViewModel.obterFuncionarios(idBarbearia = idBarbearia, isBarbeiro = isBarbeiro)
     }
 
@@ -112,7 +113,7 @@ fun PerfilBarbearia(
                 }
             }
         },
-        bottomBar = { BottomBarCustom(navController) }
+        bottomBar = { BottomBarCustom(navController, LocalContext.current) }
     )
 }
 
@@ -158,7 +159,9 @@ fun HeaderSection(navController: NavController, nomeBarbearia: String, localizac
                         .padding(end = 12.dp),
                     onClick = { navController.navigate("settingsbusiness") },
                     textButton = "Editar perfil",
-                    imagePainter = painterResource(R.drawable.edit_icon)
+                    imagePainter = painterResource(R.drawable.edit_icon),
+                    shape = RoundedCornerShape(12.dp),
+                    fontSize = 10
                 )
             }
 
@@ -216,13 +219,17 @@ fun FooterButtons(navController: NavController, idBarbearia: Int, barbearia: Bar
             modifier = Modifier.weight(1.5f),
             onClick = { navController.navigate("chat/$userName/$profilePicString/$origin/$id") },
             textButton = "Enviar mensagem",
-            imagePainter = painterResource(R.drawable.send_icon)
+            imagePainter = painterResource(R.drawable.send_icon),
+            shape = RoundedCornerShape(12.dp),
+            fontSize = 10
         )
 
         BotaoAjustavel(
             modifier = Modifier.weight(1.5f),
             onClick = { navController.navigate("agendamento/$idBarbearia/${false}") },
-            textButton = "Marcar horário"
+            textButton = "Marcar horário",
+            shape = RoundedCornerShape(12.dp),
+            fontSize = 10
         )
     }
 }

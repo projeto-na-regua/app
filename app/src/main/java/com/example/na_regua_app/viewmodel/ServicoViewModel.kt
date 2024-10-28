@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.na_regua_app.data.api.ServicoService
 import com.example.na_regua_app.data.model.Barbearia
+import com.example.na_regua_app.data.model.NovoBarbeiro
+import com.example.na_regua_app.data.model.NovoServico
 import com.example.na_regua_app.data.model.Servico
 import com.example.na_regua_app.data.model.ServicoCardDTO
 import com.example.na_regua_app.data.model.Usuario
@@ -23,10 +25,10 @@ class ServicoViewModel(
     private val _servicos = MutableStateFlow<List<ServicoCardDTO>>(emptyList())
     val servicos: StateFlow<List<ServicoCardDTO>> get() = _servicos
 
-    fun obterServicosPorStatus(status: String = "active", idBarbearia: Int, isBarbeiro: Boolean) {
+    fun obterServicosPorStatus(status: String, idBarbearia: Int, isBarbeiro: Boolean) {
         viewModelScope.launch {
             val serviceData: Response<List<Servico>> = if (isBarbeiro) {
-                servicoRepository.obterServicosPorStatus()
+                servicoRepository.obterServicosPorStatus(status)
             } else {
                 servicoRepository.obterServicosCliente(idBarbearia)
             }
@@ -44,4 +46,25 @@ class ServicoViewModel(
             }
         }
     }
+
+    fun criarServico(novoServico: NovoServico, onResult: (Boolean) -> Unit){
+        viewModelScope.launch {
+            try {
+                val servicoData = servicoRepository.cadastrarServico(novoServico)
+
+                if(servicoData.isSuccessful){
+                    Log.d("ServicoViewModel", "Dados do servico: ${servicoData.body()}")
+                    onResult(true)
+                } else {
+                    Log.e("ServicoViewModel", "Erro na resposta: ${servicoData.code()}")
+                    Log.e("ServicoViewModel", "Erro ao cadastrar o servico: ${servicoData.errorBody()?.string()}")
+                    onResult(false)
+                }
+            } catch (e: Exception){
+                Log.e("ServicoViewModel", "Erro ao cadastrar o servico: ${e.message}")
+                onResult(false)
+            }
+        }
+    }
+
 }

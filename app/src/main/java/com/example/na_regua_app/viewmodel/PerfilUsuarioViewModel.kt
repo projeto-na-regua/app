@@ -33,56 +33,13 @@ class PerfilUsuarioViewModel(private val usuarioRepository: UsuarioRepository) :
     var cidade = mutableStateOf("")
     var estado = mutableStateOf("")
     var username = mutableStateOf("")
-
-    fun atualizarNome(novoNome: String) {
-        nome.value = novoNome
-    }
-
-    fun atualizarEmail(novoEmail: String) {
-        email.value = novoEmail
-    }
-
-    fun atualizarSenha(novaSenha: String) {
-        senha.value = novaSenha
-    }
-
-    fun atualizarCelular(novoCelular: String) {
-        celular.value = novoCelular
-    }
-
-    fun atualizarCep(novoCep: String) {
-        cep.value = novoCep
-    }
-
-    fun atualizarLogradouro(novoLogradouro: String) {
-        logradouro.value = novoLogradouro
-    }
-
-    fun atualizarNumero(novoNumero: String) {
-        numero.value = novoNumero
-    }
-
-    fun atualizarComplemento(novoComplemento: String) {
-        complemento.value = novoComplemento
-    }
-
-    fun atualizarCidade(novaCidade: String) {
-        cidade.value = novaCidade
-    }
-
-    fun atualizarEstado(novoEstado: String) {
-        estado.value = novoEstado
-    }
-
-    fun atualizarUsername(novoUsername: String) {
-        username.value = novoUsername
-    }
+    var imgPerfil = mutableStateOf("")
 
     init {
         obterUsuario()
     }
 
-     private  fun obterUsuario() {
+       fun obterUsuario() {
         viewModelScope.launch {
             val response = usuarioRepository.obterUsuario()
             println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
@@ -96,25 +53,7 @@ class PerfilUsuarioViewModel(private val usuarioRepository: UsuarioRepository) :
         }
     }
 
-    fun obterUsuarioBody(onResult: (Boolean) -> Unit) {
-        viewModelScope.launch {
-            try {
-                val response = usuarioRepository.obterUsuario()
 
-                if (response.isSuccessful) {
-                    // Supondo que você quer armazenar o usuário em algum lugar
-                    _usuario.value = response.body() // Salve o usuário, se necessário
-                    onResult(true) // Chame o callback com sucesso
-                } else {
-                    Log.e("PerfilUsuarioViewModel", "Erro: $response")
-                    onResult(false) // Chame o callback com erro
-                }
-            } catch (e: Exception) {
-                onResult(false) // Chame o callback com erro
-                Log.e("PerfilUsuarioViewModel", "Erro ao obter usuario: ${e.message}")
-            }
-        }
-    }
 
 
     suspend fun editarPerfil(usuario: UsuarioDTOUpdate): Response<Void> {

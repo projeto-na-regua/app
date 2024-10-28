@@ -104,8 +104,10 @@ fun Login(
                 BotaoSpan(
                     onClick = {
 
-                        loginViewModel.atualizarEmail("joaosilva1@example.com")
-                        loginViewModel.atualizarSenha("senhaSegura123")
+            loginViewModel.atualizarSenha(senha)
+
+                        loginViewModel.atualizarEmail("teste@cliente.com")
+                        loginViewModel.atualizarSenha("teste123")
 
                         loginViewModel.logar(context) { success ->
                             if (success) {

@@ -13,12 +13,27 @@ data class Usuario(
     val cidade: String,
     val estado: String,
     val dtype: String,
+    val username: String
+)
+
+data class UsuarioDTOUpdate(
+    val nome: String,
+    val email: String,
+    val celular: String,
+    val cep: String,
+    val logradouro: String,
+    val numero: Int,
+    val complemento: String,
+    val cidade: String,
+    val estado: String,
+    val username: String
 )
 
 
 fun usuarios(): List<Usuario> {
     return listOf(
         Usuario(
+            username = "@Melissa",
             nome = "Melissa Silva",
             email = "melissa@gmail.com",
             senha = "senha123",
@@ -33,6 +48,7 @@ fun usuarios(): List<Usuario> {
             dtype = "Barbeiro"
         ),
         Usuario(
+            username = "@Vitor",
             nome = "Vitor Souza",
             email = "vitor@gmail.com",
             senha = "senha456",

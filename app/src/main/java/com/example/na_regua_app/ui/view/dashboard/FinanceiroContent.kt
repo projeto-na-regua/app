@@ -17,8 +17,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,60 +35,79 @@ import com.example.na_regua_app.data.model.ItemMenuDropDown
 import com.example.na_regua_app.ui.components.BotaoIcon
 import com.example.na_regua_app.ui.components.DropDownMenu
 import com.example.na_regua_app.ui.components.LineChartSpan
+import com.example.na_regua_app.ui.components.ModalLancarValor
 import com.example.na_regua_app.ui.components.PieChartSpan
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.example.na_regua_app.ui.view.Espacamento
+import com.example.na_regua_app.viewmodel.FinancaViewModel
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.KoinApplication.Companion.init
+import java.time.LocalDate
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun FinanceiroContent() {
-    val valorReceita by remember { mutableDoubleStateOf(230.00) }
-    val valorLucro by remember { mutableDoubleStateOf(230.00) }
-    val valorDespesa by remember { mutableDoubleStateOf(230.00) }
-    var isMes by remember { mutableStateOf(true) }
+fun FinanceiroContent(
+    financaViewModel: FinancaViewModel = koinViewModel(),
+) {
+    var isModalLancarValorVisible by remember { mutableStateOf(false) }
+
+    // Coletando dados do ViewModel
+    val receita = financaViewModel.dadosReceita.collectAsState().value
+    val despesa = financaViewModel.dadosDespesa.collectAsState().value
+    val lucro = financaViewModel.lucro.collectAsState().value
+    val lucratividade = financaViewModel.lucratividade.collectAsState().value
+
+    // Coletando dados para o gráfico
+    val datasGrafico = financaViewModel.datasGrafico.collectAsState().value
+    val qtdClientes = financaViewModel.qtdClientes.collectAsState().value
+
+    // Estado para a quantidade de dias selecionados
+    var qtdDias by remember { mutableStateOf(7) }
+
+    // Atualiza os dados ao iniciar
+    LaunchedEffect(qtdDias) {
+        val startDate = LocalDate.now().minusDays(qtdDias.toLong())
+        financaViewModel.obterFinancas(qtdDias, startDate, LocalDate.now()) {}
+        financaViewModel.obterMetricasGerais(startDate, LocalDate.now(), qtdDias) {}
+    }
 
     val filterValues = listOf(
         ItemMenuDropDown(
-            name = "Útimos meses",
-            action = { isMes = true }
+            name = "Últimos 7 dias",
+            action = { qtdDias = 7 }
         ),
         ItemMenuDropDown(
-            name = "Útimos dias",
-            action = { isMes = false }
+            name = "Últimos 15 dias",
+            action = { qtdDias = 15 }
+        ),
+        ItemMenuDropDown(
+            name = "Últimos 30 dias",
+            action = { qtdDias = 30 }
+        ),
+        ItemMenuDropDown(
+            name = "Últimos 3 meses",
+            action = { qtdDias = 90 }
         )
     )
 
-    // Valores e labels para o gráfico
-    val lineChartDataMeses = remember {
-        listOf(
-            Dado(10f, "Mai"),
-            Dado(20f, "Jun"),
-            Dado(15f, "Jul"),
-            Dado(30f, "Ago"),
-            Dado(25f, "Set")
-        )
-    }
-    val lineChartDataDias = remember {
-        listOf(
-            Dado(3f, "Qui."),
-            Dado(1f, "Sex."),
-            Dado(15f, "Sab."),
-            Dado(4f, "Dom"),
-            Dado(5f, "Seg")
-        )
+    // Lógica para preparar dados para o gráfico
+    val lineChartData = if (datasGrafico.size == qtdClientes.size) {
+        datasGrafico.mapIndexed { index, data ->
+            Dado(qtdClientes[index].toDouble(), data)
+        }
+    } else {
+        emptyList()
     }
 
-    val pieChartData = remember {
-        listOf(
-            Dado(80f, "Lucro", color = ORANGE_SECUNDARY),
-            Dado(20f, "Despesa", color = Color.Gray)
-        )
-    }
+    // Prepara o Dado da lucratividade
+    val pieChartData = Dado(lucratividade, "Lucro", color = BLUE_PRIMARY)
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
+        // Card para Receita, Lucro e Despesa
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
@@ -95,9 +115,9 @@ fun FinanceiroContent() {
                 .padding(20.dp)
         ) {
             listOf(
-                "Receita" to valorReceita,
-                "Lucro" to valorLucro,
-                "Despesa" to valorDespesa
+                "Receita" to receita,
+                "Lucro" to lucro,
+                "Despesa" to despesa
             ).forEach {
                 CardFinancas(it.first, it.second)
             }
@@ -126,14 +146,18 @@ fun FinanceiroContent() {
                             items = filterValues,
                             modifier = Modifier.width(200.dp),
                             menuWidth = 200.dp,
-                            tamFont = 15.sp
+                            tamFont = 15.sp,
+                            selectedItemPosition = null,
+                            onItemSelected = {}
                         )
                     }
 
                     Box {
                         LineChartSpan(
-                            if (isMes) lineChartDataMeses else lineChartDataDias,
-                            modifier = Modifier.padding(10.dp).height(200.dp)
+                            lineChartData,
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .height(200.dp)
                         )
                     }
                 }
@@ -159,10 +183,7 @@ fun FinanceiroContent() {
                         Text(text = "Lucratividade")
                     }
                     Box {
-                        PieChartSpan(
-                            pieChartData,
-                            modifier = Modifier.padding(10.dp).height(200.dp)
-                        )
+                        PieChartSpan(pieChartData, modifier = Modifier.padding(10.dp).height(200.dp))
                     }
                 }
             }
@@ -170,42 +191,63 @@ fun FinanceiroContent() {
             item {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth().padding(top = 10.dp)
+                        .fillMaxWidth()
+                        .padding(top = 10.dp)
                 ) {
                     BotaoIcon(
-                        onClick = {},
+                        onClick = {
+                            isModalLancarValorVisible = true
+                        },
                         textButton = "Lançar valor",
                         idIcon = R.drawable.lancar_valor
                     )
                 }
+                if (isModalLancarValorVisible) {
+                    ModalLancarValor(
+                        onDismiss = {
+                            isModalLancarValorVisible = false
+                        },
+                        isModalOpen = true
+                    )
+                }
             }
+
         }
 
-
     }
+
 }
 
+
 @Composable
-fun CardFinancas(title: String, valor: Double){
-    Column (
-        modifier = Modifier.background(BLUE_PRIMARY, shape = RoundedCornerShape(15.dp))
+fun CardFinancas(title: String, valor: Any?) {
+    Column(
+        modifier = Modifier
+            .background(BLUE_PRIMARY, shape = RoundedCornerShape(15.dp))
             .padding(10.dp)
             .width(90.dp)
             .height(90.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        Text(text = title,
+    ) {
+        Text(
+            text = title,
             color = Color.White,
-            fontSize = 14.sp)
+            fontSize = 14.sp
+        )
 
         Espacamento(10.dp)
 
-        Text(text = "R$$valor",
+        // Formata o valor com 2 casas decimais e substitui '.' por ','
+        val valorFormatado = String.format("%.2f", (valor as? Number)?.toDouble() ?: 0.0).replace(".", ",")
+        Text(
+            text = "R$$valorFormatado",
             color = Color.White,
-            fontSize = 18.sp)
+            fontSize = 15.sp
+        )
     }
 }
+
 
 
 @RequiresApi(Build.VERSION_CODES.O)

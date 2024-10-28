@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -100,6 +101,39 @@ fun InputCadastro(
     )
     )
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun InputPreco(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: @Composable (() -> Unit)? = null
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = { newValue ->
+            // Atualiza o valor sem formatação ou transformação
+            onValueChange(newValue)
+        },
+        label = label,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(80.dp)
+            .padding(vertical = 8.dp), // Defina a altura desejada
+        shape = RoundedCornerShape(8.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = BLUE_PRIMARY,
+            focusedLabelColor = BLUE_PRIMARY,
+            focusedTextColor = BLUE_PRIMARY,
+            focusedSupportingTextColor = BLUE_PRIMARY,
+            focusedPlaceholderColor = BLUE_PRIMARY
+        ),
+        leadingIcon = {
+            Text(text = "R$", color = BLUE_PRIMARY)
+        }
+    )
+}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

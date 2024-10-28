@@ -65,6 +65,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun AgendaUsuario(
     navController: NavController,
     agendamentoViewModel: AgendamentoViewModel = koinViewModel(),
+    isFromDashboard: Boolean
 ) {
 
     val agendamentosPendentes by agendamentoViewModel.agendamentosPendentes.collectAsState()
@@ -90,7 +91,14 @@ fun AgendaUsuario(
     Scaffold(
         modifier = Modifier.background(Color.White),
         topBar = {
-            TopBarCustom(navController, "Agendamentos", true)
+            if (!isFromDashboard) {
+                TopBarCustom(navController, "Agendamentos", true)
+            }
+        },
+        bottomBar = {
+            if (!isFromDashboard) {
+                BottomBarCustom(navController, context)
+            }
         },
         content = { paddingValues ->
             AgendaUsuarioContent(
@@ -101,11 +109,9 @@ fun AgendaUsuario(
                 isBarbeiro,
                 agendamentoViewModel
             )
-        },
-        bottomBar = {
-            BottomBarCustom(navController, context)
         }
     )
+
 }
 
 @RequiresApi(Build.VERSION_CODES.O)

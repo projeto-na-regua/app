@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.na_regua_app.data.model.Dado
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
+import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.github.tehras.charts.line.LineChart
 import com.github.tehras.charts.line.LineChartData
 import com.github.tehras.charts.line.renderer.line.SolidLineDrawer
@@ -29,16 +30,22 @@ import com.github.tehras.charts.piechart.PieChartData
 import com.github.tehras.charts.piechart.renderer.SimpleSliceDrawer
 
 @Composable
-fun PieChartSpan(datas: List<Dado>, modifier: Modifier){
+fun PieChartSpan(lucratividade: Dado, modifier: Modifier) {
+    // Limita o valor de lucratividade ao máximo de 100
+    val lucro = if (lucratividade.value.toFloat() > 100) 100f else lucratividade.value.toFloat()
+    val outraParteValor = 100f - lucro
 
-    var slices = ArrayList<PieChartData.Slice>()
-
-    datas.mapIndexed{ index, data ->
-        slices.add(PieChartData.Slice(
-            value = data.value,
-            color = (data.color ?: BLUE_PRIMARY) as Color
-        ))
-    }
+    // Cria as fatias do gráfico
+    val slices = listOf(
+        PieChartData.Slice(
+            value = lucro,
+            color = lucratividade.color ?: BLUE_PRIMARY
+        ),
+        PieChartData.Slice(
+            value = if (outraParteValor < 0) 0f else outraParteValor,
+            color = ORANGE_SECUNDARY  // Cor da parte restante
+        )
+    )
 
     Column {
         PieChart(
@@ -51,36 +58,32 @@ fun PieChartSpan(datas: List<Dado>, modifier: Modifier){
             )
         )
 
-
-        Row(modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween) {
-            datas.forEach { data ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(vertical = 4.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(16.dp)
-                            .background(color = data.color ?: Color.Blue, shape = RoundedCornerShape(4.dp))
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "${data.label} - %${data.value}", style = androidx.compose.ui.text.TextStyle(fontSize = 14.sp))
-                }
-            }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            // Exibe as legendas com uma casa decimal
+            Text(
+                text = String.format("%s - %.1f%%", lucratividade.label, lucro),
+                style = androidx.compose.ui.text.TextStyle(fontSize = 14.sp)
+            )
+            Text(
+                text = String.format("Despesa - %.1f%%", outraParteValor),
+                style = androidx.compose.ui.text.TextStyle(fontSize = 14.sp)
+            )
         }
     }
-
-
 }
 
 @Composable
 fun LineChartSpan(datas: List<Dado>, modifier: Modifier) {
 
+    println("Dados recebidos para o gráfico: $datas")
+
     // Cria a lista de pontos para o gráfico
     val points = datas.mapIndexed { _, point ->
         LineChartData.Point(
-            value = point.value,
+            value = point.value.toFloat(),
             label = point.label
         )
     }

@@ -40,6 +40,7 @@ import com.example.na_regua_app.data.model.usuarios
 import com.example.na_regua_app.ui.components.BottomBarCustom
 import com.example.na_regua_app.ui.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
+import com.example.na_regua_app.ui.view.AgendaUsuario
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -75,7 +76,8 @@ fun DashboardContent(paddingValues: PaddingValues) {
     Column(
         modifier = Modifier
             .background(Color.White)
-            .padding(paddingValues).fillMaxSize()
+            .padding(paddingValues)
+            .fillMaxSize()
     ) {
         TabLayout(
             tabs = tabs,
@@ -136,7 +138,7 @@ fun TabLayout(
 @Composable
 fun TabContent(selectedTabIndex: Int) {
     when (selectedTabIndex) {
-        0 -> AgendamentosContent()
+        0 -> AgendaUsuario(rememberNavController(), isFromDashboard = true)
         1 -> FinanceiroContent()
         2 -> GerenciamentoContent()
     }

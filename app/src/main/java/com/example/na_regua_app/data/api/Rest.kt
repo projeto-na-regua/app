@@ -30,8 +30,7 @@ object Rest {
             val newRequest = Request.Builder()
                 .url(oldRequest.url)
                 .method(oldRequest.method, oldRequest.body)
-                .header("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyIiwibm9tZSI6InRlc3RlY2xpZW50ZSIsInNlbmhhIjoidGVzdGUxMjMiLCJlbWFpbCI6InRlc3RlQGNsaWVudGUuY29tIiwiZXhwIjoxNzI5OTEwMzk5MzI3fQ.JLSVAqkvGTbUoAtA5hETTyWmx6zOGXWw2mqZP-H9nmE")
-                .build()
+                .header("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIxIiwibm9tZSI6Ikpvw6NvIFNpbHZhIiwic2VuaGEiOiJzZW5oYVNlZ3VyYTEyMyIsImVtYWlsIjoiam9hb3NpbHZhMUBleGFtcGxlLmNvbSIsImV4cCI6MTczMDA4MTUwMDEyN30.X-uM9w-QENBKhQtqLpQ7GRJ3F1YpA00A-B4WViChp2U")
             return chain.proceed(newRequest)
         }
     }
@@ -69,4 +68,5 @@ object Rest {
     val funcionarioService by lazy { api.create(FuncionarioService::class.java) }
     val pesquisaService by lazy { api.create(PesquisaService::class.java) }
     val agendamentoService by lazy { api.create(AgendamentoService::class.java) }
+    val financaService by lazy { api.create(FinancasService::class.java) }
 }

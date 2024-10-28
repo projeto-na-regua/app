@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.na_regua_app.data.model.AgendamentoBarbeiro
 import com.example.na_regua_app.data.model.ItemMenuDropDown
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
@@ -35,12 +36,13 @@ import com.example.na_regua_app.ui.view.dashboard.actions
 @Composable
 fun DropDownMenu(
     agendamentoBarbeiro: AgendamentoBarbeiro? = null,
-    items: List<ItemMenuDropDown>, // Lista de pares (texto, função)
+    items: List<ItemMenuDropDown>,
     modifier: Modifier = Modifier,
-    menuWidth: Dp,
-    tamFont: TextUnit,
-    tamIcon: Dp? = null,
-    selectedItemPosition: ItemMenuDropDown? = null
+    menuWidth: Dp = 100.dp,
+    tamFont: TextUnit = 16.sp,
+    tamIcon: Dp = 24.dp,
+    selectedItemPosition: ItemMenuDropDown?, // Verifique se este parâmetro existe
+    onItemSelected: (ItemMenuDropDown) -> Unit
 ) {
     val selectedItem = remember {
         mutableStateOf(selectedItemPosition ?: items.first())

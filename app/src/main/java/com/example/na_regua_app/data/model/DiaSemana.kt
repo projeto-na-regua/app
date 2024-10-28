@@ -3,57 +3,22 @@ package com.example.na_regua_app.data.model
 data class DiaSemana(
     val id: Int,
     val nome: String,
-    var horaAbertura: String? = "00:00:00",
-    var horaFechamento: String? = "00:00:00",
-    var status: Boolean
+    var horaAbertura: String? = null, // Definindo padrão como null
+    var horaFechamento: String? = null // Definindo padrão como null
 )
 
-fun criarListaDiaSemana(): List<DiaSemana>{
-    return listOf<DiaSemana>(
+
+fun criarListaDiaSemana(
+    diasSemana: List<DiaSemana>
+): List<DiaSemana> {
+    return diasSemana.map { dia ->
         DiaSemana(
-            id = 1,
-            nome = expandDayName("DOM"),
-            status = false
-        ),
-        DiaSemana(
-            id = 2,
-            nome = expandDayName("SEG"),
-            horaAbertura = "09:30:00",
-            horaFechamento = "18:30:00",
-            status = true
-        ),
-        DiaSemana(
-            id = 2,
-            nome = expandDayName("TER"),
-            horaAbertura = "09:30:00",
-            horaFechamento = "18:30:00",
-            status = true
-        ), DiaSemana(
-            id = 2,
-            nome = expandDayName("QUA"),
-            horaAbertura = "09:30:00",
-            horaFechamento = "18:30:00",
-            status = true
-        ), DiaSemana(
-            id = 2,
-            nome = expandDayName("QUI"),
-            horaAbertura = "09:30:00",
-            horaFechamento = "18:30:00",
-            status = true
-        ), DiaSemana(
-            id = 2,
-            nome = expandDayName("SEX"),
-            horaAbertura = "09:30:00",
-            horaFechamento = "18:30:00",
-            status = true
-        ), DiaSemana(
-            id = 2,
-            nome = expandDayName("SAB"),
-            horaAbertura = "09:00:00",
-            horaFechamento = "13:00:00",
-            status = true
+            id = dia.id,
+            nome = dia.nome,
+            horaAbertura = dia.horaAbertura,
+            horaFechamento = dia.horaFechamento
         )
-    )
+    }
 }
 
 fun expandDayName(shortName: String): String {
@@ -68,3 +33,4 @@ fun expandDayName(shortName: String): String {
         else -> shortName
     }
 }
+

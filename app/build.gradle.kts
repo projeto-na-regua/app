@@ -97,6 +97,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation("androidx.compose.material3:material3:1.1.0")
     implementation(libs.material)
+    implementation(libs.androidx.room.ktx)
     val navVersion = "2.5.3"
     implementation("androidx.navigation:navigation-compose:$navVersion")
 

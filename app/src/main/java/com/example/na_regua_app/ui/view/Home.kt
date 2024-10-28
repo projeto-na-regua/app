@@ -1,5 +1,7 @@
 package com.example.na_regua_app.ui.view
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,6 +27,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -62,9 +66,15 @@ import com.example.na_regua_app.ui.components.TopBarCustom
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.example.na_regua_app.ui.theme.WHITE_BACKGROUND
+import com.example.na_regua_app.utils.obterUsuarioDtype
+import com.example.na_regua_app.viewmodel.FinancaViewModel
+import com.google.android.material.progressindicator.CircularProgressIndicator
+import org.koin.compose.viewmodel.koinViewModel
+import java.time.LocalDate
 
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Home(
     navController: NavController, usuario: Usuario
@@ -86,20 +96,47 @@ fun Home(
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeContent(paddingValues: PaddingValues, navController: NavController) {
+fun HomeContent(paddingValues: PaddingValues, navController: NavController, financaViewModel: FinancaViewModel = koinViewModel()) {
 
-    var nomeUsuario by remember { mutableStateOf("Melissa") }
-    var agendamentosProximos by remember { mutableIntStateOf(2) }
-    var possuiAgendamentos by remember { mutableStateOf(true) }
-    var saldo by remember { mutableDoubleStateOf(214.00) }
-    var visitantes by remember { mutableIntStateOf(50) }
+    var agendamentosProximos = financaViewModel.agendamentosProximos.collectAsState().value
+    var agendamentosPendentes = financaViewModel.agendamentosPendentes.collectAsState().value
+    var saldo = financaViewModel.dadosSaldoHome.collectAsState().value
+    var visitantes = financaViewModel.qtdClientesHome.collectAsState().value
 
+    var isLoading = true
+    var isLoadingSaldo = true
+    var isLoadingClientes = true;
+
+    val context = LocalContext.current
+    val nomeUsuario = remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+
+        financaViewModel.obterMetricasGerais(LocalDate.now(), LocalDate.now().plusDays(3), 0) { success -> if(success){ isLoading = false }
+        }
+
+        financaViewModel.obterFinancasHome(999, LocalDate.now().minusDays(999), LocalDate.now()) { success ->
+            if(success){ isLoadingSaldo = false }
+        }
+
+        financaViewModel.obterMetricasGeraisClientes(LocalDate.now().minusDays(999), LocalDate.now(), 999) { success ->
+            if(success) { isLoadingClientes = false }
+        }
+
+        obterUsuarioDtype(context).collect { userDtype ->
+            userDtype?.let {
+                nomeUsuario.value = it.nome.split(" ").firstOrNull() ?: ""
+                println("Nome do usuário: ${it.nome}")
+            } ?: run {
+                println("Usuário não encontrado")
+            }
+        }
+    }
 
 
             LazyColumn(
-
-
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
@@ -137,7 +174,7 @@ fun HomeContent(paddingValues: PaddingValues, navController: NavController) {
                                 Text(
                                     text = buildAnnotatedString {
                                         append("Bom dia, ")
-                                        append(nomeUsuario.fraseLaranja())
+                                        append(nomeUsuario.value.fraseLaranja())
                                         append("!")
                                     },
                                     color = Color.White,
@@ -173,13 +210,14 @@ fun HomeContent(paddingValues: PaddingValues, navController: NavController) {
                                         shape = RoundedCornerShape(50)
                                     )
                             ) {
-                                Text(
-                                    text = "$agendamentosProximos",
-                                    color = BLUE_PRIMARY,
-                                    fontSize = 40.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                    modifier = Modifier.align(Alignment.Center)
-                                )
+                                    Text(
+                                        text = "$agendamentosProximos",
+                                        color = BLUE_PRIMARY,
+                                        fontSize = 40.sp,
+                                        fontWeight = FontWeight.SemiBold,
+                                        modifier = Modifier.align(Alignment.Center)
+                                    )
+
                             }
                         }
                     }
@@ -210,7 +248,9 @@ fun HomeContent(paddingValues: PaddingValues, navController: NavController) {
                     Row (
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth().padding(20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
                     ){
                         Text("Para você", fontSize = 16.sp)
                         Box (modifier = Modifier.width(230.dp)){
@@ -224,20 +264,35 @@ fun HomeContent(paddingValues: PaddingValues, navController: NavController) {
                item {
                    Box(
                        contentAlignment = Alignment.Center,
-                       modifier = Modifier.padding(20.dp, 0.dp)
+                       modifier = Modifier
+                           .padding(20.dp, 0.dp)
                            .border(
                                width = 1.dp,
                                color = WHITE_BACKGROUND,
-                               RoundedCornerShape(15))
+                               RoundedCornerShape(15)
+                           )
                            .height(110.dp)
                    ){
 
-                       if(possuiAgendamentos){
+                       if(agendamentosPendentes > 1){
                            Text(text = buildAnnotatedString {
-                               append("Você possui um compromisso pendente. ")
+                               append("Você possui $agendamentosPendentes compromissos pendentes. ")
                                append("Pressione para \nvisualizar.".fraseLaranja())
                            },
-                               modifier = Modifier.padding(15.dp),
+                               modifier = Modifier.padding(15.dp)
+                                   .clickable { navController.navigate("dashboard") },
+                               fontSize = 18.sp,
+                               lineHeight = 25.sp,
+                               fontWeight = FontWeight.Light,
+                               color = BLUE_PRIMARY
+                           )
+                       } else if (agendamentosPendentes > 0){
+                           Text(text = buildAnnotatedString {
+                               append("Você possui um compromissos pendentes. ")
+                               append("Pressione para \nvisualizar.".fraseLaranja())
+                           },
+                               modifier = Modifier.padding(15.dp)
+                                   .clickable { navController.navigate("dashboard") },
                                fontSize = 18.sp,
                                lineHeight = 25.sp,
                                fontWeight = FontWeight.Light,
@@ -254,7 +309,9 @@ fun HomeContent(paddingValues: PaddingValues, navController: NavController) {
 
                 item {
                     Row (
-                        modifier = Modifier.fillMaxWidth().padding(20.dp, 0.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp, 0.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ){
                         CardIconText(value ="R$${"%.2f".format(saldo)}",
@@ -287,7 +344,8 @@ fun HomeContent(paddingValues: PaddingValues, navController: NavController) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(200.dp).padding(20.dp, bottom = 20.dp, end = 20.dp)
+                            .height(200.dp)
+                            .padding(20.dp, bottom = 20.dp, end = 20.dp)
                             .clip(RoundedCornerShape(15.dp))
                     ) {
                         Image(
@@ -368,6 +426,7 @@ fun HomeContent(paddingValues: PaddingValues, navController: NavController) {
 
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun HomePreview() {
@@ -414,7 +473,8 @@ fun ModifierCardBoxCustom(height: Dp) : Modifier{
         .border(
             width = 1.dp,
             color = WHITE_BACKGROUND,
-            RoundedCornerShape(15))
+            RoundedCornerShape(15)
+        )
         .height(height)
 }
 
@@ -453,7 +513,7 @@ fun CardIconText(value: String, title: String, icon: Painter){
                 Box(modifier = Modifier.width(100.dp)){
                     Text(
                         text = value,
-                        fontSize = 20.sp,
+                        fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
                         color = BLUE_PRIMARY)
                 }

@@ -9,8 +9,8 @@ class BarbeariaRepositoryImpl(
     private val service : BarbeariaService
 ) : BarbeariaRepository {
 
-    override suspend fun obterBarbearia(idBarbearia: Int) : Response<Barbearia> {
-        return service.obterBarbearia(idBarbearia)
+    override suspend fun obterBarbearia() : Response<Barbearia> {
+        return service.obterBarbearia()
     }
 
     override suspend fun obterBarbeariaCliente(idBarbearia: Int): Response<Barbearia> {
@@ -21,7 +21,8 @@ class BarbeariaRepositoryImpl(
         return service.editarPerfil(barbearia)
     }
 
-    override suspend fun obterBarbearia(): Response<Barbearia> {
-        TODO("Not yet implemented")
+   
+    override suspend fun atualizarBarbearia(novaBarbearia: Barbearia): Response<Barbearia> {
+        return service.atualizarBarbearia(novaBarbearia)
     }
 }

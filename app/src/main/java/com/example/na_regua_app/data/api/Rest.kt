@@ -69,4 +69,5 @@ object Rest {
     val funcionarioService by lazy { api.create(FuncionarioService::class.java) }
     val pesquisaService by lazy { api.create(PesquisaService::class.java) }
     val agendamentoService by lazy { api.create(AgendamentoService::class.java) }
+    val financaService by lazy { api.create(FinancasService::class.java) }
 }

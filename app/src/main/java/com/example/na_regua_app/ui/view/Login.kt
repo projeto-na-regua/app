@@ -127,7 +127,7 @@ fun Login(
                     textEsquerda = "Não possui conta?",
                     textDireita = "Cadastre-se",
                     onTextoDireitaClick = {
-                        navController.navigate("cadastroInicio")
+                        navController.navigate("home")
                     }
                 )
             }

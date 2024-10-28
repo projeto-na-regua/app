@@ -10,5 +10,8 @@ interface BarbeariaRepository {
     suspend fun editarPerfil(barbearia: BarbeariaDTO): Response<Void>
     suspend fun obterBarbearia(idBarbearia: Int) : Response<Barbearia>
 
+
     suspend fun obterBarbeariaCliente(idBarbearia: Int) : Response<Barbearia>
+
+    suspend fun atualizarBarbearia(novaBarbearia: Barbearia) : Response<Barbearia>
 }

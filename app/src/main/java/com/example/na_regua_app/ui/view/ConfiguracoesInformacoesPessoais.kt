@@ -1,5 +1,8 @@
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -53,6 +56,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.ui.platform.LocalContext
+import coil.compose.rememberAsyncImagePainter
 import com.example.na_regua_app.data.model.UsuarioDTOUpdate
 import com.example.na_regua_app.ui.components.Input
 import com.example.na_regua_app.ui.components.Botao
@@ -91,6 +95,15 @@ fun ConfiguracoesInformacoesPessoais(
                 val cidade by remember { mutableStateOf(usuarioBody!!.cidade) }
                 val estado by remember { mutableStateOf(usuarioBody!!.estado) }
                 var username by remember { mutableStateOf(usuarioBody!!.username) }
+                var imgPerfil by remember { mutableStateOf(usuarioBody!!.imgPerfil) }
+
+                var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+
+                val galleryLauncher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.GetContent()
+                ) { uri: Uri? ->
+                    selectedImageUri = uri
+                }
 
                 Column(
                     Modifier
@@ -113,8 +126,8 @@ fun ConfiguracoesInformacoesPessoais(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 ImageWithEditIcon(
-                                    painter = painterResource(id = R.drawable.foto_exemplo),
-                                    onClick = {},
+                                    painter = rememberAsyncImagePainter(model = imgPerfil),
+                                    onClick = {galleryLauncher.launch("image/*")},
                                     shape = CircleShape
                                 )
 
@@ -189,39 +202,39 @@ fun ConfiguracoesInformacoesPessoais(
 
                             Spacer(modifier = Modifier.height(32.dp))
 
-                            Button(
-                                onClick = {
-                                    navController.navigate("deleteaccount")
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color.Transparent,
-                                    contentColor = Color(0xFFCC2828)
-                                ),
-                                border = BorderStroke(1.dp, Color(0xFFCC2828)),
-                                shape = RoundedCornerShape(12.dp),
-                                contentPadding = PaddingValues(16.dp),
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(
-                                        text = "Excluir conta",
-                                        style = androidx.compose.ui.text.TextStyle(
-                                            color = Color(0xFFCC2828),
-                                            fontSize = 16.sp,
-                                            fontWeight = FontWeight.Bold
-                                        )
-                                    )
-
-                                    Icon(
-                                        imageVector = Icons.Default.KeyboardArrowRight,
-                                        contentDescription = null
-                                    )
-                                }
-                            }
+//                            Button(
+//                                onClick = {
+//                                    navController.navigate("deleteaccount")
+//                                },
+//                                colors = ButtonDefaults.buttonColors(
+//                                    containerColor = Color.Transparent,
+//                                    contentColor = Color(0xFFCC2828)
+//                                ),
+//                                border = BorderStroke(1.dp, Color(0xFFCC2828)),
+//                                shape = RoundedCornerShape(12.dp),
+//                                contentPadding = PaddingValues(16.dp),
+//                                modifier = Modifier.fillMaxWidth()
+//                            ) {
+//                                Row(
+//                                    modifier = Modifier.fillMaxWidth(),
+//                                    horizontalArrangement = Arrangement.SpaceBetween,
+//                                    verticalAlignment = Alignment.CenterVertically
+//                                ) {
+//                                    Text(
+//                                        text = "Excluir conta",
+//                                        style = androidx.compose.ui.text.TextStyle(
+//                                            color = Color(0xFFCC2828),
+//                                            fontSize = 16.sp,
+//                                            fontWeight = FontWeight.Bold
+//                                        )
+//                                    )
+//
+//                                    Icon(
+//                                        imageVector = Icons.Default.KeyboardArrowRight,
+//                                        contentDescription = null
+//                                    )
+//                                }
+//                            }
                         }
                     }
 
@@ -330,10 +343,15 @@ fun EditarInformacoesDialog(
                         CoroutineScope(Dispatchers.IO).launch {
                             val result = usuarioViewModel.editarPerfil(usuarioAtualizado)
                             if (result.isSuccessful) {
-//                                Toast.makeText(context, "Perfil atualizado com sucesso!", Toast.LENGTH_SHORT).show()
+                                CoroutineScope(Dispatchers.Main).launch {
+                                    Toast.makeText(context, "Perfil atualizado com sucesso!", Toast.LENGTH_SHORT).show()
+                                }
                                 onDismiss() // Fecha o modal se a atualização for bem-sucedida
+                                usuarioViewModel.obterUsuario()
                             }else{
-//                                Toast.makeText(context, "Falha ao realizar a alteração de perfil!", Toast.LENGTH_SHORT).show()
+                                CoroutineScope(Dispatchers.Main).launch {
+                                    Toast.makeText(context, "Falha ao realizar a alteração de perfil!", Toast.LENGTH_SHORT).show()
+                                }
                             }
                         }
                     },

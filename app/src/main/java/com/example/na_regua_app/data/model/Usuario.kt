@@ -29,6 +29,10 @@ data class UsuarioDTOUpdate(
     val username: String
 )
 
+data class UsuarioImagem(
+    var imgPerfil: String
+)
+
 
 fun usuarios(): List<Usuario> {
     return listOf(

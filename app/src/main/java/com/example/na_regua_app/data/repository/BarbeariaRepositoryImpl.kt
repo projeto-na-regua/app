@@ -2,6 +2,7 @@ package com.example.na_regua_app.data.repository
 
 import com.example.na_regua_app.data.api.BarbeariaService
 import com.example.na_regua_app.data.model.Barbearia
+import com.example.na_regua_app.data.model.BarbeariaDTO
 import retrofit2.Response
 
 class BarbeariaRepositoryImpl(
@@ -16,4 +17,11 @@ class BarbeariaRepositoryImpl(
         return service.obterBarbeariaCliente(idBarbearia)
     }
 
+    override suspend fun editarPerfil(barbearia: BarbeariaDTO): Response<Void> {
+        return service.editarPerfil(barbearia)
+    }
+
+    override suspend fun obterBarbearia(): Response<Barbearia> {
+        TODO("Not yet implemented")
+    }
 }

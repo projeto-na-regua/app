@@ -172,7 +172,7 @@ fun CardAgendamento(agendamentoBarbeiro: AgendamentoBarbeiro, actionsName: List<
             }
         }
 
-        DropDownMenu(agendamentoBarbeiro, actionsName, modifier = Modifier.fillMaxWidth(), menuWidth = 250.dp,  tamFont = 15.sp)
+        DropDownMenu(agendamentoBarbeiro, actionsName, modifier = Modifier.fillMaxWidth(), menuWidth = 250.dp,  tamFont = 15.sp, onItemSelected = {}, selectedItemPosition = null)
     }
 }
 

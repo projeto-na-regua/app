@@ -30,6 +30,7 @@ import com.example.na_regua_app.ui.view.CadastroFim
 import com.example.na_regua_app.ui.view.CadastroFotoUsername
 import com.example.na_regua_app.ui.view.CadastroInicio
 import com.example.na_regua_app.ui.view.Chat
+import com.example.na_regua_app.ui.view.ChatListados
 import com.example.na_regua_app.ui.view.Gestao
 import com.example.na_regua_app.ui.view.Home
 import com.example.na_regua_app.ui.view.HomeUsuario
@@ -135,6 +136,9 @@ class MainActivity : ComponentActivity() {
                             origin = origin,
                             id = id
                         )
+                    }
+                    composable("chatListados"){
+                        ChatListados(navController)
                     }
                     composable("adicionar") {
                         Adicionar(navController, usuarios().first())

@@ -17,7 +17,7 @@ class PerfilBarbeariaViewModel(
     private val _barbearia = MutableStateFlow<Barbearia?>(null)
     val barbearia: StateFlow<Barbearia?> get() = _barbearia
 
-    fun obterBarbearia(isBarbeiro: Boolean, idBarbearia: Int) {
+    fun obterBarbearia(isBarbeiro: Boolean, idBarbearia: Int? = null) {
         viewModelScope.launch {
             try {
                 val barbeariaData: retrofit2.Response<Barbearia> = if (isBarbeiro) {

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -32,10 +33,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
+import com.example.na_regua_app.R
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.FontProvider
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
@@ -49,11 +53,13 @@ fun TopBarCustom(
     navController: NavController,
     titlePage: String,
     showIconNotification: Boolean,
+    showIconChat: Boolean,
     showIconSettings: Boolean = false,
     showBackButton: Boolean = false
 ) {
 
     var existNotification by remember {mutableStateOf(true)}
+    //var newMessages by remember {mutableStateOf(true)}
 
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -131,6 +137,21 @@ fun TopBarCustom(
                             Icon(
                                 imageVector = Icons.Default.Settings,
                                 contentDescription = "Settings",
+                                tint = Color.Black
+                            )
+                        }
+                    }
+                }
+
+                if(showIconChat) {
+
+                    Box {
+                        IconButton(onClick = {
+                            navController.navigate("chatListados")
+                        }, Modifier.zIndex(0F)) {
+                            Icon(
+                                painter = painterResource(R.drawable.baseline_chat_bubble_24),
+                                contentDescription = "Chats listados",
                                 tint = Color.Black
                             )
                         }

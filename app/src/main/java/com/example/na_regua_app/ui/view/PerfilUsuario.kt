@@ -74,8 +74,8 @@ fun PerfilUsuario(
     val barbearia by perfilBarbeariaViewModel.barbearia.collectAsState()
 
     LaunchedEffect(Unit) {
+        barbearia?.let { perfilBarbeariaViewModel.obterBarbearia(true) }
         Log.d("PerfilUsuario", "Iniciando busca de barbearia com ID: ${barbearia?.id}")
-        barbearia?.let { perfilBarbeariaViewModel.obterBarbearia(true, it.id) }
     }
 
 

@@ -52,7 +52,7 @@ fun Dashboard(
 ) {
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Dashboard", true)
+            TopBarCustom(navController, "Dashboard", true, false)
         },
         content = { paddingValues ->
             DashboardContent(paddingValues)

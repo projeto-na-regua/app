@@ -65,7 +65,7 @@ fun HomeUsuario(
     Scaffold(
         modifier = Modifier.background(White),
         topBar = {
-            TopBarCustom(navController, "Home", true)
+            TopBarCustom(navController, "Home", true, false)
         },
         content = { paddingValues ->
             HomeUsuarioContent(

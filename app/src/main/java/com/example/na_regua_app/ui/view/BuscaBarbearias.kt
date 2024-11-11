@@ -41,7 +41,7 @@ fun BuscaBarbearias(navController: NavHostController) {
 
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Busca", true)
+            TopBarCustom(navController, "Busca", true, false)
         },
         content = { paddingValues ->
             Column(

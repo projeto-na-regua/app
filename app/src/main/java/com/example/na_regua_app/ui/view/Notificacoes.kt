@@ -63,7 +63,7 @@ fun Notificacoes(
 ) {
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Notificações", false)
+            TopBarCustom(navController, "Notificações", false, false)
         },
         content = { paddingValues ->
             NotificacoesContent(

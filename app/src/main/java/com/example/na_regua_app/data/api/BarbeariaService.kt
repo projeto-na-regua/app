@@ -14,7 +14,7 @@ interface BarbeariaService {
 
     @GET("barbearias/client-side/perfil/{idBarbearia}")
     suspend fun obterBarbeariaCliente(
-        @Path("idBarbearia") idBarbearia: Int
+        @Path("idBarbearia") idBarbearia: Int?
     ) : Response<Barbearia>
 
     @PUT("barbearias/perfil")

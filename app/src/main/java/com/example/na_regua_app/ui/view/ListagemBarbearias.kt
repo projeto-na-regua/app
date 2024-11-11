@@ -77,7 +77,7 @@ fun ListagemBarbearias(
     Scaffold(
         modifier = Modifier.background(Color.White),
         topBar = {
-            TopBarCustom(navController, "Buscar", true)
+            TopBarCustom(navController, "Buscar", true, true, true)
         },
         content = { paddingValues ->
             val context = LocalContext.current

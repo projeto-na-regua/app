@@ -92,7 +92,7 @@ fun AgendaUsuario(
         modifier = Modifier.background(Color.White),
         topBar = {
             if (!isFromDashboard) {
-                TopBarCustom(navController, "Agendamentos", true)
+                TopBarCustom(navController, "Agendamentos", true, false)
             }
         },
         bottomBar = {

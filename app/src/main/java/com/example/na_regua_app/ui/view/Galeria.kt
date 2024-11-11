@@ -57,7 +57,7 @@ fun Galeria(
 ) {
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Galeria", true)
+            TopBarCustom(navController, "Galeria", true, false)
         },
         content = { paddingValues ->
             GaleriaContent(paddingValues)

@@ -71,7 +71,7 @@ fun Gestao(
 ) {
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Gestão", true)
+            TopBarCustom(navController, "Gestão", true, false)
         },
         content = { paddingValues ->
             GestaoContent(paddingValues, funcionarioViewModel, servicoViewModel)

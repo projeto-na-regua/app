@@ -82,7 +82,7 @@ fun Home(
     Scaffold(
         modifier = Modifier.background(White),
         topBar = {
-            TopBarCustom(navController, "Home", true)
+            TopBarCustom(navController, "Home", true, false)
         },
         content = { paddingValues ->
             HomeContent(

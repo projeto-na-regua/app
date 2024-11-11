@@ -12,7 +12,7 @@ class BarbeariaRepositoryImpl(
         return service.obterBarbearia()
     }
 
-    override suspend fun obterBarbeariaCliente(idBarbearia: Int): Response<Barbearia> {
+    override suspend fun obterBarbeariaCliente(idBarbearia: Int?): Response<Barbearia> {
         return service.obterBarbeariaCliente(idBarbearia)
     }
 

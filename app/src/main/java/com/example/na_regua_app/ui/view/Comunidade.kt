@@ -68,7 +68,7 @@ fun Comunidade(
 
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Comunidade", true)
+            TopBarCustom(navController, "Comunidade", true, false)
         },
         content = { paddingValues ->
             Column(

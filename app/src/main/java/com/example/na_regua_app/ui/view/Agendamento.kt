@@ -89,7 +89,7 @@ fun Agendamento(
 
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Perfil", true)
+            TopBarCustom(navController, "Perfil", true, false)
         },
         content = { paddingValues ->
             LazyColumn(

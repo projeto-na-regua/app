@@ -106,8 +106,8 @@ fun Login(
 
             loginViewModel.atualizarSenha(senha)
 
-                        loginViewModel.atualizarEmail("teste@cliente.com")
-                        loginViewModel.atualizarSenha("teste123")
+                        loginViewModel.atualizarEmail("joaosilva1@example.com")
+                        loginViewModel.atualizarSenha("senhaSegura123")
 
                         loginViewModel.logar(context) { success ->
                             if (success) {

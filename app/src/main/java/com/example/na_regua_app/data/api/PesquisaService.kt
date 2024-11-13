@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface PesquisaService {
 
-    @GET("pesquisa/client-side")
+    @GET("api/pesquisa/client-side")
     suspend fun listarBarbeariasWToken(
         @Header("Authorization") token: String,
         @Query("servico") servico: String,
@@ -18,7 +18,7 @@ interface PesquisaService {
         @Query("raio") raio: Int
     ): Response<List<BarbeariaPesquisa>>
 
-    @GET("pesquisa/client-side/filtro")
+    @GET("api/pesquisa/client-side/filtro")
     suspend fun listarBarbeariasPorNome(
         @Header("Authorization") token: String,
         @Query("nomeBarbearia") nomeBarbearia: String

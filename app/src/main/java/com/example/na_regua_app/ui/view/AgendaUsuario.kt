@@ -127,10 +127,14 @@ fun AgendaUsuarioContent(
     var showModal by remember { mutableStateOf(false) }
     var selectedAgendamento by remember { mutableStateOf<AgendamentoConsulta?>(null) }
 
+    var isLoadingPendentes = agendamentoViewModel.isLoadingPendentes.collectAsState().value
+    var isLoadingAgendados = agendamentoViewModel.isLoadingAgendados.collectAsState().value
+    var isLoadingHistorico = agendamentoViewModel.isLoadingHistorico.collectAsState().value
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 90.dp),
+            .padding(top = 30.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -146,7 +150,6 @@ fun AgendaUsuarioContent(
 
         // Se for barbeiro, exibe agendamentos pendentes e agendados
         if (isBarbeiro) {
-            // Exibir Agendamentos Pendentes
             Text(
                 text = "Agendamentos Pendentes",
                 fontSize = 16.sp,
@@ -154,25 +157,33 @@ fun AgendaUsuarioContent(
                 fontWeight = FontWeight(600),
                 modifier = Modifier.padding(vertical = 10.dp)
             )
-            if (agendamentos.filter { it.status == "Pendente" }.isEmpty()) {
+            if(isLoadingPendentes){
                 Text(
-                    text = "Não há agendamentos pendentes.",
+                    text = "Carregando...",
                     fontSize = 14.sp,
                     color = Color.Gray,
                     modifier = Modifier.padding(vertical = 10.dp)
                 )
             } else {
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(.9f),
-                    contentPadding = PaddingValues(vertical = 10.dp)
-                ) {
-                    items(agendamentos.filter { it.status == "Pendente" }) { agendamento ->
-                        BoxAgendamentos(agendamento, isBarbeiro, agendamentoViewModel, LocalContext.current)
-                        Spacer(modifier = Modifier.width(20.dp))
+                if (agendamentos.filter { it.status == "Pendente" }.isEmpty()) {
+                    Text(
+                        text = "Não há agendamentos pendentes.",
+                        fontSize = 14.sp,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(vertical = 10.dp)
+                    )
+                } else {
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(.9f),
+                        contentPadding = PaddingValues(vertical = 10.dp)
+                    ) {
+                        items(agendamentos.filter { it.status == "Pendente" }) { agendamento ->
+                            BoxAgendamentos(agendamento, isBarbeiro, agendamentoViewModel, LocalContext.current)
+                            Spacer(modifier = Modifier.width(20.dp))
+                        }
                     }
                 }
             }
-
             // Exibir Agendamentos Agendados
             Text(
                 text = "Agendamentos Confirmados",
@@ -181,26 +192,34 @@ fun AgendaUsuarioContent(
                 fontWeight = FontWeight(600),
                 modifier = Modifier.padding(vertical = 10.dp)
             )
-            if (agendamentos.filter { it.status == "Agendado" }.isEmpty()) {
+            if(isLoadingAgendados){
                 Text(
-                    text = "Não há agendamentos confirmados.",
+                    text = "Carregando...",
                     fontSize = 14.sp,
                     color = Color.Gray,
                     modifier = Modifier.padding(vertical = 10.dp)
                 )
             } else {
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(.9f),
-                    contentPadding = PaddingValues(vertical = 10.dp)
-                ) {
-                    items(agendamentos.filter { it.status == "Agendado" }) { agendamento ->
-                        BoxAgendamentos(agendamento, isBarbeiro, agendamentoViewModel, LocalContext.current)
-                        Spacer(modifier = Modifier.width(20.dp))
+                if (agendamentos.filter { it.status == "Agendado" }.isEmpty()) {
+                    Text(
+                        text = "Não há agendamentos confirmados.",
+                        fontSize = 14.sp,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(vertical = 10.dp)
+                    )
+                } else {
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(.9f),
+                        contentPadding = PaddingValues(vertical = 10.dp)
+                    ) {
+                        items(agendamentos.filter { it.status == "Agendado" }) { agendamento ->
+                            BoxAgendamentos(agendamento, isBarbeiro, agendamentoViewModel, LocalContext.current)
+                            Spacer(modifier = Modifier.width(20.dp))
+                        }
                     }
                 }
             }
         } else {
-            // Se não for barbeiro, ainda exibe agendamentos pendentes e agendados
             Text(
                 text = "Agendamentos Pendentes",
                 fontSize = 16.sp,
@@ -208,25 +227,33 @@ fun AgendaUsuarioContent(
                 fontWeight = FontWeight(600),
                 modifier = Modifier.padding(vertical = 10.dp)
             )
-            if (agendamentos.filter { it.status == "Pendente" }.isEmpty()) {
+            if(isLoadingPendentes){
                 Text(
-                    text = "Não há agendamentos pendentes.",
+                    text = "Carregando...",
                     fontSize = 14.sp,
                     color = Color.Gray,
                     modifier = Modifier.padding(vertical = 10.dp)
                 )
             } else {
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(.9f),
-                    contentPadding = PaddingValues(vertical = 10.dp)
-                ) {
-                    items(agendamentos.filter { it.status == "Pendente" }) { agendamento ->
-                        BoxAgendamentos(agendamento, isBarbeiro, agendamentoViewModel, LocalContext.current)
-                        Spacer(modifier = Modifier.width(20.dp))
+                if (agendamentos.filter { it.status == "Pendente" }.isEmpty()) {
+                    Text(
+                        text = "Não há agendamentos pendentes.",
+                        fontSize = 14.sp,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(vertical = 10.dp)
+                    )
+                } else {
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(.9f),
+                        contentPadding = PaddingValues(vertical = 10.dp)
+                    ) {
+                        items(agendamentos.filter { it.status == "Pendente" }) { agendamento ->
+                            BoxAgendamentos(agendamento, isBarbeiro, agendamentoViewModel, LocalContext.current)
+                            Spacer(modifier = Modifier.width(20.dp))
+                        }
                     }
                 }
             }
-
             // Exibir Agendamentos Agendados
             Text(
                 text = "Agendamentos Agendados",
@@ -235,25 +262,33 @@ fun AgendaUsuarioContent(
                 fontWeight = FontWeight(600),
                 modifier = Modifier.padding(vertical = 10.dp)
             )
-            if (agendamentos.filter { it.status == "Agendado" }.isEmpty()) {
+            if(isLoadingAgendados){
                 Text(
-                    text = "Não há agendamentos confirmados.",
+                    text = "Carregando...",
                     fontSize = 14.sp,
                     color = Color.Gray,
                     modifier = Modifier.padding(vertical = 10.dp)
                 )
             } else {
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(.9f),
-                    contentPadding = PaddingValues(vertical = 10.dp)
-                ) {
-                    items(agendamentos.filter { it.status == "Agendado" }) { agendamento ->
-                        BoxAgendamentos(agendamento, isBarbeiro, agendamentoViewModel, LocalContext.current)
-                        Spacer(modifier = Modifier.width(20.dp))
+                if (agendamentos.filter { it.status == "Agendado" }.isEmpty()) {
+                    Text(
+                        text = "Não há agendamentos confirmados.",
+                        fontSize = 14.sp,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(vertical = 10.dp)
+                    )
+                } else {
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(.9f),
+                        contentPadding = PaddingValues(vertical = 10.dp)
+                    ) {
+                        items(agendamentos.filter { it.status == "Agendado" }) { agendamento ->
+                            BoxAgendamentos(agendamento, isBarbeiro, agendamentoViewModel, LocalContext.current)
+                            Spacer(modifier = Modifier.width(20.dp))
+                        }
                     }
                 }
             }
-
             // Exibe a seção de histórico
             LazyRow(
                 modifier = Modifier.fillMaxWidth(1f)
@@ -280,15 +315,24 @@ fun AgendaUsuarioContent(
                     }
                 }
             }
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(.95f)
-            ) {
-                val listaHistoricoUnica = listaHistorico.distinctBy { it.enderecoBarbearia }
 
-                items(listaHistoricoUnica) { agendamento ->
-                    BoxHistorico(agendamento = agendamento) {
-                        selectedAgendamento = agendamento
-                        showModal = true
+            if(isLoadingHistorico){
+                Text(
+                    text = "Carregando...",
+                    fontSize = 14.sp,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(vertical = 10.dp)
+                )
+            } else {
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(.95f)
+                ) {
+                    val listaHistoricoUnica = listaHistorico.distinctBy { it.enderecoBarbearia }
+                    items(listaHistoricoUnica) { agendamento ->
+                        BoxHistorico(agendamento = agendamento) {
+                            selectedAgendamento = agendamento
+                            showModal = true
+                        }
                     }
                 }
             }

@@ -64,15 +64,15 @@ import org.koin.compose.viewmodel.koinViewModel
 fun ListagemBarbearias(
     navController: NavHostController,
     usuario: Usuario,
-    args: BarbeariaArgs,
+    args: BarbeariaArgs?,
     pesquisaViewmodel: PesquisaViewModel = koinViewModel()
 ) {
     // Colete a lista de barbearias como um estado
     val barbearias = remember { mutableStateListOf<BarbeariaPesquisa>() }
-    val servico = args.servico ?: "Serviço vazio"
-    val data = args.data ?: "Data vazia"
-    val hora = args.hora ?: "Hora vazia"
-    val nomeBarbearia = args.nomeBarbearia
+    val servico = args?.servico ?: "Serviço vazio"
+    val data = args?.data ?: "Data vazia"
+    val hora = args?.hora ?: "Hora vazia"
+    val nomeBarbearia = args?.nomeBarbearia
 
     Scaffold(
         modifier = Modifier.background(Color.White),
@@ -134,12 +134,13 @@ fun ListagemBarbearias(
                     .padding(vertical = 20.dp)
             ) {
                 item {
-                    BarraPesquisar({ navController.navigate("listagemBarbearias") }, navController, nomeBarbearia!!)
+                    nomeBarbearia?.let {
+                        BarraPesquisar({ navController.navigate("listagemBarbearias") }, navController, it)
+                    }
                 }
                 item {
                     Spacer(modifier = Modifier.height(20.dp))
                 }
-                // Adiciona um item para cada barbearia na lista
                 items(barbearias) { barbearia ->
                     CardSelecionarBarbearia(
                         barbearia = barbearia,
@@ -156,7 +157,7 @@ fun ListagemBarbearias(
 
 @Composable
 fun CardSelecionarBarbearia(
-    barbearia: BarbeariaPesquisa, // Supondo que você tenha uma classe BarbeariaPesquisa
+    barbearia: BarbeariaPesquisa,
     navController: NavHostController
 ) {
     Box(

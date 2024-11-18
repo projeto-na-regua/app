@@ -45,6 +45,15 @@ class AgendamentoViewModel (
     private val _agendamentoPendenteHomeUsuario = MutableStateFlow<AgendamentoConsulta?>(null)
     var agendamentoPendenteHomeUsuario: StateFlow<AgendamentoConsulta?> = _agendamentoPendenteHomeUsuario
 
+    private val _isLoadingPendentes = MutableStateFlow(true)
+    var isLoadingPendentes: StateFlow<Boolean> = _isLoadingPendentes
+
+    private val _isLoadingAgendados = MutableStateFlow(true)
+    var isLoadingAgendados: StateFlow<Boolean> = _isLoadingAgendados
+
+    private val _isLoadingHistorico = MutableStateFlow(true)
+    var isLoadingHistorico: StateFlow<Boolean> = _isLoadingHistorico
+
 
     fun listarHorariosDisponiveis(barbeiro: Int, servico: Int, barbearia: Int, date: String) {
         viewModelScope.launch {
@@ -156,6 +165,7 @@ class AgendamentoViewModel (
                     Log.d("AgendamentoViewModel", "Agendamento Pendente Home Usuário: ${_agendamentoPendenteHomeUsuario.value}")
 
                     _agendamentosPendentes.value = agendamentosFuturos
+                    _isLoadingPendentes.value = false
                 } else {
                     Log.e("AgendamentoViewModel", "Erro na resposta dos agendamentos pendentes: ${agendamentoData.code()}")
                     Log.e("AgendamentoViewModel", "Erro ao buscar os agendamentos pendentes: ${agendamentoData.errorBody()?.string()}")
@@ -200,6 +210,7 @@ class AgendamentoViewModel (
                     Log.d("AgendamentoViewModel", "Agendamento Agendado Home Usuário: ${_agendamentoAgendadoHomeUsuario.value}")
 
                     _agendamentosAgendados.value = agendamentosFuturos
+                    _isLoadingAgendados.value = false
                 } else {
                     Log.e("AgendamentoViewModel", "Erro na resposta dos agendamentos agendados: ${agendamentoData.code()}")
                     Log.e("AgendamentoViewModel", "Erro ao buscar os agendamentos agendados: ${agendamentoData.errorBody()?.string()}")
@@ -223,6 +234,7 @@ class AgendamentoViewModel (
                 if (historicoData.isSuccessful) {
                     Log.d("AgendamentoViewModel", "Dados do historico: ${historicoData.body()}")
                     _listaHistorico.value = historicoData.body()!!
+                    _isLoadingHistorico.value = false
                 } else {
                     Log.e("AgendamentoViewModel", "Erro na resposta do historico: ${historicoData.code()}")
                     Log.e("AgendamentoViewModel", "Erro ao buscar o historico: ${historicoData.errorBody()?.string()}")

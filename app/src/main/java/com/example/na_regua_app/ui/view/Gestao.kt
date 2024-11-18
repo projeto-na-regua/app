@@ -91,7 +91,10 @@ fun GestaoContent(paddingValues: PaddingValues, funcionarioViewModel: Funcionari
     }
 
     val funcionarios by funcionarioViewModel.funcionarios.collectAsState()
+    var isLoadingFuncionarios = funcionarioViewModel.isLoadingFuncionarios.collectAsState().value
+
     val servicos by servicoViewModel.servicos.collectAsState()
+    var isLoadingServicos = servicoViewModel.isLoadingServicos.collectAsState().value
 
     var showModalCadastroFuncionario by remember { mutableStateOf(false) }
     var showModalCadastroServico by remember { mutableStateOf(false) }
@@ -109,11 +112,11 @@ fun GestaoContent(paddingValues: PaddingValues, funcionarioViewModel: Funcionari
                 .padding(20.dp) // Padding adicional que você quiser
         ) {
             item {
-                ServicoSection(servicos, onShowModal = { showModalCadastroServico = true }) // Passa o callback
+                    ServicoSection(servicos, onShowModal = { showModalCadastroServico = true }, isLoadingServicos) // Passa o callback
             }
 
             item {
-                funcionarios?.let { FuncionarioSection(it, onShowModal = { showModalCadastroFuncionario = true }) } // Passa o callback
+                    funcionarios?.let { FuncionarioSection(it, onShowModal = { showModalCadastroFuncionario = true }, isLoadingFuncionarios)}
             }
         }
 
@@ -128,32 +131,49 @@ fun GestaoContent(paddingValues: PaddingValues, funcionarioViewModel: Funcionari
 }
 
 @Composable
-fun ServicoSection(servicos: List<ServicoCardDTO>, onShowModal: () -> Unit) { // Recebe callback
+fun ServicoSection(servicos: List<ServicoCardDTO>, onShowModal: () -> Unit, isLoadingServicos: Boolean) { // Recebe callback
     TituloIcon("0s serviços cadastrados", R.drawable.novo_servico, onIconClick = { onShowModal() })
 
     Espacamento(18.dp)
 
-    servicos.forEach {
-        CardServico(
-            title = it.tituloServico,
-            descricao = it.descricao
+    if(isLoadingServicos){
+        Text(
+            text = "Carregando...",
+            fontSize = 14.sp,
+            color = Color.Gray,
+            modifier = Modifier.padding(vertical = 10.dp)
         )
-        Espacamento(18.dp)
+    } else {
+        servicos.forEach {
+            CardServico(
+                title = it.tituloServico,
+                descricao = it.descricao
+            )
+            Espacamento(18.dp)
+        }
     }
 
 }
 
 @Composable
-fun FuncionarioSection(funcionarios: List<Funcionario>, onShowModal: () -> Unit) { // Recebe callback
+fun FuncionarioSection(funcionarios: List<Funcionario>, onShowModal: () -> Unit, isLoadingFuncionarios: Boolean) { // Recebe callback
     TituloIcon("0s funcionários cadastrados", R.drawable.add_user, onIconClick = { onShowModal() })
 
     Espacamento(18.dp)
 
-    funcionarios.forEach {
-        CardFuncionario(it)
-        Espacamento(18.dp)
+    if(isLoadingFuncionarios){
+        Text(
+            text = "Carregando...",
+            fontSize = 14.sp,
+            color = Color.Gray,
+            modifier = Modifier.padding(vertical = 10.dp)
+        )
+    } else {
+        funcionarios.forEach {
+            CardFuncionario(it)
+            Espacamento(18.dp)
+        }
     }
-
 }
 
 @Composable

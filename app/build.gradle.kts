@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.na_regua_app"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -98,6 +98,7 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.1.0")
     implementation(libs.material)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.compose.material)
     val navVersion = "2.5.3"
     implementation("androidx.navigation:navigation-compose:$navVersion")
 

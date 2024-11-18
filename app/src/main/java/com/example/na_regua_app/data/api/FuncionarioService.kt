@@ -12,16 +12,16 @@ import retrofit2.http.Path
 
 interface FuncionarioService {
 
-    @GET("api/funcionarios")
+    @GET("funcionarios")
     suspend fun obterFuncionarios(
     ) : Response<List<Funcionario>>
 
-    @GET("api/funcionarios/client-side/{idBarbearia}")
+    @GET("funcionarios/client-side/{idBarbearia}")
     suspend fun obterFuncionariosCliente(
         @Path("idBarbearia") idBarbearia: Int
     ) : Response<List<Funcionario>>
 
-    @POST("api/funcionarios/criar")
+    @POST("funcionarios/criar")
     suspend fun cadastrarBarbeiro(
         @Body barbeiro: NovoBarbeiro,
     ) : Response<BarbeiroConsulta>

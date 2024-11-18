@@ -13,6 +13,7 @@ nav-version = "2.5.3"
 therasChartCompose = "1.0.0"
 material = "1.12.0"
 roomKtx = "2.6.1"
+composeMaterial = "1.4.0"
 
 [libraries]
 accompanist-svg = { module = "com.google.accompanist:accompanist-svg", version.ref = "accompanistSvg" }
@@ -33,6 +34,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 theras-chart-compose = { module = "com.github.therajanmaurya:TheraS-Chart-Compose", version.ref = "therasChartCompose" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+androidx-compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "composeMaterial" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

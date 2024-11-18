@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +32,7 @@ import com.example.na_regua_app.ui.components.Input
 import com.example.na_regua_app.ui.components.LogoImage
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
+import com.example.na_regua_app.utils.obterUsuarioDtype
 import com.example.na_regua_app.viewmodel.LoginViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -42,6 +44,7 @@ fun Login(
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     val context = LocalContext.current
+    val userDtype by obterUsuarioDtype(context).collectAsState(initial = null)
 
     Scaffold(
         content = { paddingValues ->
@@ -106,16 +109,30 @@ fun Login(
 
             loginViewModel.atualizarSenha(senha)
 
-                        loginViewModel.atualizarEmail("joaosilva1@example.com")
-                        loginViewModel.atualizarSenha("senhaSegura123")
+                        loginViewModel.atualizarEmail(email)
+                        loginViewModel.atualizarSenha(senha)
 
                         loginViewModel.logar(context) { success ->
                             if (success) {
                                 Log.d("Login", "Login realizado com sucesso!")
                                 Toast.makeText(context, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show()
-                                // Tente a navegação aqui
-                                navController.navigate("agendaUsuarios") {
-                                    popUpTo("agendaUsuarios") { inclusive = true }
+
+                                // Navegação condicional com verificação de dtype
+                                userDtype?.let {
+                                    if (it.dtype == "Cliente") {
+                                        navController.navigate("homeUsuario") {
+                                            popUpTo("homeUsuario") { inclusive = true }
+                                        }
+                                    } else {
+                                        navController.navigate("home") {
+                                            popUpTo("home") { inclusive = true }
+                                        }
+                                    }
+                                } ?: run {
+                                    Log.d("Login", "DType não carregado, navegação padrão.")
+                                    navController.navigate("homeUsuario") {
+                                        popUpTo("homeUsuario") { inclusive = true }
+                                    }
                                 }
                             } else {
                                 Log.d("Login", "Erro ao realizar o login.")

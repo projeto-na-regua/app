@@ -16,6 +16,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -80,14 +81,15 @@ fun BarraPesquisar(
                 },
                 modifier = Modifier.weight(1f),
                 singleLine = true,
-                keyboardOptions = KeyboardOptions.Default, // Remove ImeAction personalizada
-                keyboardActions = KeyboardActions.Default, // Remove a ação de "Enviar"
-                colors = androidx.compose.material3.TextFieldDefaults.outlinedTextFieldColors(
-                    containerColor = Color.Transparent,
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent,
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White
+                keyboardOptions = KeyboardOptions.Default,
+                keyboardActions = KeyboardActions.Default,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.LightGray,
+                    unfocusedBorderColor = Color.LightGray
+                ),
+                textStyle = androidx.compose.ui.text.TextStyle(
+                    color = Color.White, // Aplique a cor do texto diretamente
+                    fontSize = 16.sp // (opcional) Ajuste o tamanho da fonte, se necessário
                 )
             )
 

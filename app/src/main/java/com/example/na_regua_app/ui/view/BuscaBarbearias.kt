@@ -23,6 +23,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.wear.compose.material.ContentAlpha
 import com.example.na_regua_app.R
 import com.example.na_regua_app.ui.components.Botao
 import com.example.na_regua_app.ui.components.TopBarCustom

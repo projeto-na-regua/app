@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.na_regua_app.R
@@ -269,36 +270,6 @@ fun PerfilUsuarioContent(paddingValues: PaddingValues, navController: NavControl
                     }
 
                     Spacer(modifier = Modifier.height(18.dp))
-                }
-
-                Row(
-                    modifier = Modifier
-                        .padding(top = 20.dp)
-                        .align(Alignment.BottomCenter)
-                        .padding(9.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    val userName by remember { mutableStateOf(usuario.nome) }
-                    val profilePic by remember { mutableStateOf(usuario.imgPerfil) }
-                    val origin by remember { mutableStateOf("perfilUsuario") }
-
-                    BotaoAjustavel(
-                        modifier = Modifier.weight(1.5f),
-                        onClick = { navController.navigate("chat/$userName/$profilePic/$origin") },
-                        textButton = "Enviar mensagem",
-                        imagePainter = painterResource(R.drawable.send_icon),
-                        shape = RoundedCornerShape(12.dp),
-                        fontSize = 10
-                    )
-                    Spacer(modifier = Modifier.width(2.dp))
-                    BotaoAjustavel(
-                        modifier = Modifier.weight(1.5f),
-                        onClick = { navController.navigate("perfilBarbearia") },
-                        textButton = "Visitar barbearia",
-                        shape = RoundedCornerShape(12.dp),
-                        fontSize = 10
-                    )
                 }
             }
         }

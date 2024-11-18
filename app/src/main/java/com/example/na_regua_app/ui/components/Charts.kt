@@ -97,11 +97,10 @@ fun LineChartSpan(datas: List<Dado>, modifier: Modifier) {
         thickness = 4.dp,
     )
 
-    // Renderiza o gráfico de linhas
     LineChart(
         linesChartData = listOf(LineChartData(
             points = points,
-            padBy = 0.1f,
+            padBy = .1f,
             startAtZero = true,
             lineDrawer = lineDrawer
         )),

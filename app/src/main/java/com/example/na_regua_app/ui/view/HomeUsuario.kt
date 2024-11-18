@@ -118,6 +118,8 @@ fun HomeUsuarioContent(
     val barbearias = remember { mutableStateListOf<BarbeariaPesquisa>() }
     val tokenFlow = obterToken(context).collectAsState(initial = "VAZIO")
 
+    var isLoadingPendentes = agendamentoViewModel.isLoadingPendentes.collectAsState().value
+
     LaunchedEffect(Unit) {
         agendamentoViewModel.listarAgendamentosPendentes()
         agendamentoViewModel.listarAgendamentosAgendados()
@@ -173,48 +175,9 @@ fun HomeUsuarioContent(
                     .background(color = BLUE_PRIMARY)
                     .padding(vertical = 15.dp, horizontal = 12.dp)
             ) {
-                if(agendamentoAgendado != null || agendamentoPendente != null){
+                if(isLoadingPendentes){
                     Text(
-                        text = buildAnnotatedString {
-
-                            if(agendamentoAgendado != null){
-                                append("Seu compromisso foi confirmado pela barbearia ")
-                            } else {
-                                append("Seu agendamento está aguardando confirmação da barbearia ")
-                            }
-
-                            withStyle(style = SpanStyle(color = ORANGE_SECUNDARY, fontWeight = FontWeight.Bold)) {
-                                if(agendamentoAgendado != null){
-                                    append(agendamentoAgendado.nomeNegocio)
-                                } else {
-                                    append(agendamentoPendente!!.nomeNegocio)
-                                }
-
-                            }
-
-                            append(". \nInformações do Agendamento: ")
-
-                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-
-                                if(agendamentoAgendado != null){
-                                    append(agendamentoAgendado.tipoServico)
-                                } else {
-                                    append(agendamentoPendente!!.tipoServico)
-                                }
-                            }
-
-                            append(" no dia ")
-
-                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-
-                                if(agendamentoAgendado != null){
-                                    append(formatarDataHoraHomeUsuario(agendamentoAgendado.dataHora))
-                                } else {
-                                    append(formatarDataHoraHomeUsuario(agendamentoPendente!!.dataHora))
-                                }
-                            }
-                        },
-                        color = White,
+                        text = "Carregando...", color = White,
                         fontWeight = FontWeight(350),
                         letterSpacing = 1.sp,
                         fontSize = 16.sp,
@@ -223,7 +186,67 @@ fun HomeUsuarioContent(
                         )
                     )
                 } else {
-                    Text(text = "Você não possui agendamentos pendentes ou confirmados. Conheça uma nova barbearia hoje!")
+                    if(agendamentoAgendado != null || agendamentoPendente != null){
+                        Text(
+                            text = buildAnnotatedString {
+
+                                if(agendamentoAgendado != null){
+                                    append("Seu compromisso foi confirmado pela barbearia ")
+                                } else {
+                                    append("Seu agendamento está aguardando confirmação da barbearia ")
+                                }
+
+                                withStyle(style = SpanStyle(color = ORANGE_SECUNDARY, fontWeight = FontWeight.Bold)) {
+                                    if(agendamentoAgendado != null){
+                                        append(agendamentoAgendado.nomeNegocio)
+                                    } else {
+                                        append(agendamentoPendente!!.nomeNegocio)
+                                    }
+
+                                }
+
+                                append(". \nInformações do Agendamento: ")
+
+                                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+
+                                    if(agendamentoAgendado != null){
+                                        append(agendamentoAgendado.tipoServico)
+                                    } else {
+                                        append(agendamentoPendente!!.tipoServico)
+                                    }
+                                }
+
+                                append(" no dia ")
+
+                                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+
+                                    if(agendamentoAgendado != null){
+                                        append(formatarDataHoraHomeUsuario(agendamentoAgendado.dataHora))
+                                    } else {
+                                        append(formatarDataHoraHomeUsuario(agendamentoPendente!!.dataHora))
+                                    }
+                                }
+                            },
+                            color = White,
+                            fontWeight = FontWeight(500),
+                            letterSpacing = 1.sp,
+                            fontSize = 16.sp,
+                            style = TextStyle(
+                                lineHeight = 24.sp
+                            )
+                        )
+                    } else {
+                        Text(
+                            text = "Você não possui agendamentos pendentes ou confirmados. Conheça uma nova barbearia hoje!",
+                            color = White,
+                            fontWeight = FontWeight(350),
+                            letterSpacing = 1.sp,
+                            fontSize = 16.sp,
+                            style = TextStyle(
+                                lineHeight = 24.sp
+                            )
+                        )
+                    }
                 }
             }
         }

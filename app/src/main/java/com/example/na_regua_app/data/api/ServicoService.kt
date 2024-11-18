@@ -11,17 +11,17 @@ import retrofit2.http.Path
 
 interface ServicoService {
 
-    @GET("api/servicos/list-by-status/{status}")
+    @GET("servicos/list-by-status/{status}")
     suspend fun obterServicosPorStatus(
         @Path("status") status: String
     ) : Response<List<Servico>>
 
-    @GET("api/servicos/client-side/{idBarbearia}")
+    @GET("servicos/client-side/{idBarbearia}")
     suspend fun obterServicosCliente(
         @Path("idBarbearia") idBarbearia: Int
     ) : Response<List<Servico>>
 
-    @POST("api/servicos")
+    @POST("servicos")
     suspend fun cadastrarServico(
         @Body nvServico: NovoServico
     ) : Response<ServicoConsulta>

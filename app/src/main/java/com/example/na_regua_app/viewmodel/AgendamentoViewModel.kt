@@ -1,6 +1,8 @@
 package com.example.na_regua_app.viewmodel
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.na_regua_app.data.model.AgendamentoConsulta
@@ -16,6 +18,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 
@@ -34,6 +38,13 @@ class AgendamentoViewModel (
 
     private val _listaHistorico = MutableStateFlow<List<AgendamentoConsulta>>(emptyList())
     val listaHistorico: StateFlow<List<AgendamentoConsulta>> get() = _listaHistorico
+
+    private val _agendamentoAgendadoHomeUsuario = MutableStateFlow<AgendamentoConsulta?>(null)
+    var agendamentoAgendadoHomeUsuario: StateFlow<AgendamentoConsulta?> = _agendamentoAgendadoHomeUsuario
+
+    private val _agendamentoPendenteHomeUsuario = MutableStateFlow<AgendamentoConsulta?>(null)
+    var agendamentoPendenteHomeUsuario: StateFlow<AgendamentoConsulta?> = _agendamentoPendenteHomeUsuario
+
 
     fun listarHorariosDisponiveis(barbeiro: Int, servico: Int, barbearia: Int, date: String) {
         viewModelScope.launch {
@@ -109,41 +120,100 @@ class AgendamentoViewModel (
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun listarAgendamentosPendentes() {
         viewModelScope.launch {
             try {
                 val agendamentoData = agendamentoRepository.getAgendamentosPendentes()
 
                 if (agendamentoData.isSuccessful) {
-                    Log.d("AgendamentoViewModel", "Dados dos agendamentos: ${agendamentoData.body()}")
-                    _agendamentosPendentes.value = agendamentoData.body()!!
+                    val agendamentos = agendamentoData.body() ?: emptyList()
+
+                    // Formatar o padrão de data esperado na string
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm", Locale.getDefault())
+
+                    // Filtra agendamentos futuros (data/hora superior à atual)
+                    val agendamentosFuturos = agendamentos.filter {
+                        // Parse da data de agendamento para LocalDateTime
+                        val dataHoraAgendamento = LocalDateTime.parse(it.dataHora.toString(), formatter)
+                        val currentTime = LocalDateTime.now()
+
+                        // Verifica se o agendamento é no futuro
+                        dataHoraAgendamento.isAfter(currentTime)
+                    }
+
+                    // Encontrar o agendamento pendente mais próximo
+                    // Aqui, comparamos as datas diretamente para encontrar o agendamento mais próximo
+                    val agendamentoPendenteMaisProximo = agendamentosFuturos.minByOrNull {
+                        // Converter LocalDateTime diretamente para uma comparação
+                        val dataHoraAgendamento = LocalDateTime.parse(it.dataHora.toString(), formatter)
+                        dataHoraAgendamento
+                    }
+
+                    // Emitir o agendamento pendente mais próximo para o StateFlow
+                    _agendamentoPendenteHomeUsuario.emit(agendamentoPendenteMaisProximo)
+
+                    Log.d("AgendamentoViewModel", "Agendamento Pendente Home Usuário: ${_agendamentoPendenteHomeUsuario.value}")
+
+                    _agendamentosPendentes.value = agendamentosFuturos
                 } else {
-                    Log.e("AgendamentoViewModel", "Erro na resposta dos agendamentos: ${agendamentoData.code()}")
-                    Log.e("AgendamentoViewModel", "Erro ao buscar os agendamentos: ${agendamentoData.errorBody()?.string()}")
+                    Log.e("AgendamentoViewModel", "Erro na resposta dos agendamentos pendentes: ${agendamentoData.code()}")
+                    Log.e("AgendamentoViewModel", "Erro ao buscar os agendamentos pendentes: ${agendamentoData.errorBody()?.string()}")
                 }
             } catch (e: Exception) {
-                Log.e("AgendamentoViewModel", "Erro ao buscar os agendamentos: ${e.message}")
+                Log.e("AgendamentoViewModel", "Erro ao buscar os agendamentos pendentes: ${e.message}")
             }
         }
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
     fun listarAgendamentosAgendados() {
         viewModelScope.launch {
             try {
                 val agendamentoData = agendamentoRepository.getAgendamentosAgendados()
 
                 if (agendamentoData.isSuccessful) {
-                    Log.d("AgendamentoViewModel", "Dados dos agendamentos: ${agendamentoData.body()}")
-                    _agendamentosAgendados.value = agendamentoData.body()!!
+                    val agendamentos = agendamentoData.body() ?: emptyList()
+
+                    // Ajuste no formato para permitir o caractere 'T' entre data e hora
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm", Locale.getDefault())
+
+                    // Filtra agendamentos futuros (data/hora superior à atual)
+                    val agendamentosFuturos = agendamentos.filter {
+                        // Parse da data de agendamento para LocalDateTime
+                        val dataHoraAgendamento = LocalDateTime.parse(it.dataHora.toString(), formatter)
+                        val currentTime = LocalDateTime.now()
+
+                        // Verifica se o agendamento é no futuro
+                        dataHoraAgendamento.isAfter(currentTime)
+                    }
+
+                    // Encontrar o agendamento agendado mais próximo
+                    val agendamentoAgendadoHomeUsuario = agendamentosFuturos.minByOrNull {
+                        // Converter LocalDateTime para o formato de string para comparação
+                        LocalDateTime.parse(it.dataHora.toString(), formatter).toString()
+                    }
+
+                    _agendamentoAgendadoHomeUsuario.emit(agendamentoAgendadoHomeUsuario)
+
+                    Log.d("AgendamentoViewModel", "Agendamento Agendado Home Usuário: ${_agendamentoAgendadoHomeUsuario.value}")
+
+                    _agendamentosAgendados.value = agendamentosFuturos
                 } else {
-                    Log.e("AgendamentoViewModel", "Erro na resposta dos agendamentos: ${agendamentoData.code()}")
-                    Log.e("AgendamentoViewModel", "Erro ao buscar os agendamentos: ${agendamentoData.errorBody()?.string()}")
+                    Log.e("AgendamentoViewModel", "Erro na resposta dos agendamentos agendados: ${agendamentoData.code()}")
+                    Log.e("AgendamentoViewModel", "Erro ao buscar os agendamentos agendados: ${agendamentoData.errorBody()?.string()}")
                 }
             } catch (e: Exception) {
-                Log.e("AgendamentoViewModel", "Erro ao buscar os agendamentos: ${e.message}")
+                Log.e("AgendamentoViewModel", "Erro ao buscar os agendamentos agendados: ${e.message}")
             }
         }
     }
+
+
+
+
+
 
     fun listarHistoricoCliente(){
         viewModelScope.launch {

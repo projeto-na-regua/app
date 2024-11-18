@@ -47,6 +47,31 @@ fun obterUsuarioDtype(context: Context): Flow<UserDType?> {
     val gson = Gson()
     return context.dataStore.data.map { preferences ->
         val userDtypeJson = preferences[userDtypePreferencesKey] ?: return@map null
-        gson.fromJson(userDtypeJson, UserDType::class.java)  // Deserializa o JSON para um objeto UserDType
+        gson.fromJson(userDtypeJson, UserDType::class.java)
     }
 }
+
+fun obterUsuarioDtypeSincrono(context: Context): Flow<UserDType?>{
+    val gson = Gson()
+    return runBlocking {
+        context.dataStore.data.map { preferences ->
+            val userDtypeJson = preferences[userDtypePreferencesKey] ?: return@map null
+            gson.fromJson(userDtypeJson, UserDType::class.java)
+        }
+    }
+}
+
+
+suspend fun limparDadosLogin(context: Context) {
+    context.dataStore.edit { preferences ->
+        preferences.remove(tokenPreferencesKey)
+        preferences.remove(userDtypePreferencesKey)
+    }
+}
+
+fun isUsuarioLogado(context: Context): Boolean {
+    val token = obterTokenSincrono(context)
+    println(token)
+    return token != "VAZIO"
+}
+

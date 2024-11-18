@@ -9,15 +9,15 @@ import retrofit2.http.Path
 
 interface BarbeariaService {
 
-    @GET("api/barbearias/perfil")
+    @GET("barbearias/perfil")
     suspend fun obterBarbearia(): Response<Barbearia>
 
-    @GET("api/barbearias/client-side/perfil/{idBarbearia}")
+    @GET("barbearias/client-side/perfil/{idBarbearia}")
     suspend fun obterBarbeariaCliente(
         @Path("idBarbearia") idBarbearia: Int
     ) : Response<Barbearia>
 
-    @PUT("api/barbearias/perfil")
+    @PUT("barbearias/perfil")
     suspend fun atualizarBarbearia(
         @Body nvBarbearia: Barbearia
     ) : Response<Barbearia>

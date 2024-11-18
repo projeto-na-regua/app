@@ -175,7 +175,7 @@ fun AgendaUsuarioContent(
 
             // Exibir Agendamentos Agendados
             Text(
-                text = "Agendamentos Agendados",
+                text = "Agendamentos Confirmados",
                 fontSize = 16.sp,
                 color = BLUE_PRIMARY,
                 fontWeight = FontWeight(600),
@@ -280,11 +280,12 @@ fun AgendaUsuarioContent(
                     }
                 }
             }
-
             LazyRow(
                 modifier = Modifier.fillMaxWidth(.95f)
             ) {
-                items(listaHistorico) { agendamento ->
+                val listaHistoricoUnica = listaHistorico.distinctBy { it.enderecoBarbearia }
+
+                items(listaHistoricoUnica) { agendamento ->
                     BoxHistorico(agendamento = agendamento) {
                         selectedAgendamento = agendamento
                         showModal = true

@@ -63,7 +63,7 @@ fun Notificacoes(
 ) {
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Notificações", false)
+            TopBarCustom(navController, "Notificações", false, false)
         },
         content = { paddingValues ->
             NotificacoesContent(
@@ -363,17 +363,9 @@ fun NotificacaoItem(notificacao: Notificacao) {
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun formatarDataHoraHomeUsuario(dataHora: LocalDateTime): String {
-    val formatter = DateTimeFormatter
-    .ofPattern("dd/MM/yyyy 'às' HH:mm", Locale("pt", "BR"))
-
-    return dataHora.format(formatter)
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
 fun formatarDataHora(dataHora: LocalDateTime): String {
     val formatter = DateTimeFormatter
-        .ofPattern("d MMM yyyy 'às' HH:mm", Locale("pt", "BR"))
+    .ofPattern("d MMM yyyy 'às' HH:mm", Locale("pt", "BR"))
 
     return dataHora.format(formatter)
 }

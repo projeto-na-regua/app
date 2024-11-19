@@ -99,7 +99,9 @@ fun CadastroFotoUsername(
                                 contentDescription = "Imagem selecionada",
                                 contentScale = ContentScale.Crop, // Garante que a imagem preencha o círculo
                                 modifier = Modifier
+                                    .size(150.dp) // Ajusta o tamanho da imagem ao Box
                                     .clip(CircleShape) // Aplica a forma circular também na imagem
+                                    .align(Alignment.Center)
                             )
                         } else {
                             Image(

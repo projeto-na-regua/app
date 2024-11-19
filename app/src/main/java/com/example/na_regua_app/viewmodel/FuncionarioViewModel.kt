@@ -22,9 +22,6 @@ class FuncionarioViewModel(
     private val _funcionarios = MutableStateFlow<List<Funcionario>?>(emptyList())
     val funcionarios: StateFlow<List<Funcionario>?> get() = _funcionarios
 
-    private val _isLoadingFuncionarios = MutableStateFlow(true)
-    var isLoadingFuncionarios: StateFlow<Boolean> = _isLoadingFuncionarios
-
     fun obterFuncionarios(idBarbearia: Int, isBarbeiro: Boolean) {
         viewModelScope.launch {
             try {
@@ -36,7 +33,6 @@ class FuncionarioViewModel(
                 if (funcionariosData.isSuccessful) {
                     val funcionarios = funcionariosData.body()
                     _funcionarios.value = funcionarios
-                    _isLoadingFuncionarios.value = false
                     Log.d("FuncionarioViewModel", "Dados dos funcionarios: ${funcionariosData.body()}")
                 } else {
                     Log.e("FuncionarioViewModel", "Erro na resposta: ${funcionariosData.code()}")

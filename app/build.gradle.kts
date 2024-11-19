@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.na_regua_app"
-        minSdk = 25
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -70,6 +70,9 @@ dependencies {
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
 
+    // LiveData
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
+
     // Retrofit2
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
@@ -88,6 +91,8 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     // AndroidX
+    implementation("androidx.activity:activity-ktx:1.7.0")
+    implementation("androidx.compose.ui:ui:1.5.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -98,7 +103,7 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.1.0")
     implementation(libs.material)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.runtime.livedata)
     val navVersion = "2.5.3"
     implementation("androidx.navigation:navigation-compose:$navVersion")
 
@@ -117,5 +122,8 @@ dependencies {
 
     // LogInterceptor
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10")
+
+    //Permissões
+    implementation("com.google.accompanist:accompanist-permissions:0.30.1")
 
 }

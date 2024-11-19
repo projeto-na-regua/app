@@ -82,7 +82,7 @@ fun Home(
     Scaffold(
         modifier = Modifier.background(White),
         topBar = {
-            TopBarCustom(navController, "Home", true)
+            TopBarCustom(navController, "Home", true, false)
         },
         content = { paddingValues ->
             HomeContent(
@@ -293,16 +293,6 @@ fun HomeContent(paddingValues: PaddingValues, navController: NavController, fina
                            },
                                modifier = Modifier.padding(15.dp)
                                    .clickable { navController.navigate("dashboard") },
-                               fontSize = 18.sp,
-                               lineHeight = 25.sp,
-                               fontWeight = FontWeight.Light,
-                               color = BLUE_PRIMARY
-                           )
-                       } else {
-                           Text(text = buildAnnotatedString {
-                               append("Você não possui nenhum compromisso pendente ou agendado.")
-                           },
-                               modifier = Modifier.padding(15.dp),
                                fontSize = 18.sp,
                                lineHeight = 25.sp,
                                fontWeight = FontWeight.Light,

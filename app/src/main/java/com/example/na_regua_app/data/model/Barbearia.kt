@@ -1,7 +1,7 @@
 package com.example.na_regua_app.data.model
 
 data class Barbearia(
-    val id: Int,
+    val id: Int?,
     val imgPerfil: String?,
     val imgBanner: String?,
     val nomeNegocio: String,

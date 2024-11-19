@@ -26,7 +26,7 @@ fun Adicionar(
 ) {
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Adicionar", true)
+            TopBarCustom(navController, "Adicionar", true, false)
         },
         content = { paddingValues ->
             Column(

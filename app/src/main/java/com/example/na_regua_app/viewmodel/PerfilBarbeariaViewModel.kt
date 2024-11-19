@@ -1,18 +1,14 @@
 package com.example.na_regua_app.viewmodel
 
 import android.util.Log
-import android.widget.Toast
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.util.copy
 import com.example.na_regua_app.data.model.Barbearia
 import com.example.na_regua_app.data.model.DiaSemana
 import com.example.na_regua_app.data.repository.BarbeariaRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import okhttp3.Response
 
 class PerfilBarbeariaViewModel(
     private val barbeariaRepository: BarbeariaRepository,
@@ -21,7 +17,7 @@ class PerfilBarbeariaViewModel(
     private val _barbearia = MutableStateFlow<Barbearia?>(null)
     val barbearia: StateFlow<Barbearia?> get() = _barbearia
 
-    fun obterBarbearia(isBarbeiro: Boolean, idBarbearia: Int) {
+    fun obterBarbearia(isBarbeiro: Boolean, idBarbearia: Int? = null) {
         viewModelScope.launch {
             try {
                 val barbeariaData: retrofit2.Response<Barbearia> = if (isBarbeiro) {
@@ -74,6 +70,4 @@ class PerfilBarbeariaViewModel(
             }
         }
     }
-
-
 }

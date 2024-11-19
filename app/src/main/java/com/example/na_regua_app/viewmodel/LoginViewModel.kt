@@ -87,10 +87,9 @@ class LoginViewModel(
                 Log.e("LoginViewModel", "Erro ao logar: ${e.message}")
             }
         }
-
-
-
-
-
     }
 }
+
+
+
+

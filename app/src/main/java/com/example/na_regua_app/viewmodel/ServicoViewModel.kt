@@ -25,9 +25,6 @@ class ServicoViewModel(
     private val _servicos = MutableStateFlow<List<ServicoCardDTO>>(emptyList())
     val servicos: StateFlow<List<ServicoCardDTO>> get() = _servicos
 
-    private val _isLoadingServicos = MutableStateFlow(true)
-    var isLoadingServicos: StateFlow<Boolean> = _isLoadingServicos
-
     fun obterServicosPorStatus(status: String, idBarbearia: Int, isBarbeiro: Boolean) {
         viewModelScope.launch {
             val serviceData: Response<List<Servico>> = if (isBarbeiro) {
@@ -41,7 +38,6 @@ class ServicoViewModel(
                 } ?: emptyList()
 
                 _servicos.value = servicoCardDTOList
-                _isLoadingServicos.value = false
                 Log.d("ServicoViewModel", "Dados de servicos: ${serviceData.body()}")
             } else {
                 Log.e("PerfilBarbeariaViewModel", "Erro na resposta: ${serviceData.code()}")

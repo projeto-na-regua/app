@@ -15,7 +15,7 @@ import retrofit2.http.Query
 
 interface AgendamentoService {
 
-    @GET("agendamentos/list-horarios-disponiveis")
+    @GET("api/agendamentos/list-horarios-disponiveis")
     suspend fun listarHorariosDisponiveis(
         @Query("barbeiro") barbeiro: Int,
         @Query("servico") servico: Int,
@@ -23,21 +23,21 @@ interface AgendamentoService {
         @Query("date") date: String,
     ): Response<List<HorarioDisponivel>>
 
-    @POST("agendamentos")
+    @POST("api/agendamentos")
     suspend fun adicionarAgendamento(
         @Body nvAgendamento: AgendamentoCriacao
     ): Response<AgendamentoConsulta>
 
-    @GET("agendamentos/list-all-by-status/Pendente")
+    @GET("api/agendamentos/list-all-by-status/Pendente")
     suspend fun getAgendamentosPendentes() : Response<List<AgendamentoConsulta>>
 
-    @GET("agendamentos/list-all-by-status/Agendado")
+    @GET("api/agendamentos/list-all-by-status/Agendado")
     suspend fun getAgendamentosConfirmados() : Response<List<AgendamentoConsulta>>
 
-    @GET("agendamentos/historico")
+    @GET("api/agendamentos/historico")
     suspend fun getHistoricoCliente() : Response<List<AgendamentoConsulta>>
 
-    @PUT("agendamentos/{id}/{status}")
+    @PUT("api/agendamentos/{id}/{status}")
     suspend fun updateStatusAgendamento(
         @Path("id") id: Int,
         @Path("status") status: String

@@ -29,11 +29,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberAsyncImagePainter
-import com.example.na_regua_app.R
 import com.example.na_regua_app.ui.theme.BLUE_PRIMARY
 import com.example.na_regua_app.ui.theme.ORANGE_SECUNDARY
 import com.example.na_regua_app.ui.theme.labelLargeOrange
@@ -42,49 +39,46 @@ import com.example.na_regua_app.ui.theme.labelLargeOrange
 fun CardImagemInfoBarbearia(
     onClick: () -> Unit,
     nomeBarbearia: String,
-    imagem: String?
+    distancia: String,
+    isOpen: Boolean
 ) {
     Column(
         modifier = Modifier.width(130.dp)
-            .clip(RoundedCornerShape(15.dp))
-            .background(Color(0xFFF0F0F0))
-            .padding(15.dp)
             .clickable { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Box(
             modifier = Modifier
-                .padding()
+                .padding(top = 15.dp)
                 .size(80.dp)
                 .clip(CircleShape) // Certifica-se de que o Box seja recortado como um círculo
                 .background(Color.Transparent)
                 .border(1.dp, color = Color(0xFF9E9E9E), CircleShape)
         ) {
-            if (imagem != null) {
-                Image(
-                    painter = rememberAsyncImagePainter(model = imagem),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
-            } else {
-                Image(
-                    painter = painterResource(id = R.drawable.perfil_barbearia),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
+            Image(
+                painter = painterResource(id = com.example.na_regua_app.R.drawable.png_background),
+                contentDescription = "",
+                contentScale = ContentScale.Crop, // Isso garante que a imagem preencha o círculo corretamente
+                modifier = Modifier.fillMaxSize() // Garante que a imagem ocupe o tamanho completo do Box
+            )
         }
         Text(
-            modifier = Modifier.padding(top = 10.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.padding(top = 10.dp),
             text = nomeBarbearia,
             fontSize = 16.sp,
             color = BLUE_PRIMARY,
             fontWeight = FontWeight(600),
-            letterSpacing = .5.sp,
-            textAlign = TextAlign.Center
+            letterSpacing = .5.sp
         )
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.padding(top = 5.dp)
+                .fillMaxWidth()
+        ){
+            Text(text = distancia + "m", fontSize = 16.sp, color = BLUE_PRIMARY, letterSpacing = 1.sp, fontWeight = FontWeight(400))
+            Text(text = "•", color = BLUE_PRIMARY, fontSize = 16.sp, letterSpacing = 1.sp, fontWeight = FontWeight(400))
+            Text(text = if (isOpen) "Aberto" else "Fechado", color = ORANGE_SECUNDARY, fontSize = 16.sp, letterSpacing = 1.sp, fontWeight = FontWeight(400))
+        }
     }
 }

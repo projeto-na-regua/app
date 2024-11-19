@@ -106,6 +106,10 @@ class PerfilUsuarioViewModel(private val usuarioRepository: UsuarioRepository) :
                     _usuario.value = response.body() // Salve o usuário, se necessário
                     onResult(true) // Chame o callback com sucesso
                 } else {
+                    Log.e("PerfilUsuarioViewModel", "Erro na resposta: ${response.code()}")
+                    Log.e("PerfilUsuarioViewModel", "Cabeçalhos: ${response.headers()}")
+                    Log.e("PerfilUsuarioViewModel", "Erro ao obter usuário: ${response.errorBody()?.string()}")
+                    _usuario.value = null
                     Log.e("PerfilUsuarioViewModel", "Erro: $response")
                     onResult(false) // Chame o callback com erro
                 }
@@ -115,7 +119,6 @@ class PerfilUsuarioViewModel(private val usuarioRepository: UsuarioRepository) :
             }
         }
     }
-
 
     suspend fun editarPerfil(usuario: UsuarioDTOUpdate): Response<Void> {
         return usuarioRepository.editarPerfil(usuario)

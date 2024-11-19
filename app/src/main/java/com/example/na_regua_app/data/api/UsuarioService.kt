@@ -23,19 +23,19 @@ import retrofit2.http.PUT
 
 interface UsuarioService {
 
-    @GET("usuarios/perfil")
+    @GET("api/usuarios/perfil")
     suspend fun obterUsuario(
     ) : Response<Usuario>
 
     @Multipart
-    @POST("usuarios/cadastro")
+    @POST("api/usuarios/cadastro")
     suspend fun cadastrarUsuario(
         @Part("user") userJson: RequestBody,
         @Part imagem: MultipartBody.Part?
     ): Response<String>
 
     @Multipart
-    @POST("usuarios/cadastro-barbearia")
+    @POST("api/usuarios/cadastro-barbearia")
     suspend fun cadastrarBarbearia(
         @Header("Authorization") token: String,
         @Part("barbearia") barbearia: RequestBody,
@@ -43,18 +43,18 @@ interface UsuarioService {
         @Part banner: MultipartBody.Part?
     ): Response<Void>
 
-    @POST("usuarios")
+    @POST("api/usuarios")
     suspend fun logar(
         @Body dadosLogin: DadosLogin
     ) : Response<String>
 
-    @GET("usuarios/user")
+    @GET("api/usuarios/user")
     suspend fun admIsTrue(
         @Header("Authorization") token: String
     ) : Response<UserDType>
 
     // Novo método para editar o perfil do usuário
-    @PUT("usuarios/editar-perfil")
+    @PUT("api/usuarios/editar-perfil")
     suspend fun editarPerfil(@Body usuario: UsuarioDTOUpdate): Response<Void>
 
 //    // Novo método para editar a imagem de perfil do usuário

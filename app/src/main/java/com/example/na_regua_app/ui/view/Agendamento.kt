@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -90,7 +89,7 @@ fun Agendamento(
 
     Scaffold(
         topBar = {
-            TopBarCustom(navController, "Agendamento", true)
+            TopBarCustom(navController, "Perfil", true, false)
         },
         content = { paddingValues ->
             LazyColumn(
@@ -110,15 +109,6 @@ fun Agendamento(
                 }
 
                 item {
-                    Text(
-                        text = "Selecione o barbeiro",
-                        color = BLUE_PRIMARY,
-                        style = Typography.titleMedium,
-                        modifier = Modifier.padding(vertical = 12.dp)
-                    )
-                }
-
-                item {
                     funcionarios?.let {
                         BoxSelecaoBarbeiro(navController = navController, it) { barbeiroName ->
                             selectedBarbeiro = barbeiroName
@@ -130,22 +120,22 @@ fun Agendamento(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                    item {
-                        selectedBarbeiro?.id?.let { barbeiroId ->
-                            selectedService?.id?.let { servicoId ->
-                                BoxSelecaoDataEHora(
-                                    navController = navController,
-                                    agendamentoViewModel = agendamentoViewModel,
-                                    selectedBarbearia = idBarbearia,
-                                    selectedBarbeiro = barbeiroId,
-                                    selectedServico = servicoId
-                                ) { date, time ->
-                                    selectedDate = date
-                                    selectedTime = time
-                                }
+                item {
+                    selectedBarbeiro?.id?.let { barbeiroId ->
+                        selectedService?.id?.let { servicoId ->
+                            BoxSelecaoDataEHora(
+                                navController = navController,
+                                agendamentoViewModel = agendamentoViewModel,
+                                selectedBarbearia = idBarbearia,
+                                selectedBarbeiro = barbeiroId,
+                                selectedServico = servicoId
+                            ) { date, time ->
+                                selectedDate = date
+                                selectedTime = time
                             }
                         }
                     }
+                }
 
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
@@ -341,28 +331,29 @@ fun BoxSelecaoBarbeiro(
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        Text(
+            text = "Selecione o barbeiro",
+            style = Typography.titleMedium,
+        )
 
-        LazyRow(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             funcionarios.forEach { funcionario ->
-                item {
-                    SelecaoFuncionarios(
-                        funcionario = funcionario,
-                        isSelectable = true,
-                        isSelected = selectedBarbeiro == funcionario,
-                        onClick = {
-                            selectedBarbeiro = funcionario
-                            onBarbeiroSelected(selectedBarbeiro!!)
-                        }
-                    )
-                }
+                SelecaoFuncionarios(
+                    funcionario = funcionario,
+                    isSelectable = true,
+                    isSelected = selectedBarbeiro == funcionario,
+                    onClick = {
+                        selectedBarbeiro = funcionario
+                        onBarbeiroSelected(selectedBarbeiro!!)
+                    }
+                )
             }
         }
-
     }
 }
 

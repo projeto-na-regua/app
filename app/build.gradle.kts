@@ -75,6 +75,20 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
     implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+    implementation(libs.androidx.benchmark.common)
+
+    //Testes Unitarios
+    testImplementation("junit:junit:4.13.2")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0") // Versão mais recente disponível
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
+    testImplementation("org.mockito:mockito-inline:4.5.1")
+    testImplementation("org.hamcrest:hamcrest:2.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
+
 
 
     // Coil

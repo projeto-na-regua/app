@@ -36,7 +36,7 @@ class AgendamentoViewModel (
     private val _agendamentosAgendados = MutableStateFlow<List<AgendamentoConsulta>>(emptyList())
     val agendamentosAgendados: StateFlow<List<AgendamentoConsulta>> get() = _agendamentosAgendados
 
-    private val _listaHistorico = MutableStateFlow<List<AgendamentoConsulta>>(emptyList())
+    val _listaHistorico = MutableStateFlow<List<AgendamentoConsulta>>(emptyList())
     val listaHistorico: StateFlow<List<AgendamentoConsulta>> get() = _listaHistorico
 
     private val _agendamentoAgendadoHomeUsuario = MutableStateFlow<AgendamentoConsulta?>(null)
@@ -51,7 +51,7 @@ class AgendamentoViewModel (
     private val _isLoadingAgendados = MutableStateFlow(true)
     var isLoadingAgendados: StateFlow<Boolean> = _isLoadingAgendados
 
-    private val _isLoadingHistorico = MutableStateFlow(true)
+    val _isLoadingHistorico = MutableStateFlow(true)
     var isLoadingHistorico: StateFlow<Boolean> = _isLoadingHistorico
 
 
